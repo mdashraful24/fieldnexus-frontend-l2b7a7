@@ -35,14 +35,27 @@ export default function VerifyAccountForm() {
 
   const email = searchParams.get("email") || "";
 
+  const getRemainingSeconds = (expiresAtValue: string) => {
+    if (!expiresAtValue) return 0;
+    return Math.max(
+      0,
+      Math.floor((new Date(expiresAtValue).getTime() - Date.now()) / 1000),
+    );
+  };
+
   const [expiresAt, setExpiresAt] = useState(
     searchParams.get("expiresAt") || "",
   );
   const [remaining, setRemaining] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   const [sessionExpiresAt, setSessionExpiresAt] = useState(
     searchParams.get("sessionExpiresAt") || "",
   );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!email || !sessionExpiresAt) {
@@ -164,15 +177,28 @@ export default function VerifyAccountForm() {
           });
           setOtp("");
 
+          const newExpiresAt = res?.data?.expiresAt || expiresAt;
+          const newSessionExpiresAt = res?.data?.sessionExpiresIn
+            ? new Date(Date.now() + res.data.sessionExpiresIn * 1000).toISOString()
+            : sessionExpiresAt;
+
           if (res?.data?.expiresAt) {
             setExpiresAt(res.data.expiresAt);
+            setRemaining(getRemainingSeconds(res.data.expiresAt));
           }
 
           if (res?.data?.sessionExpiresIn) {
-            setSessionExpiresAt(
-              new Date(Date.now() + res.data.sessionExpiresIn * 1000).toISOString(),
-            );
+            setSessionExpiresAt(newSessionExpiresAt);
           }
+
+          const params = new URLSearchParams({
+            email,
+            expiresAt: newExpiresAt,
+            sessionExpiresAt: newSessionExpiresAt,
+          });
+          router.replace(`/register/verify-account?${params.toString()}`, {
+            scroll: false,
+          });
         },
         onError: (err) => {
           toast.add({
@@ -241,17 +267,18 @@ export default function VerifyAccountForm() {
                 errors={[{ message: "Invalid OTP. Please try again." }]}
               />
             )}
-            {isOtpExpired ? (
-              <FieldDescription>
-                OTP expired. Please resend a new one.
-              </FieldDescription>
-            ) : (
-              expiresAt && (
+            {mounted &&
+              (isOtpExpired ? (
                 <FieldDescription>
-                  OTP expires in {formatRemainingTime()}
+                  OTP expired. Please resend a new one.
                 </FieldDescription>
-              )
-            )}
+              ) : (
+                expiresAt && (
+                  <FieldDescription>
+                    OTP expires in {formatRemainingTime()}
+                  </FieldDescription>
+                )
+              ))}
           </Field>
         </form>
       </CardContent>
@@ -259,7 +286,7 @@ export default function VerifyAccountForm() {
       <CardFooter className="flex w-full gap-2">
         <Button
           variant="outline"
-          className="flex-1"
+          className="flex-1 h-10"
           onClick={handleResendOTP}
           disabled={resendPending}
         >
@@ -275,7 +302,7 @@ export default function VerifyAccountForm() {
         <Button
           type="submit"
           form="otp-form"
-          className="flex-1"
+          className="flex-1 h-10"
           disabled={verifyPending || isOtpExpired}
         >
           {verifyPending ? (
