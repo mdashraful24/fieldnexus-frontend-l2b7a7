@@ -1,8 +1,15 @@
 "use client";
 
+import { useForm } from "@tanstack/react-form";
 import { Eye, EyeClosed } from "lucide-react";
-import { Button } from "../ui/button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type z from "zod";
+import { useRegistration } from "@/hooks/auth.hook";
+import { patientRegistrationSchema } from "@/validation";
+import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
+import { Button } from "../ui/button";
 import {
   Field,
   FieldError,
@@ -11,15 +18,8 @@ import {
   FieldSeparator,
 } from "../ui/field";
 import { Input } from "../ui/input";
-import Link from "next/link";
-import { useForm } from "@tanstack/react-form";
-import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
-import { patientRegistrationSchema } from "@/validation";
-import z from "zod";
-import { useRegistration } from "@/hooks/auth.hook";
-import { toast } from "../ui/toast";
-import { useRouter } from "next/navigation";
 import { Spinner } from "../ui/spinner";
+import { toast } from "../ui/toast";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -36,7 +36,8 @@ export default function RegisterForm() {
     confirmPassword: "Password@123",
   };
 
-  const { mutate: registration, isPending: registrationPending } = useRegistration();
+  const { mutate: registration, isPending: registrationPending } =
+    useRegistration();
 
   const form = useForm({
     defaultValues,
@@ -71,7 +72,15 @@ export default function RegisterForm() {
             type: "success",
           });
 
-          const params = new URLSearchParams({ email: registrationData.email });
+          const params = new URLSearchParams({
+            email: registrationData.email,
+            expiresAt: res?.data?.expiresAt || "",
+            sessionExpiresAt: res?.data?.sessionExpiresIn
+              ? new Date(
+                  Date.now() + res.data.sessionExpiresIn * 1000,
+                ).toISOString()
+              : "",
+          });
           router.push(`/register/verify-account?${params.toString()}`);
         },
         onError: (err) => {
@@ -88,9 +97,11 @@ export default function RegisterForm() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Create an account</h1>
-        <p className="text-balance text-sm text-muted-foreground">
+      <div className="flex flex-col gap-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Create an account
+        </h1>
+        <p className="text-balance text-sm text-foreground">
           Enter your details below to create your account
         </p>
       </div>
@@ -120,6 +131,7 @@ export default function RegisterForm() {
                     onBlur={field.handleBlur}
                     autoComplete="off"
                     aria-invalid={isInvalid}
+                    className="py-4.5 md:py-5"
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -145,6 +157,7 @@ export default function RegisterForm() {
                     onBlur={field.handleBlur}
                     autoComplete="off"
                     aria-invalid={isInvalid}
+                    className="py-4.5 md:py-5"
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -170,6 +183,7 @@ export default function RegisterForm() {
                     onBlur={field.handleBlur}
                     autoComplete="off"
                     aria-invalid={isInvalid}
+                    className="py-4.5 md:py-5"
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -196,16 +210,20 @@ export default function RegisterForm() {
                       onBlur={field.handleBlur}
                       autoComplete="off"
                       aria-invalid={isInvalid}
+                      className="py-4.5 pr-10 md:py-5"
                     />
                     <button
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                      className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground transition-colors hover:text-foreground"
                       type="button"
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeClosed size={20} />
+                        <EyeClosed size={18} />
                       ) : (
-                        <Eye size={20} />
+                        <Eye size={18} />
                       )}
                     </button>
                   </div>
@@ -234,18 +252,22 @@ export default function RegisterForm() {
                       onBlur={field.handleBlur}
                       autoComplete="off"
                       aria-invalid={isInvalid}
+                      className="py-4.5 pr-10 md:py-5"
                     />
                     <button
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                      className="absolute top-1/2 right-1.5 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground transition-colors hover:text-foreground"
                       type="button"
+                      aria-label={
+                        showConfirmPassword ? "Hide password" : "Show password"
+                      }
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
                     >
                       {showConfirmPassword ? (
-                        <EyeClosed size={20} />
+                        <EyeClosed size={18} />
                       ) : (
-                        <Eye size={20} />
+                        <Eye size={18} />
                       )}
                     </button>
                   </div>
@@ -255,7 +277,11 @@ export default function RegisterForm() {
             }}
           </form.Field>
 
-          <Button type="submit" disabled={registrationPending}>
+          <Button
+            type="submit"
+            disabled={registrationPending}
+            className="h-9 w-full text-sm font-semibold md:h-10"
+          >
             {registrationPending ? (
               <>
                 <Spinner />
@@ -272,11 +298,11 @@ export default function RegisterForm() {
 
       <GoogleLoginComponent />
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-sm text-foreground">
         Already have an account?{" "}
         <Link
           href="/login"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
+          className="font-medium text-foreground underline-offset-4 hover:underline hover:text-primary"
         >
           Login
         </Link>

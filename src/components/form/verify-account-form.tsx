@@ -1,8 +1,11 @@
 "use client";
 
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useResendRegistrationOtp, useVerifyAccount } from "@/hooks";
+import { resendRegistrationOtpSchema } from "@/validation";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -14,11 +17,8 @@ import {
 } from "../ui/card";
 import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
-import { useVerifyAccount } from "@/hooks";
-import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
-
-const RESEND_COOL_DOWN = 5 * 60; // 5 minutes in seconds
+import { toast } from "../ui/toast";
 
 export default function VerifyAccountForm() {
   const searchParams = useSearchParams();
@@ -26,12 +26,19 @@ export default function VerifyAccountForm() {
 
   const [otp, setOtp] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
-  const [resendTimer, setResendTimer] = useState(RESEND_COOL_DOWN);
 
   const { mutate: verifyAccount, isPending: verifyPending } =
     useVerifyAccount();
 
+  const { mutate: resendOtp, isPending: resendPending } =
+    useResendRegistrationOtp();
+
   const email = searchParams.get("email") || "";
+
+  const [expiresAt, setExpiresAt] = useState(
+    searchParams.get("expiresAt") || "",
+  );
+  const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
     if (!email) {
@@ -40,16 +47,32 @@ export default function VerifyAccountForm() {
   }, [email, router]);
 
   useEffect(() => {
-    if (resendTimer <= 0) {
+    if (!expiresAt) {
       return;
     }
 
-    const timer = setInterval(() => {
-      setResendTimer((prev) => prev - 1);
-    }, 1000);
+    const expiryTime = new Date(expiresAt).getTime();
+    const updateRemaining = () => {
+      const seconds = Math.max(0, Math.floor((expiryTime - Date.now()) / 1000));
+      setRemaining(seconds);
+      if (seconds <= 0) {
+        clearInterval(timerId);
+      }
+    };
 
-    return () => clearInterval(timer);
-  }, [resendTimer]);
+    updateRemaining();
+    const timerId = setInterval(updateRemaining, 1000);
+
+    return () => clearInterval(timerId);
+  }, [expiresAt]);
+
+  const isOtpExpired = Boolean(expiresAt) && remaining <= 0;
+
+  const formatRemainingTime = () => {
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   const handleOTP = () => {
     if (otp.length !== 6) {
@@ -90,14 +113,65 @@ export default function VerifyAccountForm() {
     });
   };
 
+  const handleResendOTP = () => {
+    const validation = resendRegistrationOtpSchema.safeParse({ email });
+
+    if (!validation.success) {
+      toast.add({
+        title: "Resend Failed",
+        description: "Please provide a valid email address.",
+        type: "error",
+      });
+      return;
+    }
+
+    resendOtp(
+      { email },
+      {
+        onSuccess: (res) => {
+          if (!res.success) {
+            toast.add({
+              title: "Resend Failed",
+              description: "Something went wrong. Please try again.",
+              type: "error",
+            });
+            return;
+          }
+
+          toast.add({
+            title: "OTP Sent",
+            description: "A new verification OTP has been sent to your email.",
+            type: "success",
+          });
+          setOtp("");
+
+          if (res?.data?.expiresAt) {
+            setExpiresAt(res.data.expiresAt);
+          }
+        },
+        onError: (err) => {
+          toast.add({
+            title: "Resend Failed",
+            description:
+              err.message || "Something went wrong. Please try again.",
+            type: "error",
+          });
+        },
+      },
+    );
+  };
+
   if (!email) {
     return null;
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Verify Account</CardTitle>
+    <Card className="w-full">
+      <CardHeader className="flex flex-col gap-2 items-center text-center">
+        <span className="mb-2 grid size-12 place-items-center rounded-full bg-primary/10 text-primary">
+          <Mail size={22} />
+        </span>
+        <CardTitle className="text-xl">Verify your account</CardTitle>
         <CardDescription>
           Please provide the OTP we sent to your email address.
         </CardDescription>
@@ -112,7 +186,7 @@ export default function VerifyAccountForm() {
             handleOTP();
           }}
         >
-          <Field data-invalid={isInvalid}>
+          <Field className="items-center" data-invalid={isInvalid}>
             <FieldLabel htmlFor="otp">OTP</FieldLabel>
             <InputOTP
               maxLength={6}
@@ -128,13 +202,13 @@ export default function VerifyAccountForm() {
               id="otp"
               pattern={REGEXP_ONLY_DIGITS}
             >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
+              <InputOTPGroup className="flex justify-center items-center w-full">
+                <InputOTPSlot index={0} className="size-10 text-base" />
+                <InputOTPSlot index={1} className="size-10 text-base" />
+                <InputOTPSlot index={2} className="size-10 text-base" />
+                <InputOTPSlot index={3} className="size-10 text-base" />
+                <InputOTPSlot index={4} className="size-10 text-base" />
+                <InputOTPSlot index={5} className="size-10 text-base" />
               </InputOTPGroup>
             </InputOTP>
             {isInvalid && (
@@ -142,21 +216,50 @@ export default function VerifyAccountForm() {
                 errors={[{ message: "Invalid OTP. Please try again." }]}
               />
             )}
-            <FieldDescription> Resend in {resendTimer} sec </FieldDescription>
+            {isOtpExpired ? (
+              <FieldDescription>
+                OTP expired. Please resend a new one.
+              </FieldDescription>
+            ) : (
+              expiresAt && (
+                <FieldDescription>
+                  OTP expires in {formatRemainingTime()}
+                </FieldDescription>
+              )
+            )}
           </Field>
         </form>
       </CardContent>
 
-      <CardFooter>
-        <Button disabled={resendTimer > 0}>Resend OTP</Button>
-        <Button type="submit" form="otp-form" disabled={verifyPending}>
+      <CardFooter className="flex w-full gap-2">
+        <Button
+          variant="outline"
+          className="flex-1"
+          onClick={handleResendOTP}
+          disabled={resendPending}
+        >
+          {resendPending ? (
+            <>
+              <Spinner />
+              Resending...
+            </>
+          ) : (
+            "Resend OTP"
+          )}
+        </Button>
+        <Button
+          type="submit"
+          form="otp-form"
+          className="flex-1"
+          disabled={verifyPending || isOtpExpired}
+        >
           {verifyPending ? (
             <>
               <Spinner />
               Verifying account...
             </>
           ) : (
-            "Submit"
+            "Verify account"
           )}
         </Button>
       </CardFooter>
