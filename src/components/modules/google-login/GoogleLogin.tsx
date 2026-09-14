@@ -1,13 +1,15 @@
 "use client";
 
-import { toast } from "@/components/ui/toast";
-import { useGoogleOAuth } from "@/hooks";
 import { GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
+import { toast } from "@/components/ui/toast";
+import { useGoogleOAuth } from "@/hooks";
+import { cn } from "@/lib/utils";
 
 export default function GoogleLoginComponent() {
   const router = useRouter();
-  const { mutate: googleLogin } = useGoogleOAuth();
+  const { mutate: googleLogin, isPending } = useGoogleOAuth();
 
   const handleGoogleLoginSuccess = (credentialResponse: {
     credential?: string;
@@ -56,12 +58,22 @@ export default function GoogleLoginComponent() {
   };
 
   return (
-    <GoogleLogin
-      theme="outline"
-      shape="pill"
-      text="continue_with"
-      onSuccess={handleGoogleLoginSuccess}
-      onError={handleGoogleLoginError}
-    />
+    <div className={cn("relative", isPending && "pointer-events-none opacity-70")}>
+      <GoogleLogin
+        theme="outline"
+        shape="pill"
+        text="continue_with"
+        onSuccess={handleGoogleLoginSuccess}
+        onError={handleGoogleLoginError}
+      />
+      {isPending && (
+        <div
+          className="absolute inset-0 z-10 flex items-center justify-center rounded-full bg-background/80"
+          aria-live="polite"
+        >
+          <Spinner className="size-5" />
+        </div>
+      )}
+    </div>
   );
 }
