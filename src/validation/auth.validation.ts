@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const patientRegistrationSchema = z.object({
+export const registrationSchema = z.object({
     name: z
         .string("Not a valid name")
         .min(3, "Name must be at least 3 characters long.")

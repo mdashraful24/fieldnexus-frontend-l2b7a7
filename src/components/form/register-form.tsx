@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type z from "zod";
 import { useRegistration } from "@/hooks/auth.hook";
-import { patientRegistrationSchema } from "@/validation";
+import { registrationSchema } from "@/validation";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
 import { Button } from "../ui/button";
 import {
@@ -26,9 +26,9 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  type PatientDefaultValues = z.infer<typeof patientRegistrationSchema>;
+  type UserDefaultValues = z.infer<typeof registrationSchema>;
 
-  const defaultValues: PatientDefaultValues = {
+  const defaultValues: UserDefaultValues = {
     name: "",
     email: "",
     contactNumber: "",
@@ -42,14 +42,14 @@ export default function RegisterForm() {
   const form = useForm({
     defaultValues,
     validators: {
-      onSubmit: patientRegistrationSchema,
+      onSubmit: registrationSchema,
     },
     onSubmit: async ({ value }) => {
       const registrationData = {
         name: value.name,
         email: value.email,
         password: value.password,
-        patient: {
+        customer: {
           contactNumber: value.contactNumber,
         },
       };
