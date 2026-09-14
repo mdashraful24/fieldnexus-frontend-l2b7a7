@@ -40,11 +40,28 @@ export default function VerifyAccountForm() {
   );
   const [remaining, setRemaining] = useState(0);
 
+  const [sessionExpiresAt, setSessionExpiresAt] = useState(
+    searchParams.get("sessionExpiresAt") || "",
+  );
+
   useEffect(() => {
-    if (!email) {
-      router.push("/");
+    if (!email || !sessionExpiresAt) {
+      router.push("/register");
+      return;
     }
-  }, [email, router]);
+
+    const sessionExpiryTime = new Date(sessionExpiresAt).getTime();
+    const checkSessionExpiry = () => {
+      if (sessionExpiryTime <= Date.now()) {
+        router.push("/register");
+      }
+    };
+
+    checkSessionExpiry();
+    const timerId = setInterval(checkSessionExpiry, 1000);
+
+    return () => clearInterval(timerId);
+  }, [email, sessionExpiresAt, router]);
 
   useEffect(() => {
     if (!expiresAt) {
@@ -52,16 +69,18 @@ export default function VerifyAccountForm() {
     }
 
     const expiryTime = new Date(expiresAt).getTime();
+    let timerId: ReturnType<typeof setInterval> | undefined;
+
     const updateRemaining = () => {
       const seconds = Math.max(0, Math.floor((expiryTime - Date.now()) / 1000));
       setRemaining(seconds);
-      if (seconds <= 0) {
+      if (seconds <= 0 && timerId) {
         clearInterval(timerId);
       }
     };
 
     updateRemaining();
-    const timerId = setInterval(updateRemaining, 1000);
+    timerId = setInterval(updateRemaining, 1000);
 
     return () => clearInterval(timerId);
   }, [expiresAt]);
@@ -147,6 +166,12 @@ export default function VerifyAccountForm() {
 
           if (res?.data?.expiresAt) {
             setExpiresAt(res.data.expiresAt);
+          }
+
+          if (res?.data?.sessionExpiresIn) {
+            setSessionExpiresAt(
+              new Date(Date.now() + res.data.sessionExpiresIn * 1000).toISOString(),
+            );
           }
         },
         onError: (err) => {
