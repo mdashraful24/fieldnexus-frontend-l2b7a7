@@ -58,23 +58,24 @@ export default function VerifyAccountForm() {
   }, []);
 
   useEffect(() => {
-    if (!email || !sessionExpiresAt) {
-      router.push("/register");
+    const emailValidation = resendRegistrationOtpSchema.safeParse({ email });
+    const isSessionExpired =
+      !sessionExpiresAt || new Date(sessionExpiresAt).getTime() <= Date.now();
+
+    if (!emailValidation.success || isSessionExpired || !expiresAt) {
+      router.replace("/register");
       return;
     }
 
     const sessionExpiryTime = new Date(sessionExpiresAt).getTime();
-    const checkSessionExpiry = () => {
+    const timerId = setInterval(() => {
       if (sessionExpiryTime <= Date.now()) {
-        router.push("/register");
+        router.replace("/register");
       }
-    };
-
-    checkSessionExpiry();
-    const timerId = setInterval(checkSessionExpiry, 1000);
+    }, 1000);
 
     return () => clearInterval(timerId);
-  }, [email, sessionExpiresAt, router]);
+  }, [email, sessionExpiresAt, expiresAt, router]);
 
   useEffect(() => {
     if (!expiresAt) {
@@ -212,7 +213,12 @@ export default function VerifyAccountForm() {
     );
   };
 
-  if (!email) {
+  const isEmailValid = resendRegistrationOtpSchema.safeParse({ email }).success;
+  const isSessionValid =
+    Boolean(sessionExpiresAt) &&
+    new Date(sessionExpiresAt).getTime() > Date.now();
+
+  if (!isEmailValid || !isSessionValid || !expiresAt) {
     return null;
   }
 

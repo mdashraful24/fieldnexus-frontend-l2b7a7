@@ -1,5 +1,5 @@
 import apiClient from "@/lib/apiClient";
-import { LoginPayload, RegistrationPayload, ResendRegistrationOtpPayload, VerifyAccountPayload } from "@/types";
+import { ForgotPasswordPayload, LoginPayload, RegistrationPayload, ResendRegistrationOtpPayload, ResetPasswordPayload, VerifyAccountPayload } from "@/types";
 
 export function userRegistration(payload: RegistrationPayload) {
     return apiClient("/auth/register", { method: "POST", body: payload });
@@ -27,4 +27,16 @@ export function getMe() {
 
 export function googleOAuth(payload: { idToken: string }) {
     return apiClient("/auth/google", { method: "POST", body: payload });
+}
+
+export function forgotPassword(payload: ForgotPasswordPayload) {
+    return apiClient("/auth/forgot-password", { method: "POST", body: payload });
+}
+
+export function resendForgotPasswordOtp(payload: ForgotPasswordPayload) {
+    return apiClient("/auth/resend-forgot-password-otp", { method: "POST", body: payload });
+}
+
+export function resetPassword(payload: ResetPasswordPayload) {
+    return apiClient("/auth/reset-password", { method: "POST", body: payload });
 }

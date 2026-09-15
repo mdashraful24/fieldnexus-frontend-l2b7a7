@@ -146,6 +146,15 @@ export default function LoginForm() {
             }}
           </form.Field>
 
+          <div className="flex justify-end">
+            <Link
+              href="/forgot-password"
+              className="text-sm font-medium text-foreground underline-offset-4 hover:underline hover:text-primary"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
           <Button
               type="submit"
               disabled={loginPending}
