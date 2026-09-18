@@ -144,16 +144,14 @@ export default function TechnicianReviewSheet({
     <Sheet open={!!selectedId} onOpenChange={handleClose}>
       <SheetContent>
         <SheetHeader>
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <SheetTitle className="break-words">
-                {selectedTechnician.name}
-              </SheetTitle>
-              <SheetDescription className="break-all">
-                {selectedTechnician.email}
-              </SheetDescription>
-            </div>
-            <TechnicianStatusBadge status={selectedTechnician.status} />
+          <div className="min-w-0">
+            <SheetTitle className="break-all flex items-center gap-2">
+              {selectedTechnician.name}
+              <TechnicianStatusBadge status={selectedTechnician.status} />
+            </SheetTitle>
+            <SheetDescription className="break-all">
+              {selectedTechnician.email}
+            </SheetDescription>
           </div>
         </SheetHeader>
 
