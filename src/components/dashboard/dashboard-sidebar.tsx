@@ -17,10 +17,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { adminRoutes } from "@/routes/admin.routes";
-import { UserRole } from "@/types/user.type";
+import type { UserRole } from "@/types/user.type";
 import { technicianRoutes } from "@/routes/technician.routes";
 import { customerRoutes } from "@/routes/customer.routes";
-import { SidebarItems } from "@/types/sidebar.type";
+import type { SidebarItems } from "@/types/sidebar.type";
 
 const sideBarRoutes: Partial<Record<UserRole, SidebarItems>> = {
   SUPER_ADMIN: adminRoutes,
@@ -29,9 +29,9 @@ const sideBarRoutes: Partial<Record<UserRole, SidebarItems>> = {
   CUSTOMER: customerRoutes,
 };
 
-export function DashboardSidebar({ role }: { role: UserRole }) {
+export function DashboardSidebar({ userRole }: { userRole: UserRole }) {
   const pathname = usePathname();
-  const routes: SidebarItems = sideBarRoutes[role] || [];
+  const routes: SidebarItems = sideBarRoutes[userRole] || [];
 
   // console.log(pathname);
 
