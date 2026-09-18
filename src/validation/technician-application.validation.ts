@@ -145,3 +145,10 @@ export const technicianApplicationSchema = z.object({
     }),
 });
 
+export const rejectApplicationReasonSchema = z.object({
+    rejectionReason: z
+        .string("Rejection reason is required")
+        .trim()
+        .min(3, "Rejection reason must be at least 3 characters long")
+        .max(500, "Rejection reason must not exceed 500 characters"),
+});

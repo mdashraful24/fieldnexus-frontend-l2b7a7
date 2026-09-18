@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import HowItWorksButton from "@/components/modules/about-us/HowItWorksButton";
 import { Button } from "@/components/ui/button";
 import { DashboardMockup } from "./DashboardMockup";
 
@@ -32,14 +33,7 @@ export default function Hero() {
               Get started
               <ArrowRight data-icon="inline-end" />
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              render={<Link href="/about-us#how-it-works" />}
-              nativeButton={false}
-            >
-              How it works
-            </Button>
+            <HowItWorksButton />
           </div>
         </div>
 
