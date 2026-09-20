@@ -49,11 +49,7 @@ export default function TechnicianApplyForm() {
     address: "Mirpur 10, Dhaka, Bangladesh",
     qualifications: "BSc in Electrical Engineering, HSC",
     experienceYears: "5",
-    skills: [
-      "Electrical Installation",
-      "Troubleshooting",
-      "Customer Service",
-    ] as string[],
+    skills: "Electrical Installation, Troubleshooting, Customer Service",
     bio: "I am a skilled technician with over 5 years of experience in electrical installation and troubleshooting. I have a strong background in customer service and am committed to providing high-quality work.",
     resume: null as File | null,
     additionalDocuments: [] as File[],
@@ -72,7 +68,10 @@ export default function TechnicianApplyForm() {
         address: value.address?.trim() ?? "",
         qualifications: value.qualifications.trim(),
         experienceYears: Number(value.experienceYears),
-        skills: value.skills?.length ? value.skills : undefined,
+        skills: value.skills
+          .split(",")
+          .map((skill) => skill.trim())
+          .filter(Boolean),
         bio: value.bio?.trim() ?? "",
       };
 
@@ -325,7 +324,14 @@ export default function TechnicianApplyForm() {
             </form.Field>
           </div>
 
-          <form.Field name="skills">
+          <form.Field
+            name="skills"
+            validators={{
+              onChange: technicianApplicationSchema.shape.skills,
+              onBlur: technicianApplicationSchema.shape.skills,
+              onSubmit: technicianApplicationSchema.shape.skills,
+            }}
+          >
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched && !field.state.meta.isValid;
@@ -344,16 +350,9 @@ export default function TechnicianApplyForm() {
                       name={field.name}
                       type="text"
                       placeholder="Network troubleshooting, Router configuration, Cable installation"
-                      value={field.state.value?.join(", ") ?? ""}
+                      value={field.state.value}
                       onBlur={field.handleBlur}
-                      onChange={(e) =>
-                        field.handleChange(
-                          e.target.value
-                            .split(",")
-                            .map((skill) => skill.trim())
-                            .filter(Boolean),
-                        )
-                      }
+                      onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
                       className="h-9 pl-9"
                       autoComplete="off"

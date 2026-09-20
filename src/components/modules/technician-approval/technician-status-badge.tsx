@@ -1,5 +1,5 @@
 import { cn } from "cn";
-import { ITechnicianApplicationStatus } from "@/types";
+import type { ITechnicianApplicationStatus } from "@/types";
 
 const statusStyles: Record<ITechnicianApplicationStatus, string> = {
   PENDING: "bg-amber-500/10 text-amber-600 dark:text-amber-400",

@@ -28,8 +28,8 @@ export default function LoginForm() {
 
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "admin@fieldnexus.com",
+      password: "NexusAdmin@123",
     },
     validators: {
       onSubmit: loginSchema,

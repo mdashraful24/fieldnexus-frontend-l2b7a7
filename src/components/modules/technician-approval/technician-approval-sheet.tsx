@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
-
+import { useQueryClient } from "@tanstack/react-query";
+import { FileText } from "lucide-react";
+import { type ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -17,10 +18,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
 import {
   useApproveTechnician,
-  useGetAllTechnicians,
   useRejectTechnician,
+  useSuspenseGetAllTechnicians,
 } from "@/hooks";
-import { ITechnicianParams } from "@/types";
+import type { ITechnicianParams } from "@/types";
 import { rejectApplicationReasonSchema } from "@/validation/technician-application.validation";
 import TechnicianStatusBadge from "./technician-status-badge";
 
@@ -56,7 +57,8 @@ export default function TechnicianReviewSheet({
   const [confirmRejection, setConfirmRejection] = useState(false);
   const [rejectionReason, setRejectionReason] = useState("");
 
-  const { data } = useGetAllTechnicians(params);
+  const { data } = useSuspenseGetAllTechnicians(params);
+  const queryClient = useQueryClient();
   const { mutate: approveTechnician, isPending: isApproving } =
     useApproveTechnician();
   const { mutate: rejectTechnician, isPending: isRejecting } =
@@ -81,6 +83,7 @@ export default function TechnicianReviewSheet({
           description: res?.message || "Technician approved successfully.",
           type: "success",
         });
+        queryClient.invalidateQueries({ queryKey: ["technicians"] });
         handleClose();
       },
       onError: (err) => {
@@ -123,6 +126,7 @@ export default function TechnicianReviewSheet({
             description: res?.message || "Technician rejected successfully.",
             type: "success",
           });
+          queryClient.invalidateQueries({ queryKey: ["technicians"] });
           handleClose();
         },
         onError: (err) => {
@@ -142,8 +146,8 @@ export default function TechnicianReviewSheet({
 
   return (
     <Sheet open={!!selectedId} onOpenChange={handleClose}>
-      <SheetContent>
-        <SheetHeader>
+      <SheetContent className="overflow-hidden">
+        <SheetHeader className="shrink-0 pr-12">
           <div className="min-w-0">
             <SheetTitle className="break-all flex items-center gap-2">
               {selectedTechnician.name}
@@ -155,7 +159,10 @@ export default function TechnicianReviewSheet({
           </div>
         </SheetHeader>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4">
+        <div
+          key={selectedId}
+          className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4"
+        >
           <div className="space-y-4">
             <Detail label="Application ID" value={selectedTechnician.id} />
             <Detail
@@ -212,6 +219,31 @@ export default function TechnicianReviewSheet({
               </Detail>
             )}
 
+            {selectedTechnician.additionalDocuments &&
+              selectedTechnician.additionalDocuments.length > 0 && (
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Additional Documents
+                  </p>
+                  <div className="mt-1 flex flex-col gap-1.5">
+                    {selectedTechnician.additionalDocuments.map(
+                      (document, index) => (
+                        <a
+                          key={document.publicId ?? index}
+                          href={document.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-primary underline underline-offset-4"
+                        >
+                          <FileText className="size-3.5 shrink-0" />
+                          Document {index + 1}
+                        </a>
+                      ),
+                    )}
+                  </div>
+                </div>
+              )}
+
             <Separator />
 
             {selectedTechnician.reviewedAt && (
@@ -242,7 +274,7 @@ export default function TechnicianReviewSheet({
           </div>
         </div>
 
-        <SheetFooter>
+        <SheetFooter className="shrink-0">
           {selectedTechnician.status !== "PENDING" ? (
             <p className="text-sm text-muted-foreground">
               This application has already been reviewed.

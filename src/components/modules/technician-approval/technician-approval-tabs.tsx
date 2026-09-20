@@ -1,17 +1,14 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { Search } from "lucide-react";
-import {
-  Card,
-  CardContent
-} from "@/components/ui/card";
+import { Search, X } from "lucide-react";
+import { type ChangeEvent, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ITechnicianApplicationStatus, ITechnicianParams } from "@/types";
-import TechnicianApprovalTable from "./technician-approval-table";
-import TechnicianApprovalTableLoading from "./technician-approval-table-loading";
+import useDebounce from "@/hooks/debounce.hook";
+import type { ITechnicianApplicationStatus, ITechnicianParams } from "@/types";
 import TechnicianReviewSheet from "./technician-approval-sheet";
+import TechnicianApprovalTable from "./technician-approval-table";
 
 const verificationStatus: ["ALL" | ITechnicianApplicationStatus, string][] = [
   ["ALL", "All"],
@@ -23,13 +20,26 @@ const verificationStatus: ["ALL" | ITechnicianApplicationStatus, string][] = [
 export default function TechnicianApprovalTabs() {
   const [tab, setTab] = useState<"ALL" | ITechnicianApplicationStatus>("ALL");
   const [selectedId, setSelectedId] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [page, setPage] = useState(1);
+
+  const debouncedSearch = useDebounce(searchInput);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    setPage(1);
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput("");
+    setPage(1);
+  };
 
   const queryParams: ITechnicianParams = {
-    page: 1,
+    page,
     limit: 10,
     ...(tab === "ALL" ? {} : { status: tab }),
-    ...(searchTerm.trim() ? { searchTerm: searchTerm.trim() } : {}),
+    ...(debouncedSearch ? { searchTerm: debouncedSearch } : {}),
   };
 
   return (
@@ -37,20 +47,31 @@ export default function TechnicianApprovalTabs() {
       <CardContent className="flex-1">
         <div className="flex flex-col justify-between gap-3 pb-4 md:flex-row md:items-center">
           <div className="relative w-full md:max-w-xs">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search by name or email"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
+              value={searchInput}
+              onChange={(e) => handleSearch(e)}
+              className="h-9 rounded-lg pr-9 pl-9 shadow-sm [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-cancel-button]:hidden"
             />
+            {searchInput && (
+              <button
+                type="button"
+                aria-label="Clear search"
+                onClick={handleClearSearch}
+                className="absolute top-1/2 right-2.5 flex -translate-y-1/2 items-center rounded-md p-0.5 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <X className="size-4" />
+              </button>
+            )}
           </div>
           <Tabs
             value={tab}
-            onValueChange={(value) =>
-              setTab(value as "ALL" | ITechnicianApplicationStatus)
-            }
+            onValueChange={(value) => {
+              setTab(value);
+              setPage(1);
+            }}
           >
             <TabsList className="w-full justify-start md:w-auto">
               {verificationStatus.map(([value, label]) => (
@@ -62,9 +83,11 @@ export default function TechnicianApprovalTabs() {
           </Tabs>
         </div>
 
-        <Suspense fallback={<TechnicianApprovalTableLoading />}>
-          <TechnicianApprovalTable {...queryParams} handleReview={setSelectedId} />
-        </Suspense>
+        <TechnicianApprovalTable
+          {...queryParams}
+          handleReview={setSelectedId}
+          handlePageChange={setPage}
+        />
       </CardContent>
 
       <TechnicianReviewSheet
