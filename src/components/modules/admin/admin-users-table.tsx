@@ -3,6 +3,7 @@
 import { Eye, Inbox } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -20,11 +21,17 @@ import UserStatusBadge from "./user-status-badge";
 export interface AdminUsersTableProps extends IAdminUsersParams {
   handleView: Dispatch<SetStateAction<string>>;
   handlePageChange: Dispatch<SetStateAction<number>>;
+  selectedIds: Set<string>;
+  handleToggleRow: (id: string) => void;
+  handleToggleAll: (ids: string[]) => void;
 }
 
 export default function AdminUsersTable({
   handleView,
   handlePageChange,
+  selectedIds,
+  handleToggleRow,
+  handleToggleAll,
   ...params
 }: AdminUsersTableProps) {
   const { data } = useSuspenseGetAllUsers(params);
@@ -33,6 +40,13 @@ export default function AdminUsersTable({
   const totalPages = data?.meta?.totalPages ?? 0;
   const page = params.page ?? 1;
   const limit = params.limit ?? 10;
+
+  const selectableUsers = users.filter((user) => user.status !== "DELETED");
+  const anySelectable = selectableUsers.length > 0;
+  const allOnPage =
+    anySelectable && selectableUsers.every((user) => selectedIds.has(user.id));
+  const someOnPage =
+    selectableUsers.some((user) => selectedIds.has(user.id)) && !allOnPage;
 
   useEffect(() => {
     if (page > 1 && (totalPages === 0 || page > totalPages)) {
@@ -46,6 +60,17 @@ export default function AdminUsersTable({
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-8">
+                <Checkbox
+                  checked={allOnPage}
+                  indeterminate={someOnPage}
+                  disabled={!anySelectable}
+                  onCheckedChange={() =>
+                    handleToggleAll(selectableUsers.map((user) => user.id))
+                  }
+                  aria-label="Select all visible users"
+                />
+              </TableHead>
               <TableHead>#</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
@@ -59,7 +84,7 @@ export default function AdminUsersTable({
             {users.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={8}
                   className="h-32 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
@@ -70,7 +95,19 @@ export default function AdminUsersTable({
               </TableRow>
             ) : (
               users.map((user, index) => (
-                <TableRow key={user.id}>
+                <TableRow
+                  key={user.id}
+                  data-selected={selectedIds.has(user.id)}
+                  className="data-[selected=true]:bg-muted/60"
+                >
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedIds.has(user.id)}
+                      disabled={user.status === "DELETED"}
+                      onCheckedChange={() => handleToggleRow(user.id)}
+                      aria-label={`Select ${user.name}`}
+                    />
+                  </TableCell>
                   <TableCell>{(page - 1) * limit + index + 1}</TableCell>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>

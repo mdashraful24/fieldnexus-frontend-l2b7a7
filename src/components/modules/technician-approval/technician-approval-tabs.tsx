@@ -4,7 +4,7 @@ import { Search, X } from "lucide-react";
 import { type ChangeEvent, Suspense, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useDebounce from "@/hooks/debounce.hook";
 import type { ITechnicianApplicationStatus, ITechnicianParams } from "@/types";
@@ -97,8 +97,18 @@ export default function TechnicianApprovalTabs() {
       {selectedId && (
         <Suspense
           fallback={
-            <div className="flex min-h-40 items-center justify-center">
-              <Spinner className="size-5" />
+            <div className="space-y-4 p-4">
+              <Skeleton className="h-6 w-44" />
+              <div className="flex gap-2">
+                <Skeleton className="h-5 w-16" />
+                <Skeleton className="h-5 w-20" />
+              </div>
+              <div className="space-y-3 pt-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
             </div>
           }
         >

@@ -63,6 +63,11 @@ export interface IRestoreUserPayload {
   userId: string;
 }
 
+export interface IUsersBulkStatusPayload {
+  userIds: string[];
+  status: UserStatus;
+}
+
 export interface IAuditLogParams {
   page?: number;
   limit?: number;

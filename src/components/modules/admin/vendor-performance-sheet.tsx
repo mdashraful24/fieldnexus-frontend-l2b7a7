@@ -11,7 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useGetVendorPerformance } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 
@@ -70,8 +70,16 @@ export default function VendorPerformanceSheet({
         </SheetHeader>
 
         {isPending ? (
-          <div className="flex min-h-40 items-center justify-center">
-            <Spinner className="size-5" />
+          <div className="space-y-3 px-4 py-2">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="flex items-center justify-between gap-2 rounded-lg bg-muted/50 px-3 py-2.5"
+              >
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+            ))}
           </div>
         ) : isError || !performance ? (
           <div className="flex flex-col items-center justify-center gap-3 rounded-xl border p-8 text-center">

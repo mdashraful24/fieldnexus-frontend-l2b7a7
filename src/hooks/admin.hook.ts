@@ -13,7 +13,11 @@ import {
   restoreUser,
   updateUserStatus,
 } from "@/api";
-import type { IAdminUsersParams, IAuditLogParams } from "@/types";
+import type {
+  IAdminUsersParams,
+  IAuditLogParams,
+  IUsersBulkStatusPayload,
+} from "@/types";
 
 export function useSuspenseGetDashboardStats() {
   return useSuspenseQuery({
@@ -62,6 +66,22 @@ export function useRestoreUser() {
       queryClient.invalidateQueries({
         queryKey: ["admin", "user", variables.userId],
       });
+    },
+  });
+}
+
+export function useBulkUpdateUserStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userIds, status }: IUsersBulkStatusPayload) => {
+      await Promise.all(
+        userIds.map((userId) => updateUserStatus({ userId, status })),
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "user"] });
     },
   });
 }

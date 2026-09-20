@@ -4,7 +4,7 @@ import type { UserStatus } from "@/types";
 const statusStyles: Record<UserStatus, string> = {
   ACTIVE: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   BLOCKED: "bg-destructive/10 text-destructive",
-  DELETED: "bg-muted text-muted-foreground",
+  DELETED: "bg-red-500/15 text-red-600 dark:text-red-400",
 };
 
 export default function UserStatusBadge({ status }: { status: UserStatus }) {

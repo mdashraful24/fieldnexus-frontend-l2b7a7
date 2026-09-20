@@ -13,6 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
 import { useGetUserById, useRestoreUser, useUpdateUserStatus } from "@/hooks";
@@ -73,9 +74,11 @@ function Avatar({ name, imageUrl }: { name: string; imageUrl?: string }) {
 export default function AdminUserDetailSheet({
   selectedId,
   onClose,
+  onUserDeleted,
 }: {
   selectedId: string;
   onClose: () => void;
+  onUserDeleted?: () => void;
 }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -102,6 +105,9 @@ export default function AdminUserDetailSheet({
             type: "success",
           });
           handleClose();
+          if (status === "DELETED") {
+            onUserDeleted?.();
+          }
         },
         onError: (err) => {
           toast.add({
@@ -164,8 +170,18 @@ export default function AdminUserDetailSheet({
         </SheetHeader>
 
         {isPending ? (
-          <div className="flex min-h-40 items-center justify-center">
-            <Spinner className="size-5" />
+          <div className="space-y-5 px-4 py-2">
+            <div className="flex gap-2">
+              <Skeleton className="h-6 w-20" />
+              <Skeleton className="h-6 w-16" />
+            </div>
+            <div className="space-y-4">
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-4 w-1/2" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-4 w-1/3" />
+            </div>
           </div>
         ) : isError || !user ? (
           <div className="flex flex-col items-center justify-center gap-3 rounded-xl border p-8 text-center">
