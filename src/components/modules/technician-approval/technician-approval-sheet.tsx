@@ -21,6 +21,7 @@ import {
   useRejectTechnician,
   useSuspenseGetAllTechnicians,
 } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
 import type { ITechnicianParams } from "@/types";
 import { rejectApplicationReasonSchema } from "@/validation/technician-application.validation";
 import TechnicianStatusBadge from "./technician-status-badge";
@@ -77,7 +78,6 @@ export default function TechnicianReviewSheet({
   const handleApprove = () => {
     approveTechnician(selectedId, {
       onSuccess: (res) => {
-        console.log("Technician approval response:", res);
         toast.add({
           title: "Success",
           description: res?.message || "Technician approved successfully.",
@@ -89,9 +89,11 @@ export default function TechnicianReviewSheet({
       onError: (err) => {
         toast.add({
           title: "Error",
-          description:
-            err?.message || "An error occurred while approving the technician.",
-          type: "destructive",
+          description: getApiErrorMessage(
+            err,
+            "An error occurred while approving the technician.",
+          ),
+          type: "error",
         });
       },
     });
@@ -108,7 +110,7 @@ export default function TechnicianReviewSheet({
         description:
           validationResult.error.issues[0]?.message ||
           "Please provide a valid rejection reason.",
-        type: "destructive",
+        type: "error",
       });
       return;
     }
@@ -120,7 +122,6 @@ export default function TechnicianReviewSheet({
       },
       {
         onSuccess: (res) => {
-          console.log("Technician rejection response:", res);
           toast.add({
             title: "Success",
             description: res?.message || "Technician rejected successfully.",
@@ -132,10 +133,11 @@ export default function TechnicianReviewSheet({
         onError: (err) => {
           toast.add({
             title: "Error",
-            description:
-              err?.message ||
+            description: getApiErrorMessage(
+              err,
               "An error occurred while rejecting the technician.",
-            type: "destructive",
+            ),
+            type: "error",
           });
         },
       },

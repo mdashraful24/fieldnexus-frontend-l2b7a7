@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLogin } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { loginSchema } from "../../validation";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
 import { Button } from "../ui/button";
@@ -17,8 +18,8 @@ import {
   FieldSeparator,
 } from "../ui/field";
 import { Input } from "../ui/input";
-import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
+import { toast } from "../ui/toast";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,7 +42,7 @@ export default function LoginForm() {
       };
 
       login(loginData, {
-        onSuccess: (res) => {
+        onSuccess: () => {
           toast.add({
             title: "Login Successful",
             description: "You have been successfully logged in.",
@@ -52,8 +53,7 @@ export default function LoginForm() {
         onError: (err) => {
           toast.add({
             title: "Login Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },
@@ -156,10 +156,10 @@ export default function LoginForm() {
           </div>
 
           <Button
-              type="submit"
-              disabled={loginPending}
-              className="h-9 md:h-10 w-full text-sm font-semibold"
-            >
+            type="submit"
+            disabled={loginPending}
+            className="h-9 md:h-10 w-full text-sm font-semibold"
+          >
             {loginPending ? (
               <>
                 <Spinner />

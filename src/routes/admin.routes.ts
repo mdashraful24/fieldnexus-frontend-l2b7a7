@@ -1,34 +1,34 @@
 const prefix = "/admin";
 
 export const adminRoutes = [
-    {
-        title: "Administration",
-        items: [
-            {
-                title: "Overview",
-                url: `${prefix}`,
-            },
-            {
-                title: "Technician Approval",
-                url: `${prefix}/approve-technician`,
-            },
-        ],
-    },
-    {
-        title: "App Settings",
-        items: [
-            {
-                title: "Routing",
-                url: "#",
-            },
-            {
-                title: "Data Fetching",
-                url: "#",
-            },
-            {
-                title: "Rendering",
-                url: "#",
-            },
-        ],
-    },
+  {
+    title: "Administration",
+    items: [
+      {
+        title: "Overview",
+        url: `${prefix}`,
+      },
+      {
+        title: "Users",
+        url: `${prefix}/users`,
+      },
+      {
+        title: "Technician Approval",
+        url: `${prefix}/approve-technician`,
+      },
+      {
+        title: "Vendors",
+        url: `${prefix}/vendors`,
+      },
+    ],
+  },
+  {
+    title: "Monitoring",
+    items: [
+      {
+        title: "Audit Logs",
+        url: `${prefix}/audit-logs`,
+      },
+    ],
+  },
 ];

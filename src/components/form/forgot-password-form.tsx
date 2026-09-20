@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForgotPassword } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { forgotPasswordSchema } from "@/validation";
 import { Button } from "../ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
@@ -62,8 +63,7 @@ export default function ForgotPasswordForm() {
         onError: (err) => {
           toast.add({
             title: "Request Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },

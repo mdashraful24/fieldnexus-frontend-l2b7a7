@@ -6,6 +6,7 @@ import { Eye, EyeClosed, KeyRound } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useResendForgotPasswordOtp, useResetPassword } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { forgotPasswordSchema, resetPasswordFormSchema } from "@/validation";
 import { Button } from "../ui/button";
 import {
@@ -38,8 +39,7 @@ export default function ResetPasswordForm() {
   const [otp, setOtp] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
 
-  const { mutate: resetPassword, isPending: resetPending } =
-    useResetPassword();
+  const { mutate: resetPassword, isPending: resetPending } = useResetPassword();
 
   const { mutate: resendOtp, isPending: resendPending } =
     useResendForgotPasswordOtp();
@@ -91,10 +91,7 @@ export default function ResetPasswordForm() {
     let timerId: ReturnType<typeof setInterval> | undefined;
 
     const updateRemaining = () => {
-      const seconds = Math.max(
-        0,
-        Math.floor((expiryTime - Date.now()) / 1000),
-      );
+      const seconds = Math.max(0, Math.floor((expiryTime - Date.now()) / 1000));
       setRemaining(seconds);
       if (seconds <= 0 && timerId) {
         clearInterval(timerId);
@@ -151,8 +148,7 @@ export default function ResetPasswordForm() {
         onError: (err) => {
           toast.add({
             title: "Reset Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },
@@ -196,7 +192,8 @@ export default function ResetPasswordForm() {
 
           toast.add({
             title: "OTP Sent",
-            description: "A new password reset OTP has been sent to your email.",
+            description:
+              "A new password reset OTP has been sent to your email.",
             type: "success",
           });
           setOtp("");
@@ -228,8 +225,7 @@ export default function ResetPasswordForm() {
         onError: (err) => {
           toast.add({
             title: "Resend Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },

@@ -5,6 +5,7 @@ import { Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useResendRegistrationOtp, useVerifyAccount } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { resendRegistrationOtpSchema } from "@/validation";
 import { Button } from "../ui/button";
 import {
@@ -139,7 +140,7 @@ export default function VerifyAccountForm() {
       onError: (err) => {
         toast.add({
           title: "Verification Failed",
-          description: err.message || "Something went wrong. Please try again.",
+          description: getApiErrorMessage(err),
           type: "error",
         });
       },
@@ -180,7 +181,9 @@ export default function VerifyAccountForm() {
 
           const newExpiresAt = res?.data?.expiresAt || expiresAt;
           const newSessionExpiresAt = res?.data?.sessionExpiresIn
-            ? new Date(Date.now() + res.data.sessionExpiresIn * 1000).toISOString()
+            ? new Date(
+                Date.now() + res.data.sessionExpiresIn * 1000,
+              ).toISOString()
             : sessionExpiresAt;
 
           if (res?.data?.expiresAt) {
@@ -204,8 +207,7 @@ export default function VerifyAccountForm() {
         onError: (err) => {
           toast.add({
             title: "Resend Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },

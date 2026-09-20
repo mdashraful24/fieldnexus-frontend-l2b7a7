@@ -1,14 +1,16 @@
 "use client";
 
 import { Search, X } from "lucide-react";
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, Suspense, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useDebounce from "@/hooks/debounce.hook";
 import type { ITechnicianApplicationStatus, ITechnicianParams } from "@/types";
 import TechnicianReviewSheet from "./technician-approval-sheet";
 import TechnicianApprovalTable from "./technician-approval-table";
+import TechnicianApprovalTableLoading from "./technician-approval-table-loading";
 
 const verificationStatus: ["ALL" | ITechnicianApplicationStatus, string][] = [
   ["ALL", "All"],
@@ -83,18 +85,30 @@ export default function TechnicianApprovalTabs() {
           </Tabs>
         </div>
 
-        <TechnicianApprovalTable
-          {...queryParams}
-          handleReview={setSelectedId}
-          handlePageChange={setPage}
-        />
+        <Suspense fallback={<TechnicianApprovalTableLoading />}>
+          <TechnicianApprovalTable
+            {...queryParams}
+            handleReview={setSelectedId}
+            handlePageChange={setPage}
+          />
+        </Suspense>
       </CardContent>
 
-      <TechnicianReviewSheet
-        selectedId={selectedId}
-        onClose={() => setSelectedId("")}
-        {...queryParams}
-      />
+      {selectedId && (
+        <Suspense
+          fallback={
+            <div className="flex min-h-40 items-center justify-center">
+              <Spinner className="size-5" />
+            </div>
+          }
+        >
+          <TechnicianReviewSheet
+            selectedId={selectedId}
+            onClose={() => setSelectedId("")}
+            {...queryParams}
+          />
+        </Suspense>
+      )}
     </Card>
   );
 }

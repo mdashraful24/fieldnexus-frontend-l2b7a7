@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type z from "zod";
 import { useRegistration } from "@/hooks/auth.hook";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { registrationSchema } from "@/validation";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
 import { Button } from "../ui/button";
@@ -49,9 +50,7 @@ export default function RegisterForm() {
         name: value.name,
         email: value.email,
         password: value.password,
-        customer: {
-          contactNumber: value.contactNumber,
-        },
+        contactNumber: value.contactNumber,
       };
 
       registration(registrationData, {
@@ -86,8 +85,7 @@ export default function RegisterForm() {
         onError: (err) => {
           toast.add({
             title: "Registration Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },

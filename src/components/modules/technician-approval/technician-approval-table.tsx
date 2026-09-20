@@ -1,7 +1,7 @@
 "use client";
 
 import { Inbox } from "lucide-react";
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -14,7 +14,6 @@ import {
 import TablePagination from "@/components/ui/table-pagination";
 import { useSuspenseGetAllTechnicians } from "@/hooks";
 import type { ITechnicianParams } from "@/types";
-import TechnicianApprovalTableLoading from "./technician-approval-table-loading";
 import TechnicianStatusBadge from "./technician-status-badge";
 
 export interface TechnicianApprovalTableProps extends ITechnicianParams {
@@ -27,13 +26,17 @@ export default function TechnicianApprovalTable({
   handlePageChange,
   ...params
 }: TechnicianApprovalTableProps) {
-  const { data, isPending } = useSuspenseGetAllTechnicians(params);
+  const { data } = useSuspenseGetAllTechnicians(params);
 
   const technicians = data?.data ?? [];
+  const totalPages = data?.meta?.totalPages ?? 0;
 
-  if (isPending) {
-    return <TechnicianApprovalTableLoading />;
-  }
+  useEffect(() => {
+    const currentPage = params.page ?? 1;
+    if (currentPage > 1 && (totalPages === 0 || currentPage > totalPages)) {
+      handlePageChange(totalPages > 0 ? totalPages : 1);
+    }
+  }, [totalPages, params.page, handlePageChange]);
 
   return (
     <>
@@ -98,7 +101,7 @@ export default function TechnicianApprovalTable({
 
       <div>
         <TablePagination
-          page={params.page ?? 0}
+          page={params.page ?? 1}
           totalPages={data?.meta?.totalPages ?? 0}
           handlePageChange={handlePageChange}
         />

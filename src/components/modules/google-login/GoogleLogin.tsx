@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
 import { useGoogleOAuth } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
 import { cn } from "@/lib/utils";
 
 export default function GoogleLoginComponent() {
@@ -40,8 +41,7 @@ export default function GoogleLoginComponent() {
         onError: (err) => {
           toast.add({
             title: "Google Login Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },
@@ -58,7 +58,9 @@ export default function GoogleLoginComponent() {
   };
 
   return (
-    <div className={cn("relative", isPending && "pointer-events-none opacity-70")}>
+    <div
+      className={cn("relative", isPending && "pointer-events-none opacity-70")}
+    >
       <GoogleLogin
         theme="outline"
         shape="pill"

@@ -1,10 +1,11 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useGetMe, useLogout } from "@/hooks/auth.hook";
 import { toast } from "@/components/ui/toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { useGetMe, useLogout } from "@/hooks/auth.hook";
+import { getApiErrorMessage } from "@/lib/apiError";
 
 export default function Header() {
   const routes = [
@@ -29,7 +30,7 @@ export default function Header() {
       onError: (err) => {
         toast.add({
           title: "Logout Failed",
-          description: err.message || "Something went wrong. Please try again.",
+          description: getApiErrorMessage(err),
           type: "error",
         });
       },

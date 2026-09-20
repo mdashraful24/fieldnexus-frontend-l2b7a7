@@ -2,9 +2,7 @@ export interface RegistrationPayload {
   name: string;
   email: string;
   password: string;
-  customer: {
-    contactNumber?: string;
-  };
+  contactNumber?: string;
 }
 
 export interface VerifyAccountPayload {

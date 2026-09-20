@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import type z from "zod";
 import { useApplyTechnician } from "@/hooks/technician.hook";
+import { getApiErrorMessage } from "@/lib/apiError";
 import type {
   ITechnicianApplicationData,
   ITechnicianApplicationPayload,
@@ -104,8 +105,7 @@ export default function TechnicianApplyForm() {
         onError: (err) => {
           toast.add({
             title: "Submission Failed",
-            description:
-              err.message || "Something went wrong. Please try again.",
+            description: getApiErrorMessage(err),
             type: "error",
           });
         },
