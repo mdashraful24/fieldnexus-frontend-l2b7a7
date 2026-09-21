@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, Trash2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { type ChangeEvent, Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,7 +25,6 @@ import type {
   IAdminUsersParams,
   UserStatus,
 } from "@/types";
-import AdminUserDetailSheet from "./admin-user-detail-sheet";
 import AdminUsersTable from "./admin-users-table";
 import AdminUsersTableLoading from "./admin-users-table-loading";
 
@@ -37,9 +37,10 @@ const statusTabs: AdminUsersStatusFilter[] = [
 const roleTabs: AdminUsersRoleFilter[] = ["ALL", "CUSTOMER", "TECHNICIAN"];
 
 export default function AdminUsersTabs() {
+  const router = useRouter();
+
   const [statusTab, setStatusTab] = useState<AdminUsersStatusFilter>("ALL");
   const [roleTab, setRoleTab] = useState<AdminUsersRoleFilter>("ALL");
-  const [selectedId, setSelectedId] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -59,6 +60,10 @@ export default function AdminUsersTabs() {
   const handleClearSearch = () => {
     setSearchInput("");
     setPage(1);
+  };
+
+  const handleView = (id: string) => {
+    router.push(`/admin/users/details?userId=${id}`);
   };
 
   const handleToggleRow = (id: string) => {
@@ -326,7 +331,7 @@ export default function AdminUsersTabs() {
           <Suspense fallback={<AdminUsersTableLoading />}>
             <AdminUsersTable
               {...queryParams}
-              handleView={setSelectedId}
+              handleView={handleView}
               handlePageChange={setPage}
               selectedIds={selectedIds}
               handleToggleRow={handleToggleRow}
@@ -335,16 +340,6 @@ export default function AdminUsersTabs() {
           </Suspense>
         </CardContent>
       </Card>
-
-      <AdminUserDetailSheet
-        selectedId={selectedId}
-        onClose={() => setSelectedId("")}
-        onUserDeleted={() => {
-          setSelectedId("");
-          setStatusTab("DELETED");
-          setPage(1);
-        }}
-      />
     </>
   );
 }

@@ -1,8 +1,16 @@
 "use client";
 
-import { Eye, Inbox } from "lucide-react";
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { Building2, Eye, Inbox, RotateCcw, Users } from "lucide-react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -12,23 +20,99 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import TablePagination from "@/components/ui/table-pagination";
-import { useSuspenseGetAllVendors } from "@/hooks";
-import type { IVendorParams } from "@/types";
+import { toast } from "@/components/ui/toast";
+import { useRestoreVendor, useSuspenseGetAllVendors } from "@/hooks";
+import { getApiErrorMessage } from "@/lib/apiError";
+import type { IVendor, IVendorParams, VendorListFilter } from "@/types";
 import VendorStatusBadge from "./vendor-status-badge";
 
 export interface AdminVendorsTableProps extends IVendorParams {
-  handleView: Dispatch<SetStateAction<string>>;
+  listFilter: VendorListFilter;
+  handlePerformance: (id: string) => void;
+  handleDetails: (id: string) => void;
+  handleMembers: (vendor: IVendor) => void;
   handlePageChange: Dispatch<SetStateAction<number>>;
 }
 
+function RestoreVendorPopover({ vendor }: { vendor: IVendor }) {
+  const { mutate: restoreVendor, isPending: isRestoring } = useRestoreVendor();
+  const [open, setOpen] = useState(false);
+
+  const handleRestore = () => {
+    restoreVendor(vendor.id, {
+      onSuccess: (res) => {
+        toast.add({
+          title: "Success",
+          description: res?.message || "Vendor restored successfully.",
+          type: "success",
+        });
+        setOpen(false);
+      },
+      onError: (err) => {
+        toast.add({
+          title: "Error",
+          description: getApiErrorMessage(
+            err,
+            "An error occurred while restoring the vendor.",
+          ),
+          type: "error",
+        });
+      },
+    });
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        render={<Button variant="outline" size="icon" title="Restore" />}
+      >
+        <RotateCcw className="size-4" />
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-80">
+        <PopoverTitle>Restore {vendor.name}?</PopoverTitle>
+        <PopoverDescription>
+          The vendor will be brought back and appear in the active list.
+        </PopoverDescription>
+        <div className="mt-4 flex justify-end gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setOpen(false)}
+            disabled={isRestoring}
+          >
+            Cancel
+          </Button>
+          <Button size="sm" onClick={handleRestore} disabled={isRestoring}>
+            {isRestoring ? (
+              <>
+                <Spinner />
+                Restoring...
+              </>
+            ) : (
+              "Restore Vendor"
+            )}
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 export default function AdminVendorsTable({
-  handleView,
+  listFilter,
+  handlePerformance,
+  handleDetails,
+  handleMembers,
   handlePageChange,
   ...params
 }: AdminVendorsTableProps) {
   const { data } = useSuspenseGetAllVendors(params);
 
   const vendors = data?.data ?? [];
+  const displayedVendors =
+    listFilter === "DELETED"
+      ? vendors.filter((vendor) => vendor.isDeleted)
+      : vendors;
   const totalPages = data?.meta?.totalPages ?? 0;
   const page = params.page ?? 1;
   const limit = params.limit ?? 10;
@@ -56,7 +140,7 @@ export default function AdminVendorsTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {vendors.length === 0 ? (
+            {displayedVendors.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={8}
@@ -69,8 +153,8 @@ export default function AdminVendorsTable({
                 </TableCell>
               </TableRow>
             ) : (
-              vendors.map((vendor, index) => (
-                <TableRow key={vendor.id}>
+              displayedVendors.map((vendor, index) => (
+                <TableRow key={vendor.id} data-deleted={vendor.isDeleted}>
                   <TableCell>{(page - 1) * limit + index + 1}</TableCell>
                   <TableCell className="max-w-48">
                     <p className="truncate font-medium">{vendor.name}</p>
@@ -92,14 +176,38 @@ export default function AdminVendorsTable({
                     <VendorStatusBadge status={vendor.status} />
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleView(vendor.id)}
-                    >
-                      <Eye />
-                      Performance
-                    </Button>
+                    <div className="flex justify-end gap-1">
+                      {vendor.isDeleted ? (
+                        <RestoreVendorPopover vendor={vendor} />
+                      ) : (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            title="Performance"
+                            onClick={() => handlePerformance(vendor.id)}
+                          >
+                            <Eye className="size-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            title="Details"
+                            onClick={() => handleDetails(vendor.id)}
+                          >
+                            <Building2 className="size-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            title="Members"
+                            onClick={() => handleMembers(vendor)}
+                          >
+                            <Users className="size-4" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

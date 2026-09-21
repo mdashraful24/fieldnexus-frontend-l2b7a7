@@ -4,13 +4,13 @@ import { AlertTriangle, Building2 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetVendorPerformance } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
@@ -39,7 +39,7 @@ function Stat({
   );
 }
 
-export default function VendorPerformanceSheet({
+export default function VendorPerformanceModal({
   vendorId,
   onClose,
 }: {
@@ -51,23 +51,23 @@ export default function VendorPerformanceSheet({
   const performance = data?.data;
 
   return (
-    <Sheet open={!!vendorId} onOpenChange={onClose}>
-      <SheetContent className="overflow-hidden">
-        <SheetHeader className="shrink-0 pr-12">
+    <Dialog open={!!vendorId} onOpenChange={onClose}>
+      <DialogContent className="overflow-hidden">
+        <DialogHeader className="shrink-0 pr-12">
           <div className="flex items-center gap-3">
             <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
               <Building2 className="size-5" />
             </span>
             <div className="min-w-0">
-              <SheetTitle className="break-all">
+              <DialogTitle className="break-all">
                 {performance?.vendorName ?? "Vendor performance"}
-              </SheetTitle>
-              <SheetDescription className="break-all">
+              </DialogTitle>
+              <DialogDescription className="break-all">
                 Performance overview for this vendor
-              </SheetDescription>
+              </DialogDescription>
             </div>
           </div>
-        </SheetHeader>
+        </DialogHeader>
 
         {isPending ? (
           <div className="space-y-3 px-4 py-2">
@@ -86,9 +86,7 @@ export default function VendorPerformanceSheet({
             <span className="grid size-12 place-items-center rounded-full bg-destructive/10 text-destructive">
               <AlertTriangle className="size-6" />
             </span>
-            <h2 className="text-base font-semibold">
-              Unable to load performance
-            </h2>
+            <h2 className="text-base font-semibold">Unable to load performance</h2>
             <p className="max-w-xs text-sm text-muted-foreground">
               {getApiErrorMessage(
                 error,
@@ -123,10 +121,7 @@ export default function VendorPerformanceSheet({
                   label="Average Completion Time"
                   value={performance.averageCompletionTime}
                 />
-                <Stat
-                  label="Cancelled Jobs"
-                  value={performance.cancelledJobs}
-                />
+                <Stat label="Cancelled Jobs" value={performance.cancelledJobs} />
               </div>
 
               <div className="rounded-lg border bg-card p-4">
@@ -155,14 +150,14 @@ export default function VendorPerformanceSheet({
               </div>
             </div>
 
-            <SheetFooter className="shrink-0">
+            <DialogFooter className="shrink-0">
               <Button variant="outline" size="lg" onClick={onClose}>
                 Close
               </Button>
-            </SheetFooter>
+            </DialogFooter>
           </>
         )}
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

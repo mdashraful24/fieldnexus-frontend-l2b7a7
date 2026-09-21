@@ -19,7 +19,7 @@ import UserRoleBadge from "./user-role-badge";
 import UserStatusBadge from "./user-status-badge";
 
 export interface AdminUsersTableProps extends IAdminUsersParams {
-  handleView: Dispatch<SetStateAction<string>>;
+  handleView: (id: string) => void;
   handlePageChange: Dispatch<SetStateAction<number>>;
   selectedIds: Set<string>;
   handleToggleRow: (id: string) => void;

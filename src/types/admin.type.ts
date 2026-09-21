@@ -123,6 +123,8 @@ export interface IVendorParams {
   searchTerm?: string;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
+  email?: string;
+  includeDeleted?: boolean;
 }
 
 export interface IVendor {
@@ -155,3 +157,58 @@ export interface IVendorPerformance {
 
 export type AdminUsersRoleFilter = "ALL" | "TECHNICIAN" | "CUSTOMER";
 export type AdminUsersStatusFilter = "ALL" | UserStatus;
+
+export type VendorListFilter = "ALL" | "DELETED";
+
+export interface IVendorMemberTechnician {
+  id: string;
+  name: string;
+  email: string;
+  contactNumber?: string | null;
+  qualifications?: string | null;
+  experienceYears?: number | null;
+  skills?: string[];
+}
+
+export interface IVendorMember {
+  id: string;
+  vendorId: string;
+  technicianId: string;
+  joinedAt: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  deletedAt?: string | null;
+  createdAt: string;
+  technician?: IVendorMemberTechnician | null;
+}
+
+export interface IVendorDetail extends IVendor {
+  members: IVendorMember[];
+  _count: { members: number };
+}
+
+export interface ICreateVendorPayload {
+  name: string;
+  email: string;
+  contactNumber?: string;
+  description?: string;
+  address?: string;
+  serviceAreas?: string;
+}
+
+export interface IUpdateVendorPayload extends Partial<ICreateVendorPayload> {}
+
+export interface IVendorUpdatePayload {
+  vendorId: string;
+  data: IUpdateVendorPayload;
+}
+
+export interface IAddVendorMemberPayload {
+  vendorId: string;
+  technicianId: string;
+}
+
+export interface IVendorMemberMutationPayload {
+  vendorId: string;
+  technicianId: string;
+}
