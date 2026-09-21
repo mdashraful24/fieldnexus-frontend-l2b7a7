@@ -17,13 +17,15 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { adminRoutes } from "@/routes/admin.routes";
+import { superAdminRoutes } from "@/routes/super-admin.routes";
 import type { UserRole } from "@/types/user.type";
 import { technicianRoutes } from "@/routes/technician.routes";
 import { customerRoutes } from "@/routes/customer.routes";
 import type { SidebarItems } from "@/types/sidebar.type";
+import { useGetMe } from "@/hooks";
 
 const sideBarRoutes: Partial<Record<UserRole, SidebarItems>> = {
-  SUPER_ADMIN: adminRoutes,
+  SUPER_ADMIN: [...adminRoutes, ...superAdminRoutes],
   ADMIN: adminRoutes,
   TECHNICIAN: technicianRoutes,
   CUSTOMER: customerRoutes,
@@ -31,7 +33,10 @@ const sideBarRoutes: Partial<Record<UserRole, SidebarItems>> = {
 
 export function DashboardSidebar({ userRole }: { userRole: UserRole }) {
   const pathname = usePathname();
-  const routes: SidebarItems = sideBarRoutes[userRole] || [];
+  const { data: meData } = useGetMe();
+  const effectiveRole: UserRole =
+    (meData?.data?.role as UserRole) ?? userRole;
+  const routes: SidebarItems = sideBarRoutes[effectiveRole] || [];
 
   // console.log(pathname);
 
