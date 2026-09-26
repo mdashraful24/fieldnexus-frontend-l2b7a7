@@ -8,3 +8,19 @@ export interface IServiceCategory {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ICreateServiceCategoryPayload {
+  name: string;
+  description?: string;
+  basePrice?: number;
+}
+
+export interface IUpdateServiceCategoryPayload {
+  serviceCategoryId: string;
+  data: {
+    name?: string;
+    description?: string;
+    basePrice?: number;
+    isActive?: boolean;
+  };
+}

@@ -1,12 +1,15 @@
 import apiClient from "@/lib/apiClient";
 import type {
   ApiResponse,
+  IAssignWorkOrderPayload,
   ICreateFeedbackPayload,
   ICreateServiceReportPayload,
   ICreateWorkOrderPayload,
   IRejectAssignmentPayload,
   IServiceReport,
+  IUpdateWorkOrderPayload,
   IUpdateWorkOrderStatusPayload,
+  IWorkAssignment,
   IWorkOrder,
   IWorkOrderFeedback,
   IWorkOrderParams,
@@ -46,19 +49,49 @@ export function updateWorkOrderStatus(payload: IUpdateWorkOrderStatusPayload) {
 }
 
 export function acceptWorkOrder(workOrderId: string) {
-  return apiClient<ApiResponse<IWorkOrder>>(`/work-orders/${workOrderId}/accept`, {
-    method: "POST",
-  });
+  return apiClient<ApiResponse<IWorkAssignment>>(
+    `/work-orders/${workOrderId}/accept`,
+    {
+      method: "POST",
+    },
+  );
 }
 
 export function rejectWorkOrder(payload: IRejectAssignmentPayload) {
-  return apiClient<ApiResponse<IWorkOrder>>(
+  return apiClient<ApiResponse<IWorkAssignment>>(
     `/work-orders/${payload.workOrderId}/reject`,
     {
       method: "POST",
       body: { rejectionReason: payload.rejectionReason },
     },
   );
+}
+
+export function assignWorkOrder({
+  workOrderId,
+  vendorId,
+  technicianId,
+}: IAssignWorkOrderPayload) {
+  return apiClient<ApiResponse<IWorkAssignment>>(
+    `/work-orders/${workOrderId}/assign`,
+    {
+      method: "POST",
+      body: { vendorId, technicianId },
+    },
+  );
+}
+
+export function updateWorkOrder({ workOrderId, data }: IUpdateWorkOrderPayload) {
+  return apiClient<ApiResponse<IWorkOrder>>(`/work-orders/${workOrderId}`, {
+    method: "PATCH",
+    body: data,
+  });
+}
+
+export function deleteWorkOrder(workOrderId: string) {
+  return apiClient<ApiResponse<null>>(`/work-orders/${workOrderId}`, {
+    method: "DELETE",
+  });
 }
 
 export function createServiceReport(payload: ICreateServiceReportPayload) {

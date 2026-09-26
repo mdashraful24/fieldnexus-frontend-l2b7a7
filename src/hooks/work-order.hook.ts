@@ -6,22 +6,27 @@ import {
 } from "@tanstack/react-query";
 import {
   acceptWorkOrder,
+  assignWorkOrder,
   createFeedback,
   createServiceReport,
   createWorkOrder,
+  deleteWorkOrder,
   getAllWorkOrders,
   getFeedback,
   getMyAssignedWorkOrders,
   getServiceReport,
   getWorkOrderById,
   rejectWorkOrder,
+  updateWorkOrder,
   updateWorkOrderStatus,
 } from "@/api";
 import type {
+  IAssignWorkOrderPayload,
   ICreateFeedbackPayload,
   ICreateServiceReportPayload,
   ICreateWorkOrderPayload,
   IRejectAssignmentPayload,
+  IUpdateWorkOrderPayload,
   IUpdateWorkOrderStatusPayload,
   IWorkOrderParams,
 } from "@/types";
@@ -122,12 +127,41 @@ export function useCreateServiceReport() {
     onSuccess: invalidateWorkOrders,
   });
 }
-
 export function useCreateFeedback() {
   const invalidateWorkOrders = useInvalidateWorkOrders();
 
   return useMutation({
-    mutationFn: (payload: ICreateFeedbackPayload) => createFeedback(payload),
+    mutationFn: (payload: ICreateFeedbackPayload) =>
+      createFeedback(payload),
+    onSuccess: invalidateWorkOrders,
+  });
+}
+
+export function useAssignWorkOrder() {
+  const invalidateWorkOrders = useInvalidateWorkOrders();
+
+  return useMutation({
+    mutationFn: (payload: IAssignWorkOrderPayload) =>
+      assignWorkOrder(payload),
+    onSuccess: invalidateWorkOrders,
+  });
+}
+
+export function useUpdateWorkOrder() {
+  const invalidateWorkOrders = useInvalidateWorkOrders();
+
+  return useMutation({
+    mutationFn: (payload: IUpdateWorkOrderPayload) =>
+      updateWorkOrder(payload),
+    onSuccess: invalidateWorkOrders,
+  });
+}
+
+export function useDeleteWorkOrder() {
+  const invalidateWorkOrders = useInvalidateWorkOrders();
+
+  return useMutation({
+    mutationFn: (workOrderId: string) => deleteWorkOrder(workOrderId),
     onSuccess: invalidateWorkOrders,
   });
 }

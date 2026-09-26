@@ -121,6 +121,26 @@ export interface IRejectAssignmentPayload {
   rejectionReason: string;
 }
 
+export interface IAssignWorkOrderPayload {
+  workOrderId: string;
+  vendorId: string;
+  technicianId: string;
+}
+
+export interface IUpdateWorkOrderPayload {
+  workOrderId: string;
+  data: {
+    title?: string;
+    description?: string;
+    categoryId?: string;
+    priority?: WorkOrderPriority;
+    scheduledAt?: string;
+    latitude?: number;
+    longitude?: number;
+    version: number;
+  };
+}
+
 export interface ICreateServiceReportPayload {
   workOrderId: string;
   workDescription: string;
