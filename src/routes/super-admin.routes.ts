@@ -8,6 +8,10 @@ export const superAdminRoutes: SidebarItems = [
         title: "Admins",
         url: `/admin/admins`,
       },
+      {
+        title: "My Profile",
+        url: `/profile`,
+      },
     ],
   },
 ];

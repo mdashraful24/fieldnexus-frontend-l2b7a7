@@ -3,6 +3,7 @@ export interface RegistrationPayload {
   email: string;
   password: string;
   contactNumber?: string;
+  address?: string;
 }
 
 export interface VerifyAccountPayload {
@@ -27,4 +28,19 @@ export interface ResetPasswordPayload {
   email: string;
   otp: string;
   newPassword: string;
+}
+
+export interface GoogleLoginPayload {
+  idToken: string;
+}
+
+export interface IAuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface IOtpSession {
+  expiresIn: number;
+  expiresAt: string;
+  sessionExpiresIn: number;
 }

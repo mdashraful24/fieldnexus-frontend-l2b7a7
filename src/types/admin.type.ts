@@ -1,32 +1,13 @@
 import type { ITechnician } from "./technician.type";
-import type { User, UserRole, UserStatus } from "./user.type";
+import type {
+  ICustomer,
+  User,
+  UserRole,
+  UserStatus,
+} from "./user.type";
+import type { WorkOrderStatus } from "./work-order.type";
 
 export type VendorStatus = "PENDING" | "APPROVED" | "SUSPENDED";
-
-export type WorkOrderStatus =
-  | "PENDING"
-  | "APPROVED"
-  | "ASSIGNED"
-  | "ACCEPTED"
-  | "EN_ROUTE"
-  | "IN_PROGRESS"
-  | "COMPLETED"
-  | "CANCELLED"
-  | "REASSIGNED"
-  | "FAILED";
-
-export interface ICustomer {
-  id: string;
-  name: string;
-  email: string;
-  contactNumber?: string | null;
-  address?: string | null;
-  isDeleted: boolean;
-  deletedAt?: string | null;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-}
 
 export interface IAdminUsersParams {
   page?: number;

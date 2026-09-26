@@ -31,4 +31,13 @@ export const adminRoutes = [
       },
     ],
   },
+  {
+    title: "Account",
+    items: [
+      {
+        title: "My Profile",
+        url: "/profile",
+      },
+    ],
+  },
 ];

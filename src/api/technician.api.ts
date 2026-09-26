@@ -1,9 +1,11 @@
 import apiClient from "@/lib/apiClient";
 import {
   ApiResponse,
+  IApproveTechnicianResult,
   IRejectTechnicianPayload,
   ITechnicianApplication,
   ITechnicianApplicationPayload,
+  ITechnicianApplicationStatusResult,
   ITechnicianParams,
 } from "@/types";
 
@@ -46,6 +48,15 @@ export function applyAsTechnician(payload: ITechnicianApplicationPayload) {
   });
 }
 
+export function getTechnicianApplicationStatus(email: string) {
+  return apiClient<ApiResponse<ITechnicianApplicationStatusResult>>(
+    "/technician-applications/status",
+    {
+      query: { email },
+    },
+  );
+}
+
 export function getAllTechnicians(params: ITechnicianParams) {
   return apiClient<ApiResponse<ITechnicianApplication[]>>(
     "/technician-applications",
@@ -55,10 +66,19 @@ export function getAllTechnicians(params: ITechnicianParams) {
   );
 }
 
+export function getTechnicianApplicationById(applicationId: string) {
+  return apiClient<ApiResponse<ITechnicianApplication>>(
+    `/technician-applications/${applicationId}`,
+  );
+}
+
 export function approveTechnician(applicationId: string) {
-  return apiClient(`/technician-applications/${applicationId}/approve`, {
-    method: "POST",
-  });
+  return apiClient<ApiResponse<IApproveTechnicianResult>>(
+    `/technician-applications/${applicationId}/approve`,
+    {
+      method: "POST",
+    },
+  );
 }
 
 export function rejectTechnician(payload: IRejectTechnicianPayload) {

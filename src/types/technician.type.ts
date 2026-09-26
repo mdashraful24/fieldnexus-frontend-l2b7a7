@@ -1,3 +1,5 @@
+import type { UserRole } from "./user.type";
+
 export interface ITechnicianApplicationData {
   name: string;
   email: string;
@@ -74,4 +76,24 @@ export interface ITechnicianParams {
 export interface IRejectTechnicianPayload {
   applicationId: string;
   rejectionReason?: string;
+}
+
+export interface ITechnicianApplicationStatusResult {
+  id: string;
+  status: ITechnicianApplicationStatus;
+  rejectionReason?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IApprovedTechnicianUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+}
+
+export interface IApproveTechnicianResult {
+  application: ITechnicianApplication;
+  user: IApprovedTechnicianUser;
 }
