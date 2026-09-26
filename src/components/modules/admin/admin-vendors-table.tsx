@@ -24,7 +24,7 @@ import { toast } from "@/components/ui/toast";
 import { useRestoreVendor, useSuspenseGetAllVendors } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import type { IVendor, IVendorParams, VendorListFilter } from "@/types";
-import VendorStatusBadge from "./vendor-status-badge";
+import VendorStatusBadge from "@/components/modules/vendor/vendor-status-badge";
 
 export interface AdminVendorsTableProps extends IVendorParams {
   listFilter: VendorListFilter;

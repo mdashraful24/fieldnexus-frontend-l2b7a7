@@ -49,12 +49,6 @@ export function getMe() {
   return apiClient<ApiResponse<IUserProfile>>("/auth/me");
 }
 
-export function refreshToken() {
-  return apiClient<ApiResponse<IAuthTokens>>("/auth/refresh-token", {
-    method: "POST",
-  });
-}
-
 export function googleOAuth(payload: GoogleLoginPayload) {
   return apiClient<ApiResponse<IAuthTokens>>("/auth/google", {
     method: "POST",

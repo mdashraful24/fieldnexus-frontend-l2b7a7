@@ -30,7 +30,7 @@ import { useDeleteVendor, useGetVendorById, useUpdateVendor } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import type { IVendor } from "@/types";
 import { updateVendorSchema } from "@/validation";
-import VendorStatusBadge from "./vendor-status-badge";
+import VendorStatusBadge from "@/components/modules/vendor/vendor-status-badge";
 
 function Detail({
   label,

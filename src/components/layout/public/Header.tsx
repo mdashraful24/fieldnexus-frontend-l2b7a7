@@ -11,6 +11,7 @@ export default function Header() {
   const routes = [
     { name: "Home", url: "/" },
     { name: "About us", url: "/about-us" },
+    { name: "Vendors", url: "/vendors" },
   ];
 
   const { data, isLoading } = useGetMe();
