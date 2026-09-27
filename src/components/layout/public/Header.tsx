@@ -19,6 +19,7 @@ import { toast } from "@/components/ui/toast";
 import { useGetMe, useLogout } from "@/hooks/auth.hook";
 import { getApiErrorMessage } from "@/lib/apiError";
 import type { UserRole } from "@/types/user.type";
+import Logo from "@/assets/svg/Logo";
 
 const publicRoutes = [
   { name: "Home", url: "/" },
@@ -118,11 +119,8 @@ export default function Header() {
           href="/"
           className="flex shrink-0 items-center gap-2 font-heading font-semibold"
         >
-          <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Wrench className="size-4" />
-          </span>
-          <span className="hidden text-base sm:inline">Field Nexus</span>
-          <span className="text-base sm:hidden">FieldNexus</span>
+          <Logo />
+          <span className="text-lg sm:inline">Field Nexus</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -132,8 +130,8 @@ export default function Header() {
               href={route.url}
               aria-current={isActive(route.url) ? "page" : undefined}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${isActive(route.url)
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground"
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground"
                 }`}
             >
               {route.name}
@@ -164,7 +162,7 @@ export default function Header() {
           )}
           {isSignedIn && (
             <Button
-              variant="outline"
+              variant="destructive"
               size="sm"
               onClick={handleLogout}
               className="hidden sm:inline-flex"
@@ -204,8 +202,8 @@ export default function Header() {
                           isActive(route.url) ? "page" : undefined
                         }
                         className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${isActive(route.url)
-                            ? "bg-primary/10 text-primary"
-                            : "text-muted-foreground"
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground"
                           }`}
                       />
                     }
@@ -223,6 +221,7 @@ export default function Header() {
                       render={
                         <Button
                           variant="outline"
+                          size="lg"
                           nativeButton={false}
                           render={<Link href="/login" />}
                         />
@@ -234,6 +233,7 @@ export default function Header() {
                       nativeButton={false}
                       render={
                         <Button
+                          size="lg"
                           nativeButton={false}
                           render={<Link href="/register" />}
                         />
@@ -244,7 +244,7 @@ export default function Header() {
                   </>
                 )}
                 {isSignedIn && (
-                  <Button variant="outline" onClick={handleLogout}>
+                  <Button variant="destructive" size="lg" onClick={handleLogout}>
                     Logout
                   </Button>
                 )}

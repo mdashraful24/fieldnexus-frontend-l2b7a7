@@ -29,7 +29,10 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="flex flex-col gap-10 py-16 sm:py-20">
+    <section
+      id="howItWorks"
+      className="flex scroll-mt-16 flex-col gap-10 py-16 sm:py-20"
+    >
       <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
         <span className="rounded-full border bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
           How it works
@@ -57,9 +60,7 @@ export default function HowItWorks() {
             <h3 className="font-heading text-base font-semibold">
               {step.title}
             </h3>
-            <p className="text-sm text-muted-foreground">
-              {step.description}
-            </p>
+            <p className="text-sm text-muted-foreground">{step.description}</p>
           </li>
         ))}
       </ol>
