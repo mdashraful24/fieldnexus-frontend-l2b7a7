@@ -21,6 +21,8 @@ import { getApiErrorMessage } from "@/lib/apiError";
 import type { UserRole } from "@/types/user.type";
 import Logo from "@/assets/svg/Logo";
 
+const NAVBAR_REVEAL_DELAY_MS = 500;
+
 const publicRoutes = [
   { name: "Home", url: "/" },
   { name: "About us", url: "/about-us" },
@@ -57,6 +59,7 @@ export default function Header() {
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -72,12 +75,20 @@ export default function Header() {
       }
 
       lastScrollY = currentScrollY;
+
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        setIsVisible(true);
+      }, NAVBAR_REVEAL_DELAY_MS);
     };
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      clearTimeout(idleTimer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
