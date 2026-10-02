@@ -19,10 +19,10 @@ export default function HowItWorksButton() {
 
   return (
     <Button
-      size="lg"
       variant="outline"
       render={<Link href="#how-it-works" onClick={smoothScroll} />}
       nativeButton={false}
+      className="p-5"
     >
       How it works
     </Button>

@@ -47,19 +47,19 @@ export default function Roles() {
         <SectionHeading
           eyebrow="Who we serve"
           title="One platform, four connected roles"
-          description="Every side of the field-service chain works in the same system — no more disconnected tools."
+          description="Every side of the field-service chain works in the same system no more disconnected tools."
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {groups.map((group) => (
             <div
               key={group.title}
-              className="flex flex-col gap-4 rounded-xl border bg-card p-6"
+              className="flex flex-col gap-5 rounded-3xl border bg-card p-8 group"
             >
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                  <group.icon className="size-5 text-primary" />
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary text-primary group-hover:text-white transition-colors duration-300">
+                  <group.icon className="size-6" />
                 </div>
-                <h3 className="font-medium">{group.title}</h3>
+                <h3 className="text-lg font-medium">{group.title}</h3>
               </div>
               <ul className="flex flex-col gap-2">
                 {group.points.map((point) => (
@@ -67,7 +67,7 @@ export default function Roles() {
                     key={point}
                     className="flex items-start gap-2 text-sm text-muted-foreground"
                   >
-                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" />
+                    <CheckCircle2 className="mt-0.5 size-4.5 shrink-0 text-primary" />
                     {point}
                   </li>
                 ))}

@@ -32,17 +32,17 @@ export default function HowItWorks({ id }: { id?: string }) {
           title="From request to resolution"
           description="A clear, step-by-step journey that keeps everyone in sync from start to finish."
         />
-        <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
             <li
               key={step.title}
-              className="relative flex flex-col gap-3 rounded-xl border bg-card p-6"
+              className="relative flex flex-col gap-5 rounded-3xl border bg-card p-8"
             >
               <div className="flex items-center gap-3">
-                <span className="flex size-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                <span className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                   {index + 1}
                 </span>
-                <h3 className="font-medium">{step.title}</h3>
+                <h3 className="text-lg font-medium">{step.title}</h3>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {step.description}

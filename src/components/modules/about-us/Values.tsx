@@ -37,16 +37,16 @@ export default function Values() {
           title="What we stand for"
           description="The principles that guide every feature we ship and every job we help complete."
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((value) => (
             <div
               key={value.title}
-              className="flex flex-col gap-3 rounded-xl border bg-card p-6"
+              className="flex flex-col gap-4 rounded-3xl border bg-card p-8 group"
             >
-              <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                <value.icon className="size-5 text-primary" />
+              <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary text-primary group-hover:text-white transition-colors duration-300">
+                <value.icon className="size-6" />
               </div>
-              <h3 className="mt-2 font-medium">{value.title}</h3>
+              <h3 className="mt-2 text-lg font-medium">{value.title}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {value.description}
               </p>

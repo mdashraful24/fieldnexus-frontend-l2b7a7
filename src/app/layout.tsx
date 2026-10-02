@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import Providers from "@/providers";
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
@@ -35,12 +37,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         inter.variable,
       )}
     >
-      <Providers>
-        <body className="min-h-full flex flex-col">
-          {children}
-          <Toaster />
-        </body>
-      </Providers>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

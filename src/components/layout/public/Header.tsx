@@ -5,6 +5,7 @@ import { Menu, Wrench } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -151,6 +152,7 @@ export default function Header() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2">
+          <ThemeToggle />
           {!isSignedIn && (
             <>
               <Button

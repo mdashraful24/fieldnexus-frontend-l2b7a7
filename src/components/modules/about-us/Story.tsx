@@ -25,11 +25,11 @@ const highlights = [
 export default function Story() {
   return (
     <section>
-      <div className="grid gap-12 pb-28 lg:grid-cols-2 lg:items-center">
+      <div className="grid gap-12 lg:grid-cols-2 lg:items-center pb-28">
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-7">
             <div>
-              <span className="rounded-full border bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium tracking-wide text-primary uppercase">
                 Our story
               </span>
             </div>
@@ -75,10 +75,10 @@ export default function Story() {
             {missionVision.map((item, index) => (
               <div
                 key={item.title}
-                className="group flex flex-col gap-4 p-8 transition-colors hover:bg-muted/40"
+                className="group flex flex-col gap-5 p-8 transition-colors hover:bg-muted/40"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20 transition-transform group-hover:scale-105">
+                  <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary text-primary group-hover:text-white transition-colors duration-300 ring-1 ring-primary/20 group-hover:scale-105">
                     <item.icon className="size-6" />
                   </div>
                   <span className="text-xs font-semibold tracking-widest text-muted-foreground">

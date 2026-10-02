@@ -10,7 +10,7 @@ export default function Hero() {
       <div aria-hidden />
       <div className="relative flex justify-between items-center gap-12">
         <div className="flex flex-col items-start gap-8">
-          <span className="rounded-full border bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium tracking-wide text-primary uppercase">
             About FieldNexus
           </span>
           <div className="flex flex-col gap-4">
@@ -24,11 +24,11 @@ export default function Hero() {
               job.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Button
-              size="lg"
               render={<Link href="/register" />}
               nativeButton={false}
+              className="p-5"
             >
               Get started
               <ArrowRight data-icon="inline-end" />
