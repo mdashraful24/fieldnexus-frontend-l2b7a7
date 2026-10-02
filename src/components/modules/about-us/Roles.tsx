@@ -43,7 +43,7 @@ const groups = [
 export default function Roles() {
   return (
     <section>
-      <div className="flex flex-col gap-12 pt-20 pb-14">
+      <div className="flex flex-col gap-12 pb-28">
         <SectionHeading
           eyebrow="Who we serve"
           title="One platform, four connected roles"

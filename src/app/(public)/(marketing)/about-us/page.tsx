@@ -1,5 +1,4 @@
 import Container from "@/components/layout/public/Container";
-import Cta from "@/components/modules/about-us/Cta";
 import Hero from "@/components/modules/about-us/hero-section/Hero";
 import HowItWorks from "@/components/modules/about-us/HowItWorks";
 import Roles from "@/components/modules/about-us/Roles";
@@ -18,7 +17,6 @@ export default function AboutUsPage() {
           <Values />
           <HowItWorks id="how-it-works" />
           <Roles />
-          <Cta />
         </div>
       </Container>
     </main>

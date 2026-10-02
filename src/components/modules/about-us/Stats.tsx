@@ -8,7 +8,7 @@ const stats = [
 export default function Stats() {
   return (
     <section aria-label="Stats">
-      <div className="grid grid-cols-2 gap-px pb-16 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-px py-28 sm:grid-cols-4">
         {stats.map((stat) => (
           <div
             key={stat.label}

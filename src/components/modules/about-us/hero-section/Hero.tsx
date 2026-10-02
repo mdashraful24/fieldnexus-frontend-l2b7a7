@@ -6,7 +6,7 @@ import { DashboardMockup } from "./DashboardMockup";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden py-14">
+    <section className="relative overflow-hidden pt-20">
       <div aria-hidden />
       <div className="relative flex justify-between items-center gap-12">
         <div className="flex flex-col items-start gap-8">

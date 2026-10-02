@@ -25,7 +25,7 @@ const highlights = [
 export default function Story() {
   return (
     <section>
-      <div className="grid gap-12 py-16 lg:grid-cols-2 lg:items-center">
+      <div className="grid gap-12 pb-28 lg:grid-cols-2 lg:items-center">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4">
             <div>

@@ -1,4 +1,9 @@
 import { ClipboardList, CreditCard, UserCheck, Wrench } from "lucide-react";
+import {
+  MarketingCard,
+  MarketingCardIcon,
+} from "@/components/modules/homepage/MarketingCard";
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const steps = [
   {
@@ -31,13 +36,13 @@ export default function HowItWorks() {
   return (
     <section
       id="howItWorks"
-      className="flex scroll-mt-16 flex-col gap-10 py-16 sm:py-20"
+      className="flex scroll-mt-16 flex-col gap-10 pb-28"
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-        <span className="rounded-full border bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium tracking-wide text-primary uppercase">
           How it works
         </span>
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           From request to payment in four steps
         </h2>
         <p className="text-muted-foreground sm:text-lg">
@@ -46,21 +51,28 @@ export default function HowItWorks() {
         </p>
       </div>
 
-      <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (
-          <li key={step.title} className="flex flex-col gap-3">
-            <div className="flex items-center gap-3">
-              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-                <step.icon className="size-5" />
-              </span>
-              <span className="text-sm font-semibold text-muted-foreground">
-                0{index + 1}
-              </span>
-            </div>
-            <h3 className="font-heading text-base font-semibold">
-              {step.title}
-            </h3>
-            <p className="text-sm text-muted-foreground">{step.description}</p>
+          <li key={step.title}>
+            <MarketingCard className="px-4 py-8 rounded-3xl">
+              <CardHeader>
+                <div className="flex items-start justify-between gap-3 mb-5">
+                  <MarketingCardIcon>
+                    <step.icon className="size-5" />
+                  </MarketingCardIcon>
+
+                  <span
+                    aria-hidden="true"
+                    className="font-heading text-4xl leading-none font-black text-primary/15 transition-colors duration-300 group-hover:text-primary/25"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+
+                <CardTitle className="mb-2 text-lg">{step.title}</CardTitle>
+                <CardDescription>{step.description}</CardDescription>
+              </CardHeader>
+            </MarketingCard>
           </li>
         ))}
       </ol>

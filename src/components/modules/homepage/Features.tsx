@@ -6,6 +6,11 @@ import {
   ShieldCheck,
   Star,
 } from "lucide-react";
+import {
+  MarketingCard,
+  MarketingCardIcon,
+} from "@/components/modules/homepage/MarketingCard";
+import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const features = [
   {
@@ -48,9 +53,9 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="flex flex-col gap-10 py-16 sm:py-20">
-      <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-        <span className="rounded-full border bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+    <section className="flex scroll-mt-16 flex-col gap-10 pb-28">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">
+        <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium tracking-wide text-primary uppercase">
           Capabilities
         </span>
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -62,19 +67,17 @@ export default function Features() {
         </p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
-          <div key={feature.title} className="flex flex-col gap-3">
-            <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
-              <feature.icon className="size-5" />
-            </span>
-            <h3 className="font-heading text-base font-semibold">
-              {feature.title}
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              {feature.description}
-            </p>
-          </div>
+          <MarketingCard key={feature.title} className="px-4 py-8 rounded-3xl">
+            <CardHeader>
+              <MarketingCardIcon className="mb-5">
+                <feature.icon className="size-5" />
+              </MarketingCardIcon>
+              <CardTitle className="text-lg mb-2">{feature.title}</CardTitle>
+              <CardDescription>{feature.description}</CardDescription>
+            </CardHeader>
+          </MarketingCard>
         ))}
       </div>
     </section>

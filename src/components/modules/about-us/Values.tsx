@@ -31,7 +31,7 @@ const values = [
 export default function Values() {
   return (
     <section>
-      <div className="flex flex-col gap-12 py-20">
+      <div className="flex flex-col gap-12 pb-28">
         <SectionHeading
           eyebrow="Our values"
           title="What we stand for"

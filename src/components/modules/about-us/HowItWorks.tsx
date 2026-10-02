@@ -26,7 +26,7 @@ const steps = [
 export default function HowItWorks({ id }: { id?: string }) {
   return (
     <section id={id}>
-      <div className="flex flex-col gap-12 py-20">
+      <div className="flex flex-col gap-12 pb-28">
         <SectionHeading
           eyebrow="How it works"
           title="From request to resolution"
