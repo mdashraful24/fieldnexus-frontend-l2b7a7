@@ -1,6 +1,7 @@
 import { Wrench } from "lucide-react";
 import Link from "next/link";
 import Container from "@/components/layout/public/Container";
+import Logo from "@/assets/svg/Logo";
 
 const groups = [
   {
@@ -48,14 +49,12 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <Link
               href="/"
-              className="flex w-fit items-center gap-2 font-heading font-semibold"
+              className="flex w-fit items-center gap-3 font-heading font-semibold"
             >
-              <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Wrench className="size-4" />
-              </span>
-              Field Nexus
+              <Logo />
+              <h1 className="text-lg"> Field Nexus</h1>
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
               Field service management for vendors, technicians, and customers.
               Every work order, from first request to final receipt.
             </p>
@@ -79,7 +78,7 @@ export default function Footer() {
                     <li key={link.url}>
                       <Link
                         href={link.url}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="text-sm text-muted-foreground transition-colors hover:text-blue-500 hover:underline"
                       >
                         {link.label}
                       </Link>
@@ -96,7 +95,7 @@ export default function Footer() {
                     <li key={link.url}>
                       <Link
                         href={link.url}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="text-sm text-muted-foreground transition-colors hover:text-blue-500 hover:underline"
                       >
                         {link.label}
                       </Link>
@@ -118,7 +117,7 @@ export default function Footer() {
               <li key={link.url}>
                 <Link
                   href={link.url}
-                  className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-xs text-muted-foreground transition-colors hover:text-blue-500 hover:underline"
                 >
                   {link.label}
                 </Link>

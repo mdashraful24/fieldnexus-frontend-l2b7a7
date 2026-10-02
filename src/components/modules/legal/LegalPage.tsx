@@ -75,8 +75,8 @@ export default function LegalPage({
     <main className="w-full min-h-screen">
       <Container>
         <div className="flex flex-col py-14 sm:py-16 lg:py-20">
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center rounded-full border bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          <div className="max-w-full">
+            <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium tracking-wide text-primary uppercase">
               {eyebrow}
             </span>
             <h1 className="mt-6 text-3xl font-semibold tracking-tight text-balance sm:text-4xl lg:text-5xl">
@@ -93,7 +93,7 @@ export default function LegalPage({
           <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-16">
             <LegalToc items={sections} />
 
-            <div className="max-w-3xl">
+            <div className="max-w-full">
               {intro ? <div className="mb-12">{intro}</div> : null}
 
               <div className="flex flex-col">

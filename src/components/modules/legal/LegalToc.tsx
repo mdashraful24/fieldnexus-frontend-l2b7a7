@@ -67,7 +67,7 @@ export default function LegalToc({ items }: { items: TocItem[] }) {
         aria-label="On this page"
         className="sticky top-24 hidden self-start lg:block"
       >
-        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        <p className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
           On this page
         </p>
         <ul className="mt-4 flex flex-col gap-1 border-l">
@@ -80,9 +80,9 @@ export default function LegalToc({ items }: { items: TocItem[] }) {
                   href={`#${item.id}`}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "-ml-px block border-l py-1.5 pl-4 text-sm transition-colors hover:text-foreground",
+                    "-ml-px block border-l-2 py-1.5 pl-4 text-sm transition-colors hover:text-foreground",
                     isActive
-                      ? "border-primary font-medium text-primary"
+                      ? "border-primary font-medium text-primary dark:text-blue-500"
                       : "border-transparent text-muted-foreground",
                   )}
                 >
