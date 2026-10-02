@@ -131,7 +131,7 @@ export default function Header() {
           className="flex shrink-0 items-center gap-2 font-heading font-semibold"
         >
           <Logo />
-          <span className="text-lg sm:inline">Field Nexus</span>
+          <span className="text-xl sm:inline">Field Nexus</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -141,7 +141,7 @@ export default function Header() {
               href={route.url}
               aria-current={isActive(route.url) ? "page" : undefined}
               className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${isActive(route.url)
-                ? "bg-primary/10 text-primary"
+                ? "bg-primary/20 text-primary font-semibold"
                 : "text-muted-foreground"
                 }`}
             >
@@ -155,14 +155,14 @@ export default function Header() {
             <>
               <Button
                 variant="ghost"
-                size="sm"
+                size="lg"
                 nativeButton={false}
                 render={<Link href="/login" />}
               >
                 Login
               </Button>
               <Button
-                size="sm"
+                size="lg"
                 nativeButton={false}
                 render={<Link href="/register" />}
                 className="hidden sm:inline-flex"
@@ -174,7 +174,7 @@ export default function Header() {
           {isSignedIn && (
             <Button
               variant="destructive"
-              size="sm"
+              size="lg"
               onClick={handleLogout}
               className="hidden sm:inline-flex"
             >
@@ -232,7 +232,7 @@ export default function Header() {
                       render={
                         <Button
                           variant="outline"
-                          size="lg"
+                          className="p-5 rounded-xl"
                           nativeButton={false}
                           render={<Link href="/login" />}
                         />
@@ -255,9 +255,14 @@ export default function Header() {
                   </>
                 )}
                 {isSignedIn && (
-                  <Button variant="destructive" size="lg" onClick={handleLogout}>
-                    Logout
-                  </Button>
+                  <SheetClose
+                    nativeButton={false}
+                    render={
+                      <Button variant="destructive" size="lg" onClick={handleLogout}>
+                        Logout
+                      </Button>
+                    }
+                  />
                 )}
               </div>
             </SheetContent>

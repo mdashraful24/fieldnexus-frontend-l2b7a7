@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export default function Cta() {
   return (
     <section className="scroll-mt-16 pb-28">
-      <div className="flex flex-col justify-center items-center gap-6 text-center border border-primary/25 rounded-3xl py-24">
+      <div className="flex flex-col justify-center items-center gap-6 text-center border border-primary/25 bg-blue-50 rounded-3xl py-24">
         <h2 className="max-w-5xl text-4xl font-semibold tracking-tight text-balance">
           Ready to bring your field operations onto one platform?
         </h2>
