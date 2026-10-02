@@ -81,7 +81,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative scroll-mt-16 overflow-hidden pt-24">
+    <section className="relative scroll-mt-16 overflow-hidden pt-18">
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(480px,1.05fr)]">
         <div className="max-w-3xl">
           <div className="mb-6 flex items-center gap-3 text-xs font-bold tracking-[0.16em] text-primary uppercase">
