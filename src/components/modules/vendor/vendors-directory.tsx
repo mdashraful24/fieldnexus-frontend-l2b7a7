@@ -50,17 +50,17 @@ function VendorCard({
     .toUpperCase();
 
   return (
-    <Card className="flex h-full flex-col">
+    <Card className="flex h-full flex-col px-4 py-8 rounded-3xl">
       <CardContent className="flex flex-1 flex-col gap-4">
-        <div className="flex items-start gap-3">
-          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-sm font-semibold text-primary">
+        <div className="flex items-start gap-4">
+          <span className="grid size-14 shrink-0 place-items-center rounded-xl bg-primary/10 text-lg font-semibold text-blue-500">
             {initials || "V"}
           </span>
           <div className="min-w-0 flex-1">
-            <h3 className="truncate font-heading text-base font-semibold">
+            <h3 className="text-lg truncate font-heading font-semibold">
               {name}
             </h3>
-            <div className="mt-1 flex flex-wrap items-center gap-2">
+            <div className="mt-1.5 flex flex-wrap items-center gap-2">
               <VendorStatusBadge status={status} />
               {rating ? (
                 <span className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground">
@@ -73,30 +73,30 @@ function VendorCard({
         </div>
 
         {description ? (
-          <p className="line-clamp-3 text-sm text-muted-foreground">
+          <p className="line-clamp-3 text-sm text-foreground">
             {description}
           </p>
         ) : null}
 
-        <dl className="mt-auto space-y-1.5 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
+        <dl className="mt-auto space-y-2 text-sm">
+          <div className="flex items-center gap-2 text-foreground">
             <Mail className="size-3.5 shrink-0" />
             <dd className="truncate">{email}</dd>
           </div>
           {contactNumber ? (
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-foreground">
               <Phone className="size-3.5 shrink-0" />
               <dd className="truncate">{contactNumber}</dd>
             </div>
           ) : null}
           {address ? (
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-foreground">
               <MapPin className="size-3.5 shrink-0" />
               <dd className="truncate">{address}</dd>
             </div>
           ) : null}
           {serviceAreas ? (
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2 text-foreground">
               <Building2 className="size-3.5 shrink-0" />
               <dd className="truncate">{serviceAreas}</dd>
             </div>
@@ -105,8 +105,7 @@ function VendorCard({
 
         <Button
           variant="outline"
-          size="sm"
-          className="w-full"
+          className="w-full p-5 bg-primary/80 hover:bg-primary dark:bg-primary text-white hover:text-white transition-colors duration-300 mt-3"
           render={<Link href={`/vendors/details?vendorId=${vendorId}`} />}
           nativeButton={false}
         >
@@ -153,7 +152,7 @@ export default function VendorsDirectory() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground">
           {total} {total === 1 ? "vendor" : "vendors"} available
         </p>
 

@@ -63,7 +63,7 @@ export default function HowItWorks() {
 
                   <span
                     aria-hidden="true"
-                    className="font-heading text-4xl leading-none font-black text-primary/15 transition-colors duration-300 group-hover:text-primary/25"
+                    className="font-heading text-4xl leading-none font-black text-primary/60 group-hover:text-primary transition-colors duration-300"
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>

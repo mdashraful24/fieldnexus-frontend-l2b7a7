@@ -9,15 +9,15 @@ export default function VendorsPage() {
     <main className="w-full min-h-screen overflow-x-hidden">
       <Container className="py-10 sm:py-14">
         <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Building2 className="size-5" />
+          <div className="flex items-center gap-4">
+            <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Building2 className="size-6" />
             </span>
-            <div>
+            <div className="space-y-2">
               <h1 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
                 Vendor Directory
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground">
                 Browse our partner service teams and the technicians they
                 employ.
               </p>
