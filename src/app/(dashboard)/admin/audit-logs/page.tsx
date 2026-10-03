@@ -1,5 +1,15 @@
 import { FileClock } from "lucide-react";
+import type { Metadata } from "next";
 import AdminAuditLogs from "@/components/modules/admin/admin-audit-logs";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Audit Logs",
+  description:
+    "Track administrative actions taken on the platform, including who changed what and when.",
+  path: "/admin/audit-logs",
+  noIndex: true,
+});
 
 export default function AdminAuditLogsPage() {
   return (

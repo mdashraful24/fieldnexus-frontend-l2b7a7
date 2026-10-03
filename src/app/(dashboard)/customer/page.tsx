@@ -1,4 +1,5 @@
 import { Bell, LayoutDashboard } from "lucide-react";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import CustomerOverview, {
   CustomerOverviewLoading,
@@ -12,6 +13,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Customer Dashboard",
+  description:
+    "Your bookings, payments, and the latest updates on your service requests.",
+  path: "/customer",
+  noIndex: true,
+});
 
 export default function CustomerDashboardPage() {
   return (

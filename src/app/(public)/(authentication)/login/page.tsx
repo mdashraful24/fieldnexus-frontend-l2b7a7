@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Logo from "@/assets/svg/Logo";
 import AuthSidePanel from "@/components/auth/auth-side-panel";
 import LoginForm from "@/components/form/login-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Sign In",
+  description:
+    "Sign in to Field Nexus to track work orders, manage assignments, and keep your field service operation moving.",
+  path: "/login",
+  noIndex: true,
+});
 
 export default function LoginPage() {
   return (

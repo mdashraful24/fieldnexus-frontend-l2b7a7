@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && bun run build:sw",
-    "build:sw": "bun run scripts/build-sw.mjs",
+    "build": "next build",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write"

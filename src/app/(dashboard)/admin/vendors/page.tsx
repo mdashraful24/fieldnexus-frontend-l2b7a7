@@ -1,5 +1,15 @@
 import { Building2 } from "lucide-react";
+import type { Metadata } from "next";
 import AdminVendorsTabs from "@/components/modules/admin/admin-vendors-tabs";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Vendors",
+  description:
+    "Browse vendor teams and inspect job performance, ratings, and technician rosters.",
+  path: "/admin/vendors",
+  noIndex: true,
+});
 
 export default function AdminVendorsPage() {
   return (

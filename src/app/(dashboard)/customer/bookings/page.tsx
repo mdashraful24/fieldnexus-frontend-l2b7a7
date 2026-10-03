@@ -1,4 +1,14 @@
 import { Info, ListChecks } from "lucide-react";
+import type { Metadata } from "next";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "My Bookings",
+  description:
+    "Every service request you have submitted, with the current status of each booking.",
+  path: "/customer/bookings",
+  noIndex: true,
+});
 
 export default function CustomerBookingsPage() {
   return (

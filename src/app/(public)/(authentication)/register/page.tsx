@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Logo from "@/assets/svg/Logo";
 import AuthSidePanel from "@/components/auth/auth-side-panel";
 import RegisterForm from "@/components/form/register-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Create Account",
+  description:
+    "Create a Field Nexus account to raise service requests, follow technician assignments, and pay for completed work.",
+  path: "/register",
+  noIndex: true,
+});
 
 export default function RegisterPage() {
   return (

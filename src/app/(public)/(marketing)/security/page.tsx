@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import LegalPage, {
   BulletList,
   type LegalSection,
   Note,
   P,
 } from "@/components/modules/legal/LegalPage";
+import { createMetadata } from "@/lib/metadata";
 
 const sections: LegalSection[] = [
   {
@@ -289,6 +291,13 @@ const sections: LegalSection[] = [
     ),
   },
 ];
+
+export const metadata: Metadata = createMetadata({
+  title: "Security",
+  description:
+    "How Field Nexus protects account access, work order and location data, and payments: role-based access, hashed credentials, audit trails, and rate limiting.",
+  path: "/security",
+});
 
 export default function SecurityPage() {
   return (

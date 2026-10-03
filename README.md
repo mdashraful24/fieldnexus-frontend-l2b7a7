@@ -24,6 +24,7 @@ The frontend is the complete web client for the platform: a public marketing sit
 - [Project Structure](#project-structure)
 - [Roles & Access Control](#roles--access-control)
 - [Work Order Lifecycle](#work-order-lifecycle)
+- [Metadata & SEO](#metadata--seo)
 - [API Integration](#api-integration)
 - [Deployment](#deployment)
 - [Relevant Links](#relevant-links)
@@ -182,6 +183,7 @@ Create a `.env.local` file in the project root:
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-oauth-client-id.apps.googleusercontent.com
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 Google sign-in degrades gracefully — if `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is unset, the Google button is simply not rendered. See [Environment Variables](#environment-variables) for the full reference.
@@ -212,11 +214,12 @@ bun run build     # static export written to ./out
 |----------|----------|-------------|
 | `NEXT_PUBLIC_API_URL` | **Yes** | Base URL of the backend API, including the version segment (e.g. `http://localhost:5000/api/v1`). Read in `src/lib/apiClient.ts:3`. |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | No | Google OAuth 2.0 web client ID. Enables the "Continue with Google" button. |
+| `NEXT_PUBLIC_SITE_URL` | No | Canonical origin of the deployment (e.g. `https://fieldnexus.vercel.app`). Used for `metadataBase`, canonical links, Open Graph URLs, `robots.txt`, and `sitemap.xml`. Defaults to `http://localhost:3000`, so **set it before deploying**. Read in `src/lib/metadata.ts`. |
 | `SUPER_ADMIN_NAME` / `_EMAIL` / `_PASSWORD` | No | Consumed by the **backend** seeder to create the initial Super Admin. |
 | `FIELD_NEXUS_ADMIN_NAME` / `_EMAIL` / `_PASSWORD` | No | Consumed by the **backend** seeder to create the initial Admin. |
 | `TESTER_TECHNICIAN_NAME` / `_EMAIL` / `_PASSWORD` | No | Consumed by the **backend** seeder to create a test Technician. |
 
-> **Note:** Only `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_GOOGLE_CLIENT_ID` are read by this frontend. The credential variables exist in the local `.env.local` because the backend reads the same file to seed accounts. All variables are prefixed-safe: `.env*` is gitignored, so keep secrets out of version control.
+> **Note:** Only `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, and `NEXT_PUBLIC_SITE_URL` are read by this frontend. The credential variables exist in the local `.env.local` because the backend reads the same file to seed accounts. All variables are prefixed-safe: `.env*` is gitignored, so keep secrets out of version control.
 
 ---
 
@@ -262,7 +265,7 @@ src/
 │   ├── layout/           # Public Header, Footer, Container
 │   └── modules/          # Feature UI grouped by domain
 ├── hooks/        # TanStack Query hooks (useX / useSuspenseGetX)
-├── lib/          # apiClient (ofetch), apiError helpers, cn re-export
+├── lib/          # apiClient (ofetch), apiError helpers, metadata (siteConfig + createMetadata), cn re-export
 ├── providers/    # Query, Google OAuth, tooltip providers
 ├── routes/       # Per-role sidebar route config
 ├── types/        # TypeScript domain + API types
@@ -303,6 +306,26 @@ PENDING → APPROVED → ASSIGNED → ACCEPTED → EN_ROUTE → IN_PROGRESS → 
 - Priorities: `LOW` · `MEDIUM` · `HIGH` · `URGENT`, each with an auto-calculated SLA deadline
 - Every status transition sends the record's current `version` (**optimistic locking**); the API returns `409` on a conflict
 - Payments are only possible once a work order is `COMPLETED`; only `PAID` payments are refundable
+
+---
+
+## Metadata & SEO
+
+Per-page metadata is generated with the App Router Metadata API — there is no `react-helmet`.
+
+| Concern | Where | Notes |
+|---------|-------|-------|
+| Site config + helper | `src/lib/metadata.ts` | `siteConfig` (name, description, keywords, OG image) and `createMetadata({ title, description, path, noIndex })` |
+| Root defaults | `src/app/layout.tsx` | `metadataBase`, `title.template` (`%s \| Field Nexus`), description, keywords, Open Graph, Twitter card, manifest, `appleWebApp`, `viewport.themeColor` |
+| Public pages | every `page.tsx` under `(public)/(marketing)` | Own title + description, `canonical`, `index, follow` |
+| Auth pages | every `page.tsx` under `(public)/(authentication)` | `noindex, nofollow` — thin screens that should never be indexed |
+| Dashboards | every `page.tsx` under `(dashboard)` | `noindex, nofollow, nocache`; `(dashboard)/layout.tsx` is the fallback for new screens |
+| `robots.txt` | `src/app/robots.ts` | Disallows `/admin`, `/customer`, `/technician`, `/profile`, and auth routes |
+| `sitemap.xml` | `src/app/sitemap.ts` | The six indexable public routes only |
+| PWA manifest | `src/app/manifest.ts` | Name, theme colour, lang/dir, and app shortcuts (`/login`, `/customer/create-booking`, `/profile`) |
+| Favicon | `src/app/favicon.ico` | Served at `/favicon.ico` through the App Router file convention |
+
+> **Before deploying:** set `NEXT_PUBLIC_SITE_URL` to the real origin, otherwise canonical URLs, Open Graph URLs, `robots.txt`, and `sitemap.xml` point at `http://localhost:3000`.
 
 ---
 

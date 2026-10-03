@@ -1,8 +1,17 @@
 import { Building2 } from "lucide-react";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Container from "@/components/layout/public/Container";
 import VendorsDirectory from "@/components/modules/vendor/vendors-directory";
 import VendorsDirectoryLoading from "@/components/modules/vendor/vendors-directory-loading";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Vendor Directory",
+  description:
+    "Browse verified vendor teams on Field Nexus, compare ratings and completed jobs, and see the technicians each team employs before you book their service.",
+  path: "/vendors",
+});
 
 export default function VendorsPage() {
   return (

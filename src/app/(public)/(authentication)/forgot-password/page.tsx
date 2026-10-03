@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Logo from "@/assets/svg/Logo";
 import AuthSidePanel from "@/components/auth/auth-side-panel";
 import ForgotPasswordForm from "@/components/form/forgot-password-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Forgot Password",
+  description:
+    "Request a verification code to reset the password on your Field Nexus account.",
+  path: "/forgot-password",
+  noIndex: true,
+});
 
 export default function ForgotPasswordPage() {
   return (

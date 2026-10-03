@@ -2,9 +2,9 @@ import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry } from "serwist";
 import { ExpirationPlugin, NetworkFirst, NetworkOnly, Serwist } from "serwist";
 
-// `self.__SW_MANIFEST` is replaced at build time by the Serwist CLI (see
-// `injectionPoint` in scripts/build-sw.mjs). It is declared on `Window` because
-// this project compiles with the DOM lib instead of the WebWorker lib.
+// `self.__SW_MANIFEST` is replaced at build time by the Serwist build step. It is
+// declared on `Window` because this project compiles with the DOM lib instead of
+// the WebWorker lib.
 declare global {
   interface Window {
     __SW_MANIFEST: (PrecacheEntry | string)[];

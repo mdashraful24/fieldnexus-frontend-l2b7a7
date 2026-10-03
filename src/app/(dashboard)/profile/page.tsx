@@ -1,5 +1,15 @@
 import { CircleUser } from "lucide-react";
+import type { Metadata } from "next";
 import ProfileForm from "@/components/modules/profile/profile-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "My Profile",
+  description:
+    "Update your photo, name, contact number, and the details linked to your account.",
+  path: "/profile",
+  noIndex: true,
+});
 
 export default function ProfilePage() {
   return (

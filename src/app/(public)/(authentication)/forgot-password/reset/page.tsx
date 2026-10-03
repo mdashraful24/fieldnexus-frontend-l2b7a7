@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import Logo from "@/assets/svg/Logo";
 import AuthSidePanel from "@/components/auth/auth-side-panel";
 import ResetPasswordForm from "@/components/form/reset-password-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Set a New Password",
+  description:
+    "Use the verification code from your email to choose a new password for your Field Nexus account.",
+  path: "/forgot-password/reset",
+  noIndex: true,
+});
 
 export default function ResetPasswordPage() {
   return (

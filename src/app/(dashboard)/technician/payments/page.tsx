@@ -1,8 +1,18 @@
 import { Banknote } from "lucide-react";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import PaymentHistoryTable, {
   PaymentsLoading,
 } from "@/components/modules/payment/payment-history-table";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Payments",
+  description:
+    "Payments tied to the jobs you have been assigned, with job references and amounts.",
+  path: "/technician/payments",
+  noIndex: true,
+});
 
 export default function TechnicianPaymentsPage() {
   return (

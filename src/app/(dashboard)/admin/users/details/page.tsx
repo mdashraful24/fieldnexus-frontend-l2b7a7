@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import AdminUserDetailsPage from "@/components/modules/admin/admin-user-details-page";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "User Details",
+  description:
+    "Full profile, status, and account controls for a customer or technician on the platform.",
+  path: "/admin/users/details",
+  noIndex: true,
+});
 
 export default function AdminUserDetailsRoute() {
   return (

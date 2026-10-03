@@ -1,4 +1,5 @@
 import { Bell, ClipboardList } from "lucide-react";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import NotificationList, {
   NotificationsLoading,
@@ -10,6 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Technician Dashboard",
+  description:
+    "Your assigned jobs, priorities, and the latest updates on your work orders.",
+  path: "/technician",
+  noIndex: true,
+});
 
 export default function TechnicianDashboardPage() {
   return (

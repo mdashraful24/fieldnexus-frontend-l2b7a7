@@ -1,7 +1,17 @@
 import { LayoutDashboard } from "lucide-react";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import AdminOverview from "@/components/modules/admin/admin-overview";
 import AdminOverviewLoading from "@/components/modules/admin/admin-overview-loading";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Admin Overview",
+  description:
+    "Platform metrics across customers, technicians, vendors, and work orders in one admin overview.",
+  path: "/admin",
+  noIndex: true,
+});
 
 export default function AdminDashboardPage() {
   return (

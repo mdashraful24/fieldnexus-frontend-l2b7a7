@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Logo from "@/assets/svg/Logo";
 import TechnicianApplyForm from "@/components/form/technician-apply-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Apply as a Technician",
+  description:
+    "Apply to join the Field Nexus technician network. Submit your trade, experience, and service area, and our team will review your profile.",
+  path: "/apply",
+  noIndex: true,
+});
 
 export default function ApplyAsTechnicianPage() {
   return (

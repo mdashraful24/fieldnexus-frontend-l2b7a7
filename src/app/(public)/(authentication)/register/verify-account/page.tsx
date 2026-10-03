@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import Logo from "@/assets/svg/Logo";
 import AuthSidePanel from "@/components/auth/auth-side-panel";
 import VerifyAccountForm from "@/components/form/verify-account-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Verify Account",
+  description:
+    "Confirm your email with the six-digit code we sent you to activate your new Field Nexus account.",
+  path: "/register/verify-account",
+  noIndex: true,
+});
 
 export default function VerifyAccountPage() {
   return (

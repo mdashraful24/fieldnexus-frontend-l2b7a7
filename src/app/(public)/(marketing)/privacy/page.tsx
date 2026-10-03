@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import LegalPage, {
   BulletList,
   type LegalSection,
@@ -5,6 +6,7 @@ import LegalPage, {
   NumberList,
   P,
 } from "@/components/modules/legal/LegalPage";
+import { createMetadata } from "@/lib/metadata";
 
 const sections: LegalSection[] = [
   {
@@ -378,6 +380,13 @@ const sections: LegalSection[] = [
     ),
   },
 ];
+
+export const metadata: Metadata = createMetadata({
+  title: "Privacy Policy",
+  description:
+    "What personal data Field Nexus collects, why it is needed to dispatch and pay for field service, who it is shared with, and how you control it.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

@@ -1,5 +1,15 @@
 import { UserCog } from "lucide-react";
+import type { Metadata } from "next";
 import SuperAdminAdminsTabs from "@/components/modules/super-admin/super-admin-admins-tabs";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Admins",
+  description:
+    "Create and manage administrator accounts, including blocking, restoring, password resets, and email changes.",
+  path: "/admin/admins",
+  noIndex: true,
+});
 
 export default function AdminAdminsPage() {
   return (

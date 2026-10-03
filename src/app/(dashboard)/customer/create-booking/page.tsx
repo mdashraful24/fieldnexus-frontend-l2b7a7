@@ -1,5 +1,15 @@
 import { CalendarPlus } from "lucide-react";
+import type { Metadata } from "next";
 import CreateBookingForm from "@/components/modules/customer/create-booking-form";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Book a Service",
+  description:
+    "Submit a service request with the details an admin needs to assign the right technician.",
+  path: "/customer/create-booking",
+  noIndex: true,
+});
 
 export default function CustomerCreateBookingPage() {
   return (

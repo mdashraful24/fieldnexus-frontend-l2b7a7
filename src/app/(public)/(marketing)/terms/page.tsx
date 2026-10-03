@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import LegalPage, {
   BulletList,
   type LegalSection,
@@ -5,6 +6,7 @@ import LegalPage, {
   NumberList,
   P,
 } from "@/components/modules/legal/LegalPage";
+import { createMetadata } from "@/lib/metadata";
 
 const sections: LegalSection[] = [
   {
@@ -574,6 +576,13 @@ const sections: LegalSection[] = [
     ),
   },
 ];
+
+export const metadata: Metadata = createMetadata({
+  title: "Terms of Service",
+  description:
+    "The terms that govern how customers, vendors, technicians, and administrators use Field Nexus, including work order lifecycles, payments, refunds, and disputes.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

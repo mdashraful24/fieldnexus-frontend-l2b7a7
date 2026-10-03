@@ -81,7 +81,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative scroll-mt-16 overflow-hidden pt-18">
+    <section className="relative scroll-mt-16 overflow-hidden pt-20">
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(480px,1.05fr)]">
         <div className="max-w-3xl">
           <div className="mb-6 flex items-center gap-3 text-xs font-bold tracking-[0.16em] text-primary uppercase">
@@ -114,14 +114,14 @@ export default function Hero() {
 
         <div className="relative">
           <div className="absolute -inset-5 rounded-[2rem]" />
-          <div className="relative overflow-hidden rounded-[1.5rem] border bg-card shadow">
-            <div className={`${slide.color} px-6 py-3 text-primary-foreground`}>
+          <div className="relative overflow-hidden rounded-[1.5rem] border bg-card shadow mb-1">
+            <div className={`${slide.color} px-6 py-2 text-primary-foreground`}>
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-semibold tracking-widest uppercase opacity-75">
                     Live work order
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                  <h2 className="mt-1 text-xl font-semibold tracking-tight">
                     {slide.service}
                   </h2>
                 </div>
@@ -134,14 +134,18 @@ export default function Hero() {
             <div className="p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-xl border bg-muted/40 p-4">
-                  <MapPin className="mb-3 size-5 text-primary" />
-                  <p className="text-xs text-muted-foreground">Service location</p>
-                  <p className="mt-1 font-semibold">{slide.location}</p>
+                  <div className="flex items-center gap-1">
+                    <MapPin className="size-5 text-primary" />
+                    <p className="text-sm text-foreground">Service location</p>
+                  </div>
+                  <p className="mt-2 font-semibold">{slide.location}</p>
                 </div>
                 <div className="rounded-xl border bg-muted/40 p-4">
-                  <CalendarDays className="mb-3 size-5 text-primary" />
-                  <p className="text-xs text-muted-foreground">Scheduled</p>
-                  <p className="mt-1 font-semibold">Today, 2:30 PM</p>
+                  <div className="flex items-center gap-1">
+                    <CalendarDays className="size-5 text-primary" />
+                    <p className="text-sm text-foreground">Scheduled</p>
+                  </div>
+                  <p className="mt-2 font-semibold">Today, 2:30 PM</p>
                 </div>
               </div>
 
@@ -150,7 +154,7 @@ export default function Hero() {
                   {slide.initials}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-muted-foreground">Assigned technician</p>
+                  <p className="text-xs text-foreground">Assigned technician</p>
                   <p className="truncate font-semibold">{slide.technician}</p>
                 </div>
                 <span className="flex items-center gap-1 text-sm font-medium text-amber-600">
@@ -161,7 +165,7 @@ export default function Hero() {
               <div className="border-t pt-6">
                 <div className="mb-4 flex items-center justify-between text-sm">
                   <span className="font-semibold">{slide.status}</span>
-                  <span className="text-muted-foreground">
+                  <span className="text-foreground">
                     Step {active + 1} of 4
                   </span>
                 </div>
@@ -170,11 +174,10 @@ export default function Hero() {
                     (step, index) => (
                       <div key={step} className="space-y-2">
                         <div
-                          className={`h-2 rounded-full ${
-                            index === active ? slide.color : "bg-muted"
-                          }`}
+                          className={`h-2 rounded-full ${index === active ? slide.color : "bg-muted"
+                            }`}
                         />
-                        <span className="block text-[11px] text-muted-foreground">
+                        <span className="block text-[11px] text-foreground">
                           {step}
                         </span>
                       </div>
@@ -183,7 +186,7 @@ export default function Hero() {
                 </div>
               </div>
 
-              <div className="mt-7 flex flex-wrap justify-between items-center gap-3 text-xs text-muted-foreground">
+              <div className="mt-7 flex flex-wrap justify-between items-center gap-3 text-xs text-foreground">
                 <span className="flex items-center gap-1.5">
                   <CircleCheck className="size-4 text-emerald-600" /> Verified team
                 </span>

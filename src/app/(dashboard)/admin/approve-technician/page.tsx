@@ -1,7 +1,15 @@
-"use client";
-
 import { ClipboardCheck } from "lucide-react";
+import type { Metadata } from "next";
 import TechnicianApprovalTabs from "@/components/modules/technician-approval/technician-approval-tabs";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Technician Approval",
+  description:
+    "Review technician applications, verify submitted details, and approve or reject technician accounts.",
+  path: "/admin/approve-technician",
+  noIndex: true,
+});
 
 export default function ApproveTechnicianPage() {
   return (

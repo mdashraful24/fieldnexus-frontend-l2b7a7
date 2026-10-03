@@ -1,5 +1,15 @@
 import { UsersRound } from "lucide-react";
+import type { Metadata } from "next";
 import AdminUsersTabs from "@/components/modules/admin/admin-users-tabs";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createMetadata({
+  title: "Users",
+  description:
+    "Manage customer and technician accounts, including blocking, unblocking, deleting, and restoring users.",
+  path: "/admin/users",
+  noIndex: true,
+});
 
 export default function AdminUsersPage() {
   return (
