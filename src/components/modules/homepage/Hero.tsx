@@ -174,8 +174,9 @@ export default function Hero() {
                     (step, index) => (
                       <div key={step} className="space-y-2">
                         <div
-                          className={`h-2 rounded-full ${index === active ? slide.color : "bg-muted"
-                            }`}
+                          className={`h-2 rounded-full ${
+                            index === active ? slide.color : "bg-muted"
+                          }`}
                         />
                         <span className="block text-[11px] text-foreground">
                           {step}
@@ -188,10 +189,12 @@ export default function Hero() {
 
               <div className="mt-7 flex flex-wrap justify-between items-center gap-3 text-xs text-foreground">
                 <span className="flex items-center gap-1.5">
-                  <CircleCheck className="size-4 text-emerald-600" /> Verified team
+                  <CircleCheck className="size-4 text-emerald-600" /> Verified
+                  team
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Clock3 className="size-4 text-primary" /> Updates in real time
+                  <Clock3 className="size-4 text-primary" /> Updates in real
+                  time
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Wrench className="size-4 text-primary" /> Service report

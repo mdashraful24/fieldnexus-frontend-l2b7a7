@@ -1,4 +1,8 @@
+"use client";
+
+import { ArrowRight, MessageCircleQuestion } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -52,47 +56,81 @@ const faqs = [
 ];
 
 export default function Faq() {
+  const faqRef = useRef<HTMLDivElement>(null);
+  const [openItems, setOpenItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      if (!faqRef.current?.contains(event.target as Node)) {
+        setOpenItems([]);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, []);
+
   return (
-    <section id="faq" className="scroll-mt-16 pb-28">
-      <div className="grid gap-10 lg:grid-cols-[minmax(220px,0.7fr)_minmax(0,1.5fr)] lg:gap-16">
-        <div className="flex flex-col items-start gap-5">
+    <section className="scroll-mt-16 pb-28">
+      <div className="grid gap-10 lg:grid-cols-[minmax(260px,0.72fr)_minmax(0,1.45fr)] lg:gap-16">
+        <div className="flex flex-col items-start">
           <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-medium tracking-wide text-primary uppercase">
             FAQ
           </span>
-          <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          <h2 className="mt-5 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
             Answers before you get started
           </h2>
-          <p className="text-muted-foreground sm:text-lg">
+          <p className="mt-5 text-muted-foreground sm:text-lg">
             Find clear answers about requests, assignments, payments, and
             working with the Field Nexus team.
           </p>
 
-          <div className="mt-2 w-full rounded-2xl border border-primary/20 bg-primary/5 p-5">
-            <p className="font-heading font-semibold">Still have a question?</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Create an account and our team can help you choose the right
-              next step.
+          <div className="mt-8 w-full rounded-2xl border border-primary/20 bg-primary/6 p-5 sm:p-6">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <MessageCircleQuestion className="size-5" aria-hidden="true" />
+            </div>
+            <p className="mt-4 font-heading font-semibold">
+              Still have a question?
+            </p>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              Our team can help you choose the right next step for your role.
             </p>
             <Button
               nativeButton={false}
               render={<Link href="/register" />}
-              className="mt-4"
+              className="mt-5 rounded-xl"
             >
-              Get started
+              Get started <ArrowRight data-icon="inline-end" />
             </Button>
           </div>
         </div>
 
         <Accordion
-          className="w-full rounded-2xl border border-border px-5 sm:px-7"
-          defaultValue={[faqs[0].question]}
+          ref={faqRef} id="faq"
+          className="w-full rounded-2xl border border-border bg-card/50 px-5 shadow-sm sm:px-7"
+          value={openItems}
+          onValueChange={setOpenItems}
         >
-          {faqs.map((faq) => (
-            <AccordionItem key={faq.question} value={faq.question}>
+          {faqs.map((faq, index) => (
+            <AccordionItem
+              key={faq.question}
+              value={faq.question}
+              className="border-border/80"
+            >
               <AccordionHeader>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                <AccordionTrigger className="py-5 text-sm sm:text-base">
+                  <span className="flex items-center gap-3">
+                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {faq.question}
+                  </span>
+                </AccordionTrigger>
               </AccordionHeader>
-              <AccordionContent>{faq.answer}</AccordionContent>
+              <AccordionContent className="pl-10 transition-[height,opacity] duration-300 ease-in-out data-ending-style:opacity-0 data-starting-style:opacity-0">
+                <p className="max-w-4xl leading-7">{faq.answer}</p>
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

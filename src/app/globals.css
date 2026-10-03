@@ -137,4 +137,57 @@
   html {
     @apply font-sans;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@utility marquee-paused {
+  /* biome-ignore lint/complexity/noImportantStyles: Tailwind's animate-* utilities emit the `animation` shorthand, which resets animation-play-state, so this override must win regardless of source order */
+  animation-play-state: paused !important;
+}
+
+@theme {
+  --animate-marquee-left: marquee-left 46s linear infinite;
+  --animate-marquee-right: marquee-right 38s linear infinite;
+  --animate-marquee-rail-left: marquee-rail-left 46s linear infinite;
+  --animate-marquee-rail-right: marquee-rail-right 38s linear infinite;
+
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes marquee-rail-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes marquee-rail-right {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
 }

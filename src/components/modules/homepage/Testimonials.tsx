@@ -89,32 +89,25 @@ const testimonials = [
 
 function TestimonialDots() {
   const { api } = useCarousel();
-  const [count, setCount] = useState(0);
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
     if (!api) return;
 
-    const sync = () => {
-      setCount(api.slideNodes().length);
-      setSelected(api.selectedScrollSnap());
-    };
-
+    const sync = () => setSelected(api.selectedScrollSnap());
     sync();
-    api.on("reInit", sync).on("select", sync);
+    api.on("select", sync).on("reInit", sync);
 
     return () => {
-      api.off("reInit", sync).off("select", sync);
+      api.off("select", sync).off("reInit", sync);
     };
   }, [api]);
 
-  if (count < 2) return null;
-
   return (
     <div className="flex items-center justify-center gap-2">
-      {Array.from({ length: count }, (_, index) => (
+      {testimonials.map((testimonial, index) => (
         <button
-          key={testimonials[index].name}
+          key={testimonial.name}
           type="button"
           onClick={() => api?.scrollTo(index)}
           aria-label={`Go to testimonial ${index + 1}`}
@@ -127,6 +120,75 @@ function TestimonialDots() {
         />
       ))}
     </div>
+  );
+}
+
+function TestimonialCards() {
+  const { api } = useCarousel();
+  const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    const sync = () => setSelected(api.selectedScrollSnap());
+    sync();
+    api.on("select", sync).on("reInit", sync);
+
+    return () => {
+      api.off("select", sync).off("reInit", sync);
+    };
+  }, [api]);
+
+  return (
+    <CarouselContent className="-ml-0 items-stretch gap-5 lg:gap-0">
+      {testimonials.map((testimonial, index) => (
+        <CarouselItem
+          key={testimonial.name}
+          className={`basis-[90%] py-2 pl-0 transition-[filter,opacity] duration-500 motion-reduce:transition-none lg:basis-1/3 lg:pr-4 ${
+            index === selected
+              ? "opacity-100 blur-0"
+              : "opacity-55 blur-[2px]"
+          }`}
+        >
+          <MarketingCard className="h-full rounded-3xl px-3 py-6">
+            <CardContent className="flex h-full flex-col gap-5">
+              <Quote className="size-7 text-primary/40 transition-colors duration-300 group-hover:text-primary/70" />
+
+              <blockquote className="flex-1 text-sm text-foreground/85 sm:text-base">
+                {testimonial.quote}
+              </blockquote>
+
+              <div
+                className="flex items-center gap-1"
+                role="img"
+                aria-label={`Rated ${testimonial.rating} out of 5`}
+              >
+                {starSlots.map((slot) => (
+                  <Star
+                    key={slot}
+                    aria-hidden="true"
+                    className={`size-4 ${
+                      slot <= testimonial.rating
+                        ? "fill-primary text-primary"
+                        : "text-muted-foreground/30"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-0.5 border-t pt-3">
+                <span className="font-heading text-sm font-semibold">
+                  {testimonial.name}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {testimonial.role}
+                </span>
+              </div>
+            </CardContent>
+          </MarketingCard>
+        </CarouselItem>
+      ))}
+    </CarouselContent>
   );
 }
 
@@ -159,64 +221,17 @@ export default function Testimonials() {
         </p>
       </div>
 
-      <div className="relative">
-        <Carousel
-          opts={{ align: "center", loop: true }}
-          plugins={[autoplayPlugin]}
-          className="w-full px-2"
-          aria-label="Customer testimonials"
-        >
-          <CarouselContent className="flex gap-4">
-            {testimonials.map((testimonial) => (
-              <CarouselItem
-                key={testimonial.name}
-                className="basis-[30%] py-1"
-              >
-                <MarketingCard className="h-full px-3 py-6 rounded-3xl">
-                  <CardContent className="flex h-full flex-col gap-5">
-                    <Quote className="size-7 text-primary/40 transition-colors duration-300 group-hover:text-primary/70" />
-
-                    <blockquote className="flex-1 text-sm text-foreground/85 sm:text-base">
-                      {testimonial.quote}
-                    </blockquote>
-
-                    <div
-                      className="flex items-center gap-1"
-                      role="img"
-                      aria-label={`Rated ${testimonial.rating} out of 5`}
-                    >
-                      {starSlots.map((slot) => (
-                        <Star
-                          key={slot}
-                          aria-hidden="true"
-                          className={`size-4 ${
-                            slot <= testimonial.rating
-                              ? "fill-primary text-primary"
-                              : "text-muted-foreground/30"
-                          }`}
-                        />
-                      ))}
-                    </div>
-
-                    <div className="flex flex-col gap-0.5 border-t pt-3">
-                      <span className="font-heading text-sm font-semibold">
-                        {testimonial.name}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {testimonial.role}
-                      </span>
-                    </div>
-                  </CardContent>
-                </MarketingCard>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-
-          <div className="mt-8 flex items-center justify-center gap-6">
-            <TestimonialDots />
-          </div>
-        </Carousel>
-      </div>
+      <Carousel
+        opts={{ align: "center", loop: true, slidesToScroll: 1 }}
+        plugins={[autoplayPlugin]}
+        className="w-full px-4 lg:px-2"
+        aria-label="Customer testimonials"
+      >
+        <TestimonialCards />
+        <div className="mt-8">
+          <TestimonialDots />
+        </div>
+      </Carousel>
     </section>
   );
 }

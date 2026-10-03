@@ -5,6 +5,7 @@ import Faq from "@/components/modules/homepage/Faq";
 import Features from "@/components/modules/homepage/Features";
 import Hero from "@/components/modules/homepage/Hero";
 import HowItWorks from "@/components/modules/homepage/HowItWorks";
+import MarketplaceMarquee from "@/components/modules/homepage/MarketplaceMarquee";
 import Roles from "@/components/modules/homepage/Roles";
 import Stats from "@/components/modules/homepage/Stats";
 import Testimonials from "@/components/modules/homepage/Testimonials";
@@ -28,6 +29,7 @@ export default function HomePage() {
           <Hero />
           <Stats />
           <HowItWorks />
+          <MarketplaceMarquee />
           <Features />
           <Roles />
           <Testimonials />

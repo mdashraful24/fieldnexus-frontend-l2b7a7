@@ -11,6 +11,7 @@ const stats = [
 export default function Stats() {
   return (
     <section
+      id="stats"
       aria-label="Platform statistics"
       className="max-w-6xl w-full mx-auto flex scroll-mt-16 flex-col py-28"
     >
