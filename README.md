@@ -1,6 +1,8 @@
 # Field Nexus — Frontend
 
-![Field Nexus](docs/screenshot-home.png)
+<div align="center">
+  <img height="500" src="https://drive.google.com/uc?export=view&id=1VUnNZWJokUwf-CcTH5PbyV-f20BeIp-z" alt="FixItNow" />
+</div>
 
 **Field Nexus** is a **B2B multi-vendor field service management platform**. It sits between a large enterprise that needs technicians dispatched to customer homes and offices, and the network of **subcontractor vendor companies** that actually employ those technicians.
 
@@ -8,7 +10,7 @@ The frontend is the complete web client for the platform: a public marketing sit
 
 > Instead of a company manually juggling hundreds of technicians with phone calls and paper files, Field Nexus provides a single hub where jobs are created, assigned, tracked, completed, and paid — end to end.
 
-**Live frontend:** _not deployed yet — static build ready (see [Deployment](#deployment))_
+<!-- **Live frontend:** _not deployed yet — static build ready (see [Deployment](#deployment))_ -->
 **Live backend API:** <https://fieldnexus-backend.vercel.app>
 
 ---
