@@ -18,6 +18,13 @@ export function useSuspenseGetMyNotifications(params: INotificationParams) {
   });
 }
 
+export function useGetMyNotifications(params: INotificationParams) {
+  return useQuery({
+    queryKey: ["notifications", params],
+    queryFn: () => getMyNotifications(params),
+  });
+}
+
 export function useMarkNotificationAsRead() {
   const queryClient = useQueryClient();
 

@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import type { UserRole } from "@/types/user.type";
 import { DashboardSidebar } from "./dashboard-sidebar";
+import NotificationBell from "./notification-bell";
 import OfflineIndicator from "./offline-indicator";
 import UserAvatarMenu from "./user-avatar-menu";
 
@@ -26,6 +27,7 @@ export default function DashboardShell({
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <OfflineIndicator />
+            <NotificationBell />
             <UserAvatarMenu />
           </div>
         </header>
