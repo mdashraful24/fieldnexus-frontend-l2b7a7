@@ -1,12 +1,12 @@
 import { CircleUser } from "lucide-react";
 import type { Metadata } from "next";
-import ProfileForm from "@/components/modules/profile/profile-form";
+import ProfileOverview from "@/components/modules/profile/profile-overview";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
   title: "My Profile",
   description:
-    "Update your photo, name, contact number, and the details linked to your account.",
+    "Review your account details, role, status, and the information linked to your profile.",
   path: "/profile",
   noIndex: true,
 });
@@ -24,12 +24,12 @@ export default function ProfilePage() {
               My Profile
             </h1>
             <p className="text-sm text-muted-foreground">
-              Update your photo and the details linked to your account.
+              Review the details linked to your account.
             </p>
           </div>
         </div>
 
-        <ProfileForm />
+        <ProfileOverview />
       </div>
     </div>
   );

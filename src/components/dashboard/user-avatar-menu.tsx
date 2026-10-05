@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { LogOut, UserRound } from "lucide-react";
+import { LogOut, UserPen, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -133,10 +133,10 @@ export default function UserAvatarMenu() {
 
         <DropdownMenuItem
           nativeButton={false}
-          render={<Link href="/profile" />}
+          render={<Link href="/profile/edit" />}
         >
-          <UserRound />
-          My Profile
+          <UserPen />
+          Edit Profile
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
