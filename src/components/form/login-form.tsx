@@ -3,9 +3,8 @@
 import { useForm } from "@tanstack/react-form";
 import { Eye, EyeClosed } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useLogin } from "@/hooks";
+import { useLogin, useRedirectToDashboard } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import { loginSchema } from "../../validation";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
@@ -23,9 +22,9 @@ import { toast } from "../ui/toast";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
 
   const { mutate: login, isPending: loginPending } = useLogin();
+  const { redirectToDashboard, isRedirecting } = useRedirectToDashboard();
 
   const form = useForm({
     defaultValues: {
@@ -42,13 +41,13 @@ export default function LoginForm() {
       };
 
       login(loginData, {
-        onSuccess: () => {
+        onSuccess: async () => {
           toast.add({
             title: "Login Successful",
             description: "You have been successfully logged in.",
             type: "success",
           });
-          router.push("/");
+          await redirectToDashboard();
         },
         onError: (err) => {
           toast.add({
@@ -157,13 +156,13 @@ export default function LoginForm() {
 
           <Button
             type="submit"
-            disabled={loginPending}
+            disabled={loginPending || isRedirecting}
             className="h-9 md:h-10 w-full text-sm font-semibold"
           >
-            {loginPending ? (
+            {loginPending || isRedirecting ? (
               <>
                 <Spinner />
-                Logging in...
+                {loginPending ? "Logging in..." : "Redirecting..."}
               </>
             ) : (
               "Login"

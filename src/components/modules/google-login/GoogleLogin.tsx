@@ -1,16 +1,15 @@
 "use client";
 
 import { GoogleLogin } from "@react-oauth/google";
-import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
-import { useGoogleOAuth } from "@/hooks";
+import { useGoogleOAuth, useRedirectToDashboard } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import { cn } from "@/lib/utils";
 
 export default function GoogleLoginComponent() {
-  const router = useRouter();
   const { mutate: googleLogin, isPending } = useGoogleOAuth();
+  const { redirectToDashboard, isRedirecting } = useRedirectToDashboard();
 
   const handleGoogleLoginSuccess = (credentialResponse: {
     credential?: string;
@@ -28,15 +27,17 @@ export default function GoogleLoginComponent() {
     }
 
     googleLogin(
-      { idToken },
       {
-        onSuccess: () => {
+        idToken,
+      },
+      {
+        onSuccess: async () => {
           toast.add({
             title: "Google Login Successful",
             description: "You have been successfully logged in.",
             type: "success",
           });
-          router.push("/");
+          await redirectToDashboard();
         },
         onError: (err) => {
           toast.add({
@@ -59,7 +60,10 @@ export default function GoogleLoginComponent() {
 
   return (
     <div
-      className={cn("relative", isPending && "pointer-events-none opacity-70")}
+      className={cn(
+        "relative",
+        (isPending || isRedirecting) && "pointer-events-none opacity-70",
+      )}
     >
       <GoogleLogin
         theme="outline"
@@ -68,7 +72,7 @@ export default function GoogleLoginComponent() {
         onSuccess={handleGoogleLoginSuccess}
         onError={handleGoogleLoginError}
       />
-      {isPending && (
+      {(isPending || isRedirecting) && (
         <div
           className="absolute inset-0 z-10 flex items-center justify-center rounded-full bg-background/80"
           aria-live="polite"

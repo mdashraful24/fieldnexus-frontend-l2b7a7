@@ -4,7 +4,11 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useResendRegistrationOtp, useVerifyAccount } from "@/hooks";
+import {
+  useRedirectToDashboard,
+  useResendRegistrationOtp,
+  useVerifyAccount,
+} from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import { resendRegistrationOtpSchema } from "@/validation";
 import { Button } from "../ui/button";
@@ -33,6 +37,8 @@ export default function VerifyAccountForm() {
 
   const { mutate: resendOtp, isPending: resendPending } =
     useResendRegistrationOtp();
+
+  const { redirectToDashboard, isRedirecting } = useRedirectToDashboard();
 
   const email = searchParams.get("email") || "";
 
@@ -120,7 +126,7 @@ export default function VerifyAccountForm() {
     };
 
     verifyAccount(verifyData, {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (!res.success) {
           toast.add({
             title: "Verification Failed",
@@ -135,7 +141,7 @@ export default function VerifyAccountForm() {
           description: "Your account has been verified successfully.",
           type: "success",
         });
-        router.push("/");
+        await redirectToDashboard();
       },
       onError: (err) => {
         toast.add({
@@ -311,12 +317,12 @@ export default function VerifyAccountForm() {
           type="submit"
           form="otp-form"
           className="flex-1 h-10"
-          disabled={verifyPending || isOtpExpired}
+          disabled={verifyPending || isRedirecting || isOtpExpired}
         >
-          {verifyPending ? (
+          {verifyPending || isRedirecting ? (
             <>
               <Spinner />
-              Verifying account...
+              {verifyPending ? "Verifying account..." : "Redirecting..."}
             </>
           ) : (
             "Verify account"

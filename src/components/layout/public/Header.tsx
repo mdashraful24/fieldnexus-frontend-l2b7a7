@@ -5,6 +5,7 @@ import { Menu, Wrench } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Logo from "@/assets/svg/Logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,8 +20,8 @@ import {
 import { toast } from "@/components/ui/toast";
 import { useGetMe, useLogout } from "@/hooks/auth.hook";
 import { getApiErrorMessage } from "@/lib/apiError";
+import { getDashboardPath } from "@/lib/dashboard";
 import type { UserRole } from "@/types/user.type";
-import Logo from "@/assets/svg/Logo";
 
 const NAVBAR_REVEAL_DELAY_MS = 500;
 
@@ -29,13 +30,6 @@ const publicRoutes = [
   { name: "About us", url: "/about-us" },
   { name: "Vendors", url: "/vendors" },
 ];
-
-const roleDashboardMap: Record<UserRole, string> = {
-  SUPER_ADMIN: "/admin",
-  ADMIN: "/admin",
-  TECHNICIAN: "/technician",
-  CUSTOMER: "/customer",
-};
 
 export default function Header() {
   const pathname = usePathname();
@@ -48,7 +42,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const role = data?.data?.role as UserRole | undefined;
-  const dashboardHref = role ? roleDashboardMap[role] : undefined;
+  const dashboardHref = role ? getDashboardPath(role) : undefined;
   const isSignedIn = !isLoading && !!data;
 
   const routes = [
@@ -123,8 +117,9 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-transform duration-300 ease-out ${isVisible ? "translate-y-0" : "-translate-y-full"
-        } ${isScrolled ? "border-b bg-background/80 backdrop-blur-md" : "border-b border-transparent bg-background"}`}
+      className={`sticky top-0 z-50 w-full transition-transform duration-300 ease-out ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      } ${isScrolled ? "border-b bg-background/80 backdrop-blur-md" : "border-b border-transparent bg-background"}`}
     >
       <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-14 sm:max-w-150 md:max-w-185 lg:max-w-255 xl:max-w-7xl 2xl:max-w-410 3xl:max-w-[1710px] flex h-16 items-center justify-between gap-2">
         <Link
@@ -141,10 +136,11 @@ export default function Header() {
               key={route.url}
               href={route.url}
               aria-current={isActive(route.url) ? "page" : undefined}
-              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${isActive(route.url)
-                ? "bg-primary/20 text-primary font-semibold"
-                : "text-muted-foreground"
-                }`}
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+                isActive(route.url)
+                  ? "bg-primary/20 text-primary font-semibold"
+                  : "text-muted-foreground"
+              }`}
             >
               {route.name}
             </Link>
@@ -211,13 +207,12 @@ export default function Header() {
                     render={
                       <Link
                         href={route.url}
-                        aria-current={
-                          isActive(route.url) ? "page" : undefined
-                        }
-                        className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${isActive(route.url)
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground"
-                          }`}
+                        aria-current={isActive(route.url) ? "page" : undefined}
+                        className={`rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+                          isActive(route.url)
+                            ? "bg-primary/10 text-primary"
+                            : "text-muted-foreground"
+                        }`}
                       />
                     }
                   >
@@ -260,7 +255,11 @@ export default function Header() {
                   <SheetClose
                     nativeButton={false}
                     render={
-                      <Button variant="destructive" size="lg" onClick={handleLogout}>
+                      <Button
+                        variant="destructive"
+                        size="lg"
+                        onClick={handleLogout}
+                      >
                         Logout
                       </Button>
                     }
