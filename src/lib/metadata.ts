@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
 
-const DEFAULT_SITE_URL = "http://localhost:3000";
-
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? DEFAULT_SITE_URL).replace(
-  /\/+$/,
-  "",
-);
-
 export const siteConfig = {
   name: "Field Nexus",
   shortName: "Field Nexus",
-  url: siteUrl,
   locale: "en_US",
   lang: "en",
   themeColor: "#007AFF",
@@ -93,8 +85,4 @@ export function createMetadata({
       description,
     },
   };
-}
-
-export function absoluteUrl(path = "/"): string {
-  return `${siteConfig.url}${path === "/" ? "" : path}`;
 }

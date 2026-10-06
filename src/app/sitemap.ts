@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { absoluteUrl } from "@/lib/metadata";
 
 export const dynamic = "force-static";
 
@@ -20,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   return publicRoutes.map(({ path, changeFrequency, priority }) => ({
-    url: absoluteUrl(path),
+    url: path,
     lastModified,
     changeFrequency,
     priority,
