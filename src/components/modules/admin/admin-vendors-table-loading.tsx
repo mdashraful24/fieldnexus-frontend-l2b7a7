@@ -16,7 +16,10 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Service Areas", width: "w-32" },
   { label: "Rating", width: "w-20" },
   { label: "Status", width: "w-24" },
-  { label: "Actions", width: "w-20", align: "right" },
+  { label: "Performance", width: "w-24" },
+  { label: "Details", width: "w-20" },
+  { label: "Members", width: "w-20" },
+  { label: "Restore", width: "w-20" },
 ];
 
 export default function AdminVendorsTableLoading() {

@@ -2,6 +2,7 @@
 
 import { Building2, Eye, Inbox, RotateCcw, Users } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
+import VendorStatusBadge from "@/components/modules/vendor/vendor-status-badge";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -24,7 +25,6 @@ import { toast } from "@/components/ui/toast";
 import { useRestoreVendor, useSuspenseGetAllVendors } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import type { IVendor, IVendorParams, VendorListFilter } from "@/types";
-import VendorStatusBadge from "@/components/modules/vendor/vendor-status-badge";
 
 export interface AdminVendorsTableProps extends IVendorParams {
   listFilter: VendorListFilter;
@@ -32,6 +32,10 @@ export interface AdminVendorsTableProps extends IVendorParams {
   handleDetails: (id: string) => void;
   handleMembers: (vendor: IVendor) => void;
   handlePageChange: Dispatch<SetStateAction<number>>;
+}
+
+function StatusNote() {
+  return <span className="text-base font-bold text-muted-foreground">—</span>;
 }
 
 function RestoreVendorPopover({ vendor }: { vendor: IVendor }) {
@@ -136,14 +140,17 @@ export default function AdminVendorsTable({
               <TableHead>Service Areas</TableHead>
               <TableHead>Rating</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Performance</TableHead>
+              <TableHead>Details</TableHead>
+              <TableHead>Members</TableHead>
+              <TableHead>Restore</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedVendors.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={8}
+                  colSpan={11}
                   className="h-32 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
@@ -175,39 +182,54 @@ export default function AdminVendorsTable({
                   <TableCell>
                     <VendorStatusBadge status={vendor.status} />
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-1">
-                      {vendor.isDeleted ? (
-                        <RestoreVendorPopover vendor={vendor} />
-                      ) : (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            title="Performance"
-                            onClick={() => handlePerformance(vendor.id)}
-                          >
-                            <Eye className="size-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            title="Details"
-                            onClick={() => handleDetails(vendor.id)}
-                          >
-                            <Building2 className="size-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            title="Members"
-                            onClick={() => handleMembers(vendor)}
-                          >
-                            <Users className="size-4" />
-                          </Button>
-                        </>
-                      )}
-                    </div>
+                  <TableCell>
+                    {vendor.isDeleted ? (
+                      <StatusNote />
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        title="Performance"
+                        onClick={() => handlePerformance(vendor.id)}
+                      >
+                        <Eye className="size-4" />
+                      </Button>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {vendor.isDeleted ? (
+                      <StatusNote />
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        title="Details"
+                        onClick={() => handleDetails(vendor.id)}
+                      >
+                        <Building2 className="size-4" />
+                      </Button>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {vendor.isDeleted ? (
+                      <StatusNote />
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        title="Members"
+                        onClick={() => handleMembers(vendor)}
+                      >
+                        <Users className="size-4" />
+                      </Button>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {vendor.isDeleted ? (
+                      <RestoreVendorPopover vendor={vendor} />
+                    ) : (
+                      <StatusNote />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

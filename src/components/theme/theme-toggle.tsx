@@ -18,7 +18,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <Button
       variant="outline"
-      size="icon"
+      size="lg"
       className={className}
       onClick={() => {
         if (theme === "light") {
@@ -31,11 +31,11 @@ export function ThemeToggle({ className }: { className?: string }) {
       }}
     >
       {theme === "light" ? (
-        <Sun className="size-4" />
+        <Sun className="size-4.5" />
       ) : theme === "dark" ? (
-        <Moon className="size-4" />
+        <Moon className="size-4.5" />
       ) : (
-        <Monitor className="size-4" />
+        <Monitor className="size-4.5" />
       )}
 
       <span className="sr-only">Toggle theme</span>

@@ -77,7 +77,7 @@ export default function AdminUsersTable({
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Joined At</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>View</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -120,7 +120,7 @@ export default function AdminUsersTable({
                   <TableCell>
                     {new Date(user.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     <Button
                       variant="outline"
                       size="sm"

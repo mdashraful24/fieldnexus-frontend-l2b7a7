@@ -71,7 +71,7 @@ function Detail({
       </span>
       <div className="min-w-0">
         <p className="text-xs font-medium text-muted-foreground">{label}</p>
-        <div className="text-sm break-words">{children}</div>
+        <div className="text-sm wrap-break-word">{children}</div>
       </div>
     </div>
   );
@@ -104,7 +104,7 @@ export default function ProfileOverview() {
           <CardAction>
             <Button
               variant="outline"
-              size="sm"
+              size="lg"
               nativeButton={false}
               render={<Link href="/profile/edit" />}
             >
@@ -112,18 +112,26 @@ export default function ProfileOverview() {
             </Button>
           </CardAction>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <div className="flex flex-wrap items-center gap-4">
-            <Avatar className="size-20">
+        <CardContent className="grid gap-8 lg:grid-cols-[minmax(220px,0.7fr)_minmax(0,2fr)]">
+          <div className="flex min-h-56 flex-col items-center justify-center gap-4 rounded-2xl bg-muted/50 p-6 text-center">
+            <Avatar className="size-36 ring-4 ring-background shadow-sm">
               {user.imageUrl ? (
                 <AvatarImage src={user.imageUrl} alt={user.name} />
               ) : null}
-              <AvatarFallback className="bg-primary/10 text-xl font-semibold text-primary">
+              <AvatarFallback className="bg-primary/10 text-4xl font-semibold text-primary">
                 {getInitials(user.name)}
               </AvatarFallback>
             </Avatar>
+            <div className="min-w-0">
+              <p className="text-sm font-medium">Profile picture</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Your account avatar
+              </p>
+            </div>
+          </div>
 
-            <div className="min-w-0 flex-1">
+          <div className="flex flex-col gap-6">
+            <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="font-heading text-lg font-semibold">
                   {user.name}
@@ -145,23 +153,23 @@ export default function ProfileOverview() {
                 <UserStatusBadge status={user.status} />
               </div>
             </div>
-          </div>
 
-          <Separator />
+            <Separator />
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            <Detail icon={<UserRound size="16" />} label="Full name">
-              {user.name}
-            </Detail>
-            <Detail icon={<Mail size="16" />} label="Email address">
-              {user.email}
-            </Detail>
-            <Detail icon={<ShieldCheck size="16" />} label="Account status">
-              <UserStatusBadge status={user.status} />
-            </Detail>
-            <Detail icon={<CalendarDays size="16" />} label="Member since">
-              {formatDate(user.createdAt)}
-            </Detail>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Detail icon={<UserRound size="16" />} label="Full name">
+                {user.name}
+              </Detail>
+              <Detail icon={<Mail size="16" />} label="Email address">
+                {user.email}
+              </Detail>
+              <Detail icon={<ShieldCheck size="16" />} label="Account status">
+                <UserStatusBadge status={user.status} />
+              </Detail>
+              <Detail icon={<CalendarDays size="16" />} label="Member since">
+                {formatDate(user.createdAt)}
+              </Detail>
+            </div>
           </div>
         </CardContent>
       </Card>

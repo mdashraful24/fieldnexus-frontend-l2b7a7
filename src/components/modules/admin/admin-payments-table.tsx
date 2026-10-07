@@ -114,6 +114,10 @@ export interface AdminPaymentsTableProps extends IPaymentParams {
   handlePageChange: Dispatch<SetStateAction<number>>;
 }
 
+function StatusNote() {
+  return <span className="text-base font-bold text-muted-foreground">—</span>;
+}
+
 export default function AdminPaymentsTable({
   handlePageChange,
   ...params
@@ -138,7 +142,7 @@ export default function AdminPaymentsTable({
               <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Refund</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -184,12 +188,12 @@ export default function AdminPaymentsTable({
                       ? new Date(payment.paidAt).toLocaleString()
                       : new Date(payment.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end">
-                      {payment.status === "PAID" && (
-                        <RefundPaymentPopover payment={payment} />
-                      )}
-                    </div>
+                  <TableCell>
+                    {payment.status === "PAID" ? (
+                      <RefundPaymentPopover payment={payment} />
+                    ) : (
+                      <StatusNote />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

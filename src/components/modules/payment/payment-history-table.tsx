@@ -78,7 +78,7 @@ export default function PaymentHistoryTable() {
                 <TableHead>Amount</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Details</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -99,7 +99,7 @@ export default function PaymentHistoryTable() {
                   <TableCell className="whitespace-nowrap text-muted-foreground">
                     {new Date(payment.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     <Button
                       variant="outline"
                       size="sm"

@@ -50,7 +50,7 @@ export default function TechnicianApprovalTable({
               <TableHead>Contact No.</TableHead>
               <TableHead>Experience (Years)</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Review</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -79,7 +79,7 @@ export default function TechnicianApprovalTable({
                   <TableCell>
                     <TechnicianStatusBadge status={technician.status} />
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     {technician.status === "PENDING" ? (
                       <Button
                         variant="outline"

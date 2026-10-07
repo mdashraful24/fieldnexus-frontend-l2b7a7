@@ -17,7 +17,7 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Contact No.", width: "w-28" },
   { label: "Experience (Years)", width: "w-20" },
   { label: "Status", width: "w-24" },
-  { label: "Actions", width: "w-16", align: "right" },
+  { label: "Review", width: "w-20" },
 ];
 
 export default function TechnicianApprovalTableLoading() {

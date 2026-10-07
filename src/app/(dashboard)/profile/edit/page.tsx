@@ -16,7 +16,7 @@ export const metadata: Metadata = createMetadata({
 export default function EditProfilePage() {
   return (
     <div className="flex-1 p-4 lg:p-6">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+      <div className="mx-auto flex w-full flex-col gap-6">
         <Button
           variant="ghost"
           size="sm"

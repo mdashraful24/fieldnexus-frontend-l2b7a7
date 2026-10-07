@@ -14,7 +14,9 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Base Price", width: "w-28" },
   { label: "Status", width: "w-24" },
   { label: "Created", width: "w-40" },
-  { label: "Actions", width: "w-20", align: "right" },
+  { label: "Edit", width: "w-16" },
+  { label: "Delete", width: "w-16" },
+  { label: "Restore", width: "w-20" },
 ];
 
 export default function ServiceCategoryTableLoading() {

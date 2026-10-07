@@ -29,7 +29,7 @@ function Detail({
   return (
     <div>
       <p className="text-xs font-medium text-muted-foreground">{label}</p>
-      <p className="mt-0.5 break-words text-sm whitespace-pre-wrap">
+      <p className="mt-0.5 wrap-break-word text-sm whitespace-pre-wrap">
         {children ?? value ?? "—"}
       </p>
     </div>

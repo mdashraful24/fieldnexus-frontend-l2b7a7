@@ -16,7 +16,7 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Amount", width: "w-24" },
   { label: "Status", width: "w-24" },
   { label: "Date", width: "w-36" },
-  { label: "Actions", width: "w-16", align: "right" },
+  { label: "Refund", width: "w-16" },
 ];
 
 export default function AdminPaymentsTableLoading() {

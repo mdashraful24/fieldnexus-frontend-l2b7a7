@@ -177,6 +177,10 @@ export interface ServiceCategoryTableProps extends IServiceCategoryParams {
   handlePageChange: Dispatch<SetStateAction<number>>;
 }
 
+function StatusNote() {
+  return <span className="text-base font-bold text-muted-foreground">—</span>;
+}
+
 export default function ServiceCategoryTable({
   listFilter,
   handleEdit,
@@ -211,14 +215,16 @@ export default function ServiceCategoryTable({
               <TableHead>Base Price</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Edit</TableHead>
+              <TableHead>Delete</TableHead>
+              <TableHead>Restore</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedCategories.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={8}
                   className="h-32 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
@@ -255,24 +261,33 @@ export default function ServiceCategoryTable({
                   <TableCell>
                     {new Date(category.createdAt).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-1">
-                      {category.isDeleted ? (
-                        <RestoreCategoryPopover category={category} />
-                      ) : (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            title="Edit"
-                            onClick={() => handleEdit(category)}
-                          >
-                            <Pencil className="size-4" />
-                          </Button>
-                          <DeleteCategoryPopover category={category} />
-                        </>
-                      )}
-                    </div>
+                  <TableCell>
+                    {category.isDeleted ? (
+                      <StatusNote />
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        title="Edit"
+                        onClick={() => handleEdit(category)}
+                      >
+                        <Pencil className="size-4" />
+                      </Button>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {category.isDeleted ? (
+                      <StatusNote />
+                    ) : (
+                      <DeleteCategoryPopover category={category} />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {category.isDeleted ? (
+                      <RestoreCategoryPopover category={category} />
+                    ) : (
+                      <StatusNote />
+                    )}
                   </TableCell>
                 </TableRow>
               ))

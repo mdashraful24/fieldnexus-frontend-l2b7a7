@@ -65,7 +65,7 @@ export default function SuperAdminAdminsTable({
               <TableHead>Joined At</TableHead>
               <TableHead>Change Email</TableHead>
               <TableHead>Reset Password</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>View</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -113,7 +113,7 @@ export default function SuperAdminAdminsTable({
                       <span className="text-muted-foreground">—</span>
                     )}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell>
                     <Button
                       variant="outline"
                       size="sm"

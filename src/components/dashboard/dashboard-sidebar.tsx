@@ -7,6 +7,7 @@ import Logo from "@/assets/svg/Logo";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -23,6 +24,7 @@ import { superAdminRoutes } from "@/routes/super-admin.routes";
 import { technicianRoutes } from "@/routes/technician.routes";
 import type { SidebarItems } from "@/types/sidebar.type";
 import type { UserRole } from "@/types/user.type";
+import UserAvatarMenu from "./user-avatar-menu";
 
 const sideBarRoutes: Partial<Record<UserRole, SidebarItems>> = {
   SUPER_ADMIN: [...adminRoutes, ...superAdminRoutes],
@@ -70,6 +72,9 @@ export function DashboardSidebar({ userRole }: { userRole: UserRole }) {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter className="border-t p-3">
+        <UserAvatarMenu sidebar />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

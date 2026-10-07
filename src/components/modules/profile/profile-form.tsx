@@ -115,7 +115,7 @@ function ProfilePicture({
   };
 
   return (
-    <Card>
+    <Card className="p-3 py-6 rounded-3xl">
       <CardHeader>
         <CardTitle className="text-base">Profile Picture</CardTitle>
         <CardDescription>
@@ -123,10 +123,9 @@ function ProfilePicture({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-5">
-          <span className="relative inline-flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-muted">
+        <div className="flex flex-col items-center gap-5">
+          <span className="relative inline-flex size-25 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-muted">
             {displayedImageUrl ? (
-              // biome-ignore lint/performance/noImgElement: user uploaded avatar served from cloudinary
               <img
                 src={displayedImageUrl}
                 alt={`${name}'s profile picture`}
@@ -302,10 +301,10 @@ export default function ProfileForm() {
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="grid gap-6 lg:grid-cols-2">
       <ProfilePicture imageUrl={user.imageUrl} name={user.name} />
 
-      <Card>
+      <Card className="p-3 py-6 rounded-3xl">
         <CardHeader>
           <CardTitle className="text-base">Account Details</CardTitle>
           <CardDescription>

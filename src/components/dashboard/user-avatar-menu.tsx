@@ -1,7 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { LogOut, UserPen, UserRound } from "lucide-react";
+import { LogOut, UserPen } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -52,7 +52,7 @@ function UserAvatar({
     <Avatar className={className}>
       {imageUrl ? <AvatarImage src={imageUrl} alt={name} /> : null}
       <AvatarFallback
-        className={`bg-primary/10 font-semibold text-primary ${fallbackClassName ?? ""}`}
+        className={`bg-primary/10 font-semibold text-blue-500 ${fallbackClassName ?? ""}`}
       >
         {getInitials(name)}
       </AvatarFallback>
@@ -60,7 +60,11 @@ function UserAvatar({
   );
 }
 
-export default function UserAvatarMenu() {
+export default function UserAvatarMenu({
+  sidebar = false,
+}: {
+  sidebar?: boolean;
+}) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { data: meData, isPending } = useGetMe();
@@ -101,21 +105,38 @@ export default function UserAvatarMenu() {
         render={
           <Button
             variant="ghost"
-            size="icon"
+            size={sidebar ? "default" : "icon"}
             aria-label="Open account menu"
-            className="size-9 rounded-full"
+            className={
+              sidebar
+                ? "h-auto w-full justify-start gap-3 rounded-lg p-2 text-left"
+                : "size-9 rounded-full"
+            }
           />
         }
       >
         <UserAvatar
           name={user.name}
           imageUrl={user.imageUrl}
-          className="size-8"
+          className={sidebar ? "size-9 shrink-0" : "size-8"}
           fallbackClassName="text-xs"
         />
+        {sidebar ? (
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-medium">
+              {user.name}
+            </span>
+            <span className="block truncate text-xs text-muted-foreground">
+              {user.email}
+            </span>
+            <span className="block truncate text-xs text-muted-foreground">
+              {roleLabels[role] ?? role}
+            </span>
+          </span>
+        ) : null}
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-64">
+      <DropdownMenuContent align={sidebar ? "start" : "end"} className="w-64">
         <div className="flex items-center gap-3 px-2 py-2">
           <UserAvatar name={user.name} imageUrl={user.imageUrl} />
           <div className="min-w-0 flex-1">

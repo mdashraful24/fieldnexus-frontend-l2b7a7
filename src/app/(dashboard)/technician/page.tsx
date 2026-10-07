@@ -41,7 +41,7 @@ export default function TechnicianDashboardPage() {
 
         <TechnicianOverview />
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Bell className="size-4" />
@@ -54,7 +54,7 @@ export default function TechnicianDashboardPage() {
           <Suspense fallback={<NotificationsLoading />}>
             <NotificationList />
           </Suspense>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

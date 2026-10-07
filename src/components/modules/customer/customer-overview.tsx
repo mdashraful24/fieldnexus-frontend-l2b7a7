@@ -296,6 +296,99 @@ export function CustomerOverviewLoading() {
           <Skeleton className="mx-auto mt-5 size-40 rounded-full" />
         </div>
       </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10 lg:col-span-2">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-3 w-64" />
+          </div>
+          <Skeleton className="mt-6 h-56 w-full rounded-lg" />
+        </div>
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-3 w-48" />
+          </div>
+          <Skeleton className="mx-auto mt-5 size-40 rounded-full" />
+          <div className="mt-4 space-y-3">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="space-y-2">
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-1.5 w-full rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10 lg:col-span-3">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-3 w-52" />
+          </div>
+          <div className="mt-5 space-y-2">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <div
+                key={item}
+                className="flex items-center justify-between gap-3 rounded-lg bg-muted/50 p-3"
+              >
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  <Skeleton className="size-9 shrink-0 rounded-lg" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-3 w-40" />
+                  </div>
+                </div>
+                <Skeleton className="h-5 w-16 rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-3 w-48" />
+          </div>
+          <Skeleton className="mt-5 h-2 w-full rounded-full" />
+          <div className="mt-5 grid grid-cols-2 gap-3 border-t pt-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
+        </div>
+
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-40" />
+            <Skeleton className="h-3 w-52" />
+          </div>
+          <div className="mt-5 space-y-3">
+            <div className="flex items-center gap-3">
+            <Skeleton className="size-10 shrink-0 rounded-xl" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-6 w-2/3" />
+              <Skeleton className="h-3 w-full" />
+            </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 border-t pt-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            </div>
+            <Skeleton className="h-4 w-36" />
+          </div>
+        </div>
+
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <Skeleton className="h-4 w-28" />
+          <div className="mt-5 space-y-3">
+            {[1, 2, 3].map((item) => (
+            <Skeleton key={item} className="h-12 w-full rounded-lg" />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -339,35 +432,19 @@ export default function CustomerOverview() {
   const trendData = buildMonthlyTrend(payments);
   const hasTrendData = trendData.some((entry) => entry.total > 0);
 
-  const gatewayData = Array.from(
-    payments.reduce((map, payment) => {
-      const gateway = payment.gateway || "Other";
-      map.set(gateway, (map.get(gateway) ?? 0) + Number(payment.amount));
-      return map;
-    }, new Map<string, number>()),
-  )
-    .map(([gateway, amount]) => ({ label: toLabel(gateway), amount }))
-    .sort((a, b) => b.amount - a.amount)
-    .slice(0, 4);
-
-  const maxGatewayAmount = Math.max(
-    ...gatewayData.map((entry) => entry.amount),
-    1,
-  );
-
   const recentPayments = payments.slice(0, 5);
 
   return (
     <div className="flex flex-col gap-6">
       <section className="relative overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground lg:p-6">
-        <div
+        {/* <div
           aria-hidden
           className="absolute -top-12 -right-12 size-48 rounded-full bg-primary-foreground/10"
         />
         <div
           aria-hidden
           className="absolute -bottom-16 right-24 size-40 rounded-full bg-primary-foreground/5"
-        />
+        /> */}
         <div className="relative flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-start gap-4">
             <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary-foreground/15">
@@ -383,7 +460,7 @@ export default function CustomerOverview() {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-4">
             <Link
               href="/customer/create-booking"
               className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary-foreground px-4 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
@@ -540,7 +617,7 @@ export default function CustomerOverview() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle className="text-base">Recent Payments</CardTitle>
             <CardDescription>
@@ -583,126 +660,134 @@ export default function CustomerOverview() {
           </CardContent>
         </Card>
 
-        <div className="flex flex-col gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Settlement Health</CardTitle>
-              <CardDescription>
-                Share of payments already settled.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="text-sm text-muted-foreground">
-                  Settled payments
-                </span>
-                <span className="font-heading text-xl font-semibold tabular-nums">
-                  {percent(paidPayments.length, total)}%
-                </span>
-              </div>
-              <Meter
-                value={percent(paidPayments.length, total)}
-                tone={
-                  total > 0 && unpaidPayments.length > 0
-                    ? "var(--color-amber-500)"
-                    : "var(--color-emerald-500)"
-                }
-              />
-              <div className="grid gap-3 border-t pt-4 sm:grid-cols-2">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4 shrink-0 text-emerald-500" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Settled</p>
-                    <p className="font-medium tabular-nums">
-                      {paidPayments.length}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="size-4 shrink-0 text-amber-500" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Outstanding</p>
-                    <p className="font-medium tabular-nums">
-                      {unpaidPayments.length}
-                    </p>
-                  </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Settlement Health</CardTitle>
+            <CardDescription>
+              Share of payments already settled.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="text-sm text-muted-foreground">
+                Settled payments
+              </span>
+              <span className="font-heading text-xl font-semibold tabular-nums">
+                {percent(paidPayments.length, total)}%
+              </span>
+            </div>
+            <Meter
+              value={percent(paidPayments.length, total)}
+              tone={
+                total > 0 && unpaidPayments.length > 0
+                  ? "var(--color-amber-500)"
+                  : "var(--color-emerald-500)"
+              }
+            />
+            <div className="grid gap-3 border-t pt-4 sm:grid-cols-2">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="size-4 shrink-0 text-emerald-500" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Settled</p>
+                  <p className="font-medium tabular-nums">
+                    {paidPayments.length}
+                  </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex items-center gap-2">
+                <CalendarDays className="size-4 shrink-0 text-amber-500" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Outstanding</p>
+                  <p className="font-medium tabular-nums">
+                    {unpaidPayments.length}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Payment Methods</CardTitle>
-              <CardDescription>
-                Where your money went, by gateway.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {gatewayData.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  No payment methods recorded yet.
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Outstanding Balance</CardTitle>
+            <CardDescription>
+              Payments that still need your attention.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-500">
+                <Wallet className="size-5" />
+              </span>
+              <div>
+                <p className="font-heading text-2xl font-semibold tabular-nums">
+                  {formatCurrency(totalDue)}
                 </p>
-              ) : (
-                <ul className="flex flex-col gap-3">
-                  {gatewayData.map((entry) => (
-                    <li key={entry.label} className="flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between gap-2 text-sm">
-                        <span className="text-muted-foreground">
-                          {entry.label}
-                        </span>
-                        <span className="font-medium tabular-nums">
-                          {formatCurrency(entry.amount)}
-                        </span>
-                      </div>
-                      <Meter
-                        value={(entry.amount / maxGatewayAmount) * 100}
-                        tone="var(--color-chart-2)"
-                      />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
+                <p className="text-xs text-muted-foreground">
+                  {unpaidPayments.length} unpaid{" "}
+                  {unpaidPayments.length === 1 ? "payment" : "payments"}
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 border-t pt-4">
+              <div>
+                <p className="text-xs text-muted-foreground">Refunded</p>
+                <p className="font-medium tabular-nums">
+                  {formatCurrency(totalRefunded)}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Paid total</p>
+                <p className="font-medium tabular-nums">
+                  {formatCurrency(totalPaid)}
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/customer/payment-history"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              View payment history
+            </Link>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="flex flex-col gap-2">
-                <li>
-                  <QuickLink
-                    label="Payment History"
-                    description="Review every transaction"
-                    to="/customer/payment-history"
-                    icon={<Banknote size={16} />}
-                    tone="var(--color-emerald-500)"
-                  />
-                </li>
-                <li>
-                  <QuickLink
-                    label="My Profile"
-                    description="Review your account details"
-                    to="/profile"
-                    icon={<UserRound size={16} />}
-                    tone="var(--color-chart-1)"
-                  />
-                </li>
-                <li>
-                  <QuickLink
-                    label="Edit Profile"
-                    description="Update your photo and name"
-                    to="/profile/edit"
-                    icon={<UserCog size={16} />}
-                    tone="var(--color-violet-500)"
-                  />
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="flex flex-col gap-2">
+              <li>
+                <QuickLink
+                  label="Payment History"
+                  description="Review every transaction"
+                  to="/customer/payment-history"
+                  icon={<Banknote size={16} />}
+                  tone="var(--color-emerald-500)"
+                />
+              </li>
+              <li>
+                <QuickLink
+                  label="My Profile"
+                  description="Review your account details"
+                  to="/profile"
+                  icon={<UserRound size={16} />}
+                  tone="var(--color-chart-1)"
+                />
+              </li>
+              <li>
+                <QuickLink
+                  label="Edit Profile"
+                  description="Update your photo and name"
+                  to="/profile/edit"
+                  icon={<UserCog size={16} />}
+                  tone="var(--color-violet-500)"
+                />
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
       </section>
     </div>
   );

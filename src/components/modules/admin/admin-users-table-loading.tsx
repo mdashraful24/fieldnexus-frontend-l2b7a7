@@ -15,7 +15,7 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Role", width: "w-24" },
   { label: "Status", width: "w-24" },
   { label: "Joined At", width: "w-40" },
-  { label: "Actions", width: "w-16", align: "right" },
+  { label: "View", width: "w-16" },
 ];
 
 export default function AdminUsersTableLoading() {

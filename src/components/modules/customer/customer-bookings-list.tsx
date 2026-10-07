@@ -72,7 +72,7 @@ export default function CustomerBookingsList() {
             <TableHead>Created</TableHead>
             <TableHead>Scheduled</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead>Details</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -93,7 +93,7 @@ export default function CustomerBookingsList() {
               <TableCell>
                 <WorkOrderStatusBadge status={booking.status} />
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell>
                 <Button
                   variant="outline"
                   size="sm"

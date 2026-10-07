@@ -74,8 +74,9 @@ export default function OfflineIndicator() {
         render={
           <Button
             variant="outline"
-            size="sm"
-            className="gap-2"
+            size="lg"
+            className="pointer-events-none shrink-0 gap-2 cursor-default opacity-100"
+            aria-disabled="true"
             aria-label={`Connection status: ${statusLabel}`}
           />
         }
@@ -97,7 +98,7 @@ export default function OfflineIndicator() {
           </Badge>
         )}
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80">
+      {/* <PopoverContent align="end" className="w-80">
         <PopoverTitle>Offline sync</PopoverTitle>
         <PopoverDescription>
           {isOnline
@@ -156,7 +157,7 @@ export default function OfflineIndicator() {
             ))}
           </ul>
         )}
-      </PopoverContent>
+      </PopoverContent> */}
     </Popover>
   );
 }
