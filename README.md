@@ -185,9 +185,19 @@ Create a `.env.local` file in the project root:
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-oauth-client-id.apps.googleusercontent.com
+
+# Optional: role-wise quick login buttons on /login (mirrors of the seeded accounts)
+NEXT_PUBLIC_QUICK_LOGIN_SUPER_ADMIN_EMAIL=your-super-admin-email
+NEXT_PUBLIC_QUICK_LOGIN_SUPER_ADMIN_PASSWORD=your-super-admin-password
+NEXT_PUBLIC_QUICK_LOGIN_ADMIN_EMAIL=your-admin-email
+NEXT_PUBLIC_QUICK_LOGIN_ADMIN_PASSWORD=your-admin-password
+NEXT_PUBLIC_QUICK_LOGIN_TECHNICIAN_EMAIL=your-technician-email
+NEXT_PUBLIC_QUICK_LOGIN_TECHNICIAN_PASSWORD=your-technician-password
+NEXT_PUBLIC_QUICK_LOGIN_CUSTOMER_EMAIL=your-customer-email
+NEXT_PUBLIC_QUICK_LOGIN_CUSTOMER_PASSWORD=your-customer-password
 ```
 
-Google sign-in degrades gracefully — if `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is unset, the Google button is simply not rendered. See [Environment Variables](#environment-variables) for the full reference.
+Google sign-in degrades gracefully — if `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is unset, the Google button is simply not rendered. Quick login degrades the same way — a role button is only rendered when both its `NEXT_PUBLIC_QUICK_LOGIN_*` email and password are set. See [Environment Variables](#environment-variables) for the full reference.
 
 ### 4. Start the backend
 
@@ -215,11 +225,12 @@ bun run build     # static export written to ./out
 |----------|----------|-------------|
 | `NEXT_PUBLIC_API_URL` | **Yes** | Base URL of the backend API, including the version segment (e.g. `http://localhost:5000/api/v1`). Read in `src/lib/apiClient.ts:3`. |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | No | Google OAuth 2.0 web client ID. Enables the "Continue with Google" button. |
+| `NEXT_PUBLIC_QUICK_LOGIN_{ROLE}_EMAIL` / `_PASSWORD` | No | Email/password pair per role (`SUPER_ADMIN`, `ADMIN`, `TECHNICIAN`, `CUSTOMER`) for the role-wise quick login buttons on `/login`. Read in `src/lib/quick-login.ts`. |
 | `SUPER_ADMIN_NAME` / `_EMAIL` / `_PASSWORD` | No | Consumed by the **backend** seeder to create the initial Super Admin. |
 | `FIELD_NEXUS_ADMIN_NAME` / `_EMAIL` / `_PASSWORD` | No | Consumed by the **backend** seeder to create the initial Admin. |
 | `TESTER_TECHNICIAN_NAME` / `_EMAIL` / `_PASSWORD` | No | Consumed by the **backend** seeder to create a test Technician. |
 
-> **Note:** Only `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_GOOGLE_CLIENT_ID` are read by this frontend. The credential variables exist in the local `.env.local` because the backend reads the same file to seed accounts. All variables are prefixed-safe: `.env*` is gitignored, so keep secrets out of version control.
+> **Note:** The frontend reads `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, and the optional `NEXT_PUBLIC_QUICK_LOGIN_*` credentials (the app is statically exported, so only `NEXT_PUBLIC_*` values reach the browser). The remaining credential variables exist in the local `.env.local` because the backend reads the same file to seed accounts. All variables are prefixed-safe: `.env*` is gitignored, so keep secrets out of version control — never mirror real user passwords into `NEXT_PUBLIC_*` variables.
 
 ---
 

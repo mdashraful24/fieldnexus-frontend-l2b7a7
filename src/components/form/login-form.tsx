@@ -1,11 +1,25 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { Eye, EyeClosed } from "lucide-react";
+import {
+  Eye,
+  EyeClosed,
+  Shield,
+  ShieldCheck,
+  UserRound,
+  Wrench,
+  Zap,
+} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useLogin, useRedirectToDashboard } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
+import {
+  type QuickLoginProfile,
+  type QuickLoginRole,
+  quickLoginProfiles,
+} from "@/lib/quick-login";
+import type { LoginPayload } from "@/types";
 import { loginSchema } from "../../validation";
 import GoogleLoginComponent from "../modules/google-login/GoogleLogin";
 import { Button } from "../ui/button";
@@ -20,45 +34,60 @@ import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
 import { toast } from "../ui/toast";
 
+const quickLoginIcons: Record<QuickLoginRole, typeof Shield> = {
+  "super-admin": ShieldCheck,
+  admin: Shield,
+  technician: Wrench,
+  customer: UserRound,
+};
+
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const { mutate: login, isPending: loginPending } = useLogin();
   const { redirectToDashboard, isRedirecting } = useRedirectToDashboard();
 
+  const performLogin = (loginData: LoginPayload) => {
+    login(loginData, {
+      onSuccess: async () => {
+        toast.add({
+          title: "Login Successful",
+          description: "You have been successfully logged in.",
+          type: "success",
+        });
+        await redirectToDashboard();
+      },
+      onError: (err) => {
+        toast.add({
+          title: "Login Failed",
+          description: getApiErrorMessage(err),
+          type: "error",
+        });
+      },
+    });
+  };
+
   const form = useForm({
     defaultValues: {
-      email: "admin@fieldnexus.com",
-      password: "NexusAdmin@123",
+      email: "",
+      password: "",
     },
     validators: {
       onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => {
-      const loginData = {
+      performLogin({
         email: value.email,
         password: value.password,
-      };
-
-      login(loginData, {
-        onSuccess: async () => {
-          toast.add({
-            title: "Login Successful",
-            description: "You have been successfully logged in.",
-            type: "success",
-          });
-          await redirectToDashboard();
-        },
-        onError: (err) => {
-          toast.add({
-            title: "Login Failed",
-            description: getApiErrorMessage(err),
-            type: "error",
-          });
-        },
       });
     },
   });
+
+  const handleQuickLogin = (profile: QuickLoginProfile) => {
+    form.setFieldValue("email", profile.email);
+    form.setFieldValue("password", profile.password);
+    performLogin({ email: profile.email, password: profile.password });
+  };
 
   return (
     <div className="flex flex-col justify-center gap-6">
@@ -170,6 +199,45 @@ export default function LoginForm() {
           </Button>
         </FieldGroup>
       </form>
+
+      <FieldSeparator>Or continue with</FieldSeparator>
+
+      {quickLoginProfiles.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1 text-center">
+            <p className="flex items-center justify-center gap-1.5 text-sm font-medium">
+              <Zap size={14} />
+              Quick login
+            </p>
+            {/* <p className="text-xs text-muted-foreground">
+              Role accounts from{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-[0.7rem]">
+                .env.local
+              </code>
+            </p> */}
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            {quickLoginProfiles.map((profile) => {
+              const Icon = quickLoginIcons[profile.role];
+
+              return (
+                <Button
+                  key={profile.role}
+                  type="button"
+                  variant="outline"
+                  disabled={loginPending || isRedirecting}
+                  onClick={() => handleQuickLogin(profile)}
+                  className="h-9 md:h-10 gap-2 text-sm font-semibold"
+                >
+                  <Icon />
+                  {profile.label}
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <FieldSeparator>Or continue with</FieldSeparator>
 
