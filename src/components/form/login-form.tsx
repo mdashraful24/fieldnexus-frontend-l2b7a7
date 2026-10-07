@@ -61,7 +61,7 @@ export default function LoginForm() {
   });
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col justify-center gap-6">
       <div className="flex flex-col gap-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
         <p className="text-balance text-sm text-foreground">
@@ -173,17 +173,19 @@ export default function LoginForm() {
 
       <FieldSeparator>Or continue with</FieldSeparator>
 
-      <GoogleLoginComponent />
+      <div className="flex flex-col justify-center items-center gap-6">
+        <GoogleLoginComponent />
 
-      <p className="text-center text-sm text-foreground">
-        Don&apos;t have an account?{" "}
-        <Link
-          href="/register"
-          className="font-medium text-foreground underline-offset-4 hover:underline hover:text-primary"
-        >
-          Create one
-        </Link>
-      </p>
+        <p className="text-center text-sm text-foreground">
+          Don&apos;t have an account?{" "}
+          <Link
+            href="/register"
+            className="font-medium text-foreground underline-offset-4 hover:underline hover:text-primary"
+          >
+            Create one
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

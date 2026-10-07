@@ -70,7 +70,7 @@ export default function AuthSidePanel({
   return (
     <aside className="relative hidden overflow-hidden bg-slate-950 text-white lg:flex lg:flex-col">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_18%,oklch(.45_.18_250/.35),transparent_34%),radial-gradient(circle_at_20%_90%,oklch(.35_.12_180/.2),transparent_32%)]" />
-      <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(oklch(1_0_0/.08)_1px,transparent_1px),linear-gradient(90deg,oklch(1_0_0/.08)_1px,transparent_1px)] [background-size:42px_42px]" />
+      <div className="absolute inset-0 opacity-20 bg-[linear-gradient(oklch(1_0_0/.08)_1px,transparent_1px),linear-gradient(90deg,oklch(1_0_0/.08)_1px,transparent_1px)] bg-size-[42px_42px]" />
 
       <div className="relative flex min-h-full flex-col justify-between p-10 xl:p-14">
         <Link href="/" className="flex items-center gap-2.5">

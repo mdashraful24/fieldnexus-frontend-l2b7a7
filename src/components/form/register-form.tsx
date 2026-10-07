@@ -76,8 +76,8 @@ export default function RegisterForm() {
             expiresAt: res?.data?.expiresAt || "",
             sessionExpiresAt: res?.data?.sessionExpiresIn
               ? new Date(
-                  Date.now() + res.data.sessionExpiresIn * 1000,
-                ).toISOString()
+                Date.now() + res.data.sessionExpiresIn * 1000,
+              ).toISOString()
               : "",
           });
           router.push(`/register/verify-account?${params.toString()}`);
@@ -94,7 +94,7 @@ export default function RegisterForm() {
   });
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col justify-center gap-6">
       <div className="flex flex-col gap-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
           Create an account
@@ -294,17 +294,20 @@ export default function RegisterForm() {
 
       <FieldSeparator>Or continue with</FieldSeparator>
 
-      <GoogleLoginComponent />
+      <div className="flex flex-col justify-center items-center gap-6">
 
-      <p className="text-center text-sm text-foreground">
-        Already have an account?{" "}
-        <Link
-          href="/login"
-          className="font-medium text-foreground underline-offset-4 hover:underline hover:text-primary"
-        >
-          Login
-        </Link>
-      </p>
+        <GoogleLoginComponent />
+
+        <p className="text-center text-sm text-foreground">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-foreground underline-offset-4 hover:underline hover:text-primary"
+          >
+            Login
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
