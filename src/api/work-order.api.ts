@@ -21,6 +21,12 @@ export function getAllWorkOrders(params: IWorkOrderParams) {
   });
 }
 
+export function getMyWorkOrders(params?: IWorkOrderParams) {
+  return apiClient<ApiResponse<IWorkOrder[]>>("/work-orders/my", {
+    query: params,
+  });
+}
+
 export function createWorkOrder(payload: ICreateWorkOrderPayload) {
   return apiClient<ApiResponse<IWorkOrder>>("/work-orders", {
     method: "POST",

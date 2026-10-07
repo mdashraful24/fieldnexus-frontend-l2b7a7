@@ -44,6 +44,12 @@ export interface IWorkAssignment {
   vendorId: string;
   technicianId: string;
   vendor?: { id: string; name: string } | null;
+  technician?: {
+    id: string;
+    name: string;
+    email: string;
+    contactNumber?: string | null;
+  } | null;
 }
 
 export interface IServiceReport {

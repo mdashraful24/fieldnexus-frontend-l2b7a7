@@ -1,3 +1,5 @@
+import type { WorkOrderStatus } from "./work-order.type";
+
 export type PaymentStatus =
   | "UNPAID"
   | "PAID"
@@ -26,6 +28,13 @@ export interface IPayment {
   updatedAt: string;
   workOrderId: string;
   customerId: string;
+  workOrder?: {
+    id: string;
+    workOrderNumber: string;
+    title: string;
+    status: WorkOrderStatus;
+  } | null;
+  customer?: { id: string; name: string; email: string } | null;
 }
 
 export interface IPaymentParams {

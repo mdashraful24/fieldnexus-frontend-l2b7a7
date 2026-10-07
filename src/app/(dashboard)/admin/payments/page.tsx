@@ -1,35 +1,35 @@
-import { ListChecks } from "lucide-react";
+import { Banknote } from "lucide-react";
 import type { Metadata } from "next";
-import CustomerBookingsList from "@/components/modules/customer/customer-bookings-list";
+import AdminPaymentsTabs from "@/components/modules/admin/admin-payments-tabs";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
-  title: "My Bookings",
+  title: "Payments",
   description:
-    "Every service request you have submitted, with the current status of each booking.",
-  path: "/customer/bookings",
+    "Review every payment recorded on the platform and issue refunds.",
+  path: "/admin/payments",
   noIndex: true,
 });
 
-export default function CustomerBookingsPage() {
+export default function AdminPaymentsPage() {
   return (
     <div className="flex-1 p-4 lg:p-6">
       <div className="mx-auto flex w-full flex-col gap-6">
         <div className="flex items-center gap-3">
           <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <ListChecks className="size-5" />
+            <Banknote className="size-5" />
           </span>
           <div>
             <h1 className="font-heading text-2xl font-semibold tracking-tight">
-              My Bookings
+              Payments
             </h1>
             <p className="text-sm text-muted-foreground">
-              Every service request you have submitted.
+              Track payments across the platform and issue refunds.
             </p>
           </div>
         </div>
 
-        <CustomerBookingsList />
+        <AdminPaymentsTabs />
       </div>
     </div>
   );

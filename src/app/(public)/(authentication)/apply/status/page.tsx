@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Logo from "@/assets/svg/Logo";
-import TechnicianApplyForm from "@/components/form/technician-apply-form";
+import TechnicianApplicationStatusForm from "@/components/form/technician-application-status-form";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
-  title: "Apply as a Technician",
+  title: "Check Application Status",
   description:
-    "Apply to join the Field Nexus technician network. Submit your trade, experience, and service area, and our team will review your profile.",
-  path: "/apply",
+    "Check the status of your Field Nexus technician application using the email you applied with.",
+  path: "/apply/status",
   noIndex: true,
 });
 
-export default function ApplyAsTechnicianPage() {
+export default function ApplicationStatusPage() {
   return (
     <div className="flex min-h-svh flex-col">
       <header className="flex items-center justify-center px-6 py-6 sm:justify-start sm:px-10">
@@ -25,19 +25,19 @@ export default function ApplyAsTechnicianPage() {
       </header>
 
       <main className="flex flex-1 flex-col items-center justify-center px-6">
-        <div className="w-full max-w-2xl">
-          <TechnicianApplyForm />
-        </div>
+        <div className="w-full max-w-xl">
+          <TechnicianApplicationStatusForm />
 
-        <p className="mt-6 text-sm text-muted-foreground">
-          Already applied?{" "}
-          <Link
-            href="/apply/status"
-            className="font-medium underline underline-offset-4 hover:text-primary"
-          >
-            Check your application status
-          </Link>
-        </p>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Want to apply again?{" "}
+            <Link
+              href="/apply"
+              className="font-medium underline underline-offset-4 hover:text-primary"
+            >
+              Submit an application
+            </Link>
+          </p>
+        </div>
       </main>
 
       <footer className="pb-6">

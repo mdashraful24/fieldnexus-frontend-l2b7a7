@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import {
   createServiceCategory,
   deleteServiceCategory,
@@ -9,14 +14,25 @@ import {
 } from "@/api";
 import type {
   ICreateServiceCategoryPayload,
+  IServiceCategoryParams,
   IUpdateServiceCategoryPayload,
 } from "@/types";
 
 export function useGetAllServiceCategories() {
   return useQuery({
-    queryKey: ["service-categories"],
-    queryFn: getAllServiceCategories,
+    queryKey: ["service-categories", "all"],
+    queryFn: () =>
+      getAllServiceCategories({ limit: 100, sortBy: "name", sortOrder: "asc" }),
     retry: false,
+  });
+}
+
+export function useSuspenseGetAllServiceCategories(
+  params: IServiceCategoryParams,
+) {
+  return useSuspenseQuery({
+    queryKey: ["service-categories", params],
+    queryFn: () => getAllServiceCategories(params),
   });
 }
 

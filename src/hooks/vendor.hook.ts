@@ -25,6 +25,14 @@ export function useSuspenseGetAllVendors(params: IVendorParams) {
   });
 }
 
+export function useGetAllVendors(params: IVendorParams) {
+  return useQuery({
+    queryKey: ["vendors", params],
+    queryFn: () => getAllVendors(params),
+    retry: false,
+  });
+}
+
 export function useGetVendorById(vendorId: string) {
   return useQuery({
     queryKey: ["admin", "vendor", vendorId],

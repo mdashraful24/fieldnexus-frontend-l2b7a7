@@ -232,40 +232,43 @@ function SlaRing({ rate }: { rate: number }) {
     clamped >= 80 ? "Healthy" : clamped >= 50 ? "Monitor" : "At risk";
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="relative size-28 shrink-0">
-        <svg
-          viewBox="0 0 100 100"
-          role="img"
-          aria-label={`SLA compliance ${clamped}%`}
-          className="size-full -rotate-90"
-        >
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="none"
-            strokeWidth="10"
-            className="stroke-muted"
-          />
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="none"
-            stroke={tone}
-            strokeLinecap="round"
-            strokeWidth="10"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-          />
-        </svg>
-        <div className="absolute inset-0 grid place-items-center">
-          <span className="font-heading text-xl font-semibold tabular-nums">
-            {clamped}%
-          </span>
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-col items-center">
+        <div className="relative size-32 shrink-0">
+          <svg
+            viewBox="0 0 100 100"
+            role="img"
+            aria-label={`SLA compliance ${clamped}%`}
+            className="size-full -rotate-90"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              r={radius}
+              fill="none"
+              strokeWidth="10"
+              className="stroke-muted"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r={radius}
+              fill="none"
+              stroke={tone}
+              strokeLinecap="round"
+              strokeWidth="10"
+              strokeDasharray={circumference}
+              strokeDashoffset={offset}
+            />
+          </svg>
+          <div className="absolute inset-0 grid place-items-center">
+            <span className="font-heading text-xl font-semibold tabular-nums">
+              {clamped}%
+            </span>
+          </div>
         </div>
       </div>
+
       <div className="min-w-0">
         <p className="text-sm font-medium">SLA compliance</p>
         <p className="text-xs text-muted-foreground">
@@ -484,7 +487,143 @@ export default function AdminOverview() {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-3">
-        <Card className="xl:col-span-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Vendors by Status</CardTitle>
+            <CardDescription>
+              {totalVendors} vendors onboarded.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {totalVendors === 0 ? (
+              <ChartEmpty message="No vendors onboarded yet." />
+            ) : (
+              <>
+                <ChartContainer
+                  config={vendorChartConfig}
+                  className="mx-auto h-40 w-full"
+                >
+                  <PieChart>
+                    <ChartTooltip
+                      content={<ChartTooltipContent nameKey="key" />}
+                    />
+                    <Pie
+                      data={vendorData}
+                      dataKey="value"
+                      nameKey="status"
+                      innerRadius={44}
+                      outerRadius={72}
+                      paddingAngle={3}
+                      strokeWidth={0}
+                    >
+                      {vendorData.map((entry) => (
+                        <Cell
+                          key={entry.key}
+                          fill={vendorStatusColors[entry.key]}
+                        />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ChartContainer>
+                <div className="mt-2">
+                  <LegendList
+                    items={vendorData.map((entry) => ({
+                      label: entry.status,
+                      count: entry.value,
+                      color: vendorStatusColors[entry.key],
+                    }))}
+                    total={totalVendors}
+                  />
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">
+              Technician Applications
+            </CardTitle>
+            <CardDescription>
+              {totalApplications} applications received.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {totalApplications === 0 ? (
+              <ChartEmpty message="No applications submitted yet." />
+            ) : (
+              <>
+                <ChartContainer
+                  config={applicationChartConfig}
+                  className="mx-auto h-40 w-full"
+                >
+                  <PieChart>
+                    <ChartTooltip
+                      content={<ChartTooltipContent nameKey="key" />}
+                    />
+                    <Pie
+                      data={applicationData}
+                      dataKey="value"
+                      nameKey="status"
+                      innerRadius={44}
+                      outerRadius={72}
+                      paddingAngle={3}
+                      strokeWidth={0}
+                    >
+                      {applicationData.map((entry) => (
+                        <Cell
+                          key={entry.key}
+                          fill={applicationStatusColors[entry.key]}
+                        />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ChartContainer>
+                <div className="mt-2">
+                  <LegendList
+                    items={applicationData.map((entry) => ({
+                      label: entry.status,
+                      count: entry.value,
+                      color: applicationStatusColors[entry.key],
+                    }))}
+                    total={totalApplications}
+                  />
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Service Health</CardTitle>
+            <CardDescription>
+              Delivery quality against completed orders.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-5">
+            <SlaRing rate={stats?.slaComplianceRate ?? 0} />
+            <div className="grid gap-3 border-t pt-4 sm:grid-cols-2">
+              <div>
+                <p className="text-xs text-muted-foreground">Completed</p>
+                <p className="font-heading text-xl font-semibold tabular-nums">
+                  {completedWorkOrders}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">In flight</p>
+                <p className="font-heading text-xl font-semibold tabular-nums">
+                  {Math.max(totalWorkOrders - completedWorkOrders, 0)}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="grid gap-4 xl:grid-cols-3">
+        <Card className="xl:col-span-3">
           <CardHeader>
             <CardTitle className="text-base">Work Orders by Status</CardTitle>
             <CardDescription>
@@ -532,118 +671,6 @@ export default function AdminOverview() {
           </CardContent>
         </Card>
 
-        <div className="flex flex-col gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Vendors by Status</CardTitle>
-              <CardDescription>
-                {totalVendors} vendors onboarded.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {totalVendors === 0 ? (
-                <ChartEmpty message="No vendors onboarded yet." />
-              ) : (
-                <>
-                  <ChartContainer
-                    config={vendorChartConfig}
-                    className="mx-auto h-40 w-full"
-                  >
-                    <PieChart>
-                      <ChartTooltip
-                        content={<ChartTooltipContent nameKey="key" />}
-                      />
-                      <Pie
-                        data={vendorData}
-                        dataKey="value"
-                        nameKey="status"
-                        innerRadius={44}
-                        outerRadius={72}
-                        paddingAngle={3}
-                        strokeWidth={0}
-                      >
-                        {vendorData.map((entry) => (
-                          <Cell
-                            key={entry.key}
-                            fill={vendorStatusColors[entry.key]}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ChartContainer>
-                  <div className="mt-2">
-                    <LegendList
-                      items={vendorData.map((entry) => ({
-                        label: entry.status,
-                        count: entry.value,
-                        color: vendorStatusColors[entry.key],
-                      }))}
-                      total={totalVendors}
-                    />
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">
-                Technician Applications
-              </CardTitle>
-              <CardDescription>
-                {totalApplications} applications received.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {totalApplications === 0 ? (
-                <ChartEmpty message="No applications submitted yet." />
-              ) : (
-                <>
-                  <ChartContainer
-                    config={applicationChartConfig}
-                    className="mx-auto h-40 w-full"
-                  >
-                    <PieChart>
-                      <ChartTooltip
-                        content={<ChartTooltipContent nameKey="key" />}
-                      />
-                      <Pie
-                        data={applicationData}
-                        dataKey="value"
-                        nameKey="status"
-                        innerRadius={44}
-                        outerRadius={72}
-                        paddingAngle={3}
-                        strokeWidth={0}
-                      >
-                        {applicationData.map((entry) => (
-                          <Cell
-                            key={entry.key}
-                            fill={applicationStatusColors[entry.key]}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ChartContainer>
-                  <div className="mt-2">
-                    <LegendList
-                      items={applicationData.map((entry) => ({
-                        label: entry.status,
-                        count: entry.value,
-                        color: applicationStatusColors[entry.key],
-                      }))}
-                      total={totalApplications}
-                    />
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      <section className="grid gap-4 xl:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle className="text-base">People</CardTitle>
@@ -658,32 +685,6 @@ export default function AdminOverview() {
               }))}
               total={totalUsers}
             />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Service Health</CardTitle>
-            <CardDescription>
-              Delivery quality against completed orders.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-5">
-            <SlaRing rate={stats?.slaComplianceRate ?? 0} />
-            <div className="grid gap-3 border-t pt-4 sm:grid-cols-2">
-              <div>
-                <p className="text-xs text-muted-foreground">Completed</p>
-                <p className="font-heading text-xl font-semibold tabular-nums">
-                  {completedWorkOrders}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">In flight</p>
-                <p className="font-heading text-xl font-semibold tabular-nums">
-                  {Math.max(totalWorkOrders - completedWorkOrders, 0)}
-                </p>
-              </div>
-            </div>
           </CardContent>
         </Card>
 

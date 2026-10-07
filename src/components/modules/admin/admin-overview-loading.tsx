@@ -21,51 +21,84 @@ export default function AdminOverviewLoading() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-3">
-        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10 xl:col-span-2">
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-44" />
-            <Skeleton className="h-3 w-64" />
-          </div>
-          <Skeleton className="mt-6 h-72 w-full rounded-lg" />
-        </div>
-
-        <div className="flex flex-col gap-4">
-          {[1, 2].map((item) => (
-            <div
-              key={item}
-              className="rounded-xl bg-card p-5 ring-1 ring-foreground/10"
-            >
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-36" />
-                <Skeleton className="h-3 w-28" />
-              </div>
-              <Skeleton className="mx-auto mt-5 size-40 rounded-full" />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, index) => (
+        {[1, 2].map((item) => (
           <div
-            // biome-ignore lint/suspicious/noArrayIndexKey: static placeholder rows
-            key={index}
+            key={item}
             className="rounded-xl bg-card p-5 ring-1 ring-foreground/10"
           >
             <div className="space-y-2">
-              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-36" />
               <Skeleton className="h-3 w-40" />
             </div>
-            <div className="mt-5 space-y-4">
-              {[1, 2, 3, 4].map((row) => (
-                <div key={row} className="space-y-2">
-                  <Skeleton className="h-3 w-full" />
-                  <Skeleton className="h-1.5 w-full rounded-full" />
-                </div>
-              ))}
+            <Skeleton className="mx-auto mt-6 h-40 w-full rounded-lg" />
+            <div className="mt-4 space-y-2">
+              <Skeleton className="h-3 w-full" />
+              <Skeleton className="h-3 w-3/4" />
             </div>
           </div>
         ))}
+
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-3 w-44" />
+          </div>
+          <Skeleton className="mx-auto mt-6 size-32 rounded-full" />
+          <div className="mt-5 grid grid-cols-2 gap-3 border-t pt-4">
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-6 w-12" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-14" />
+              <Skeleton className="h-6 w-12" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-44" />
+          <Skeleton className="h-3 w-72" />
+        </div>
+        <Skeleton className="mt-6 h-72 w-full rounded-lg" />
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-3">
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-3 w-28" />
+          </div>
+          <div className="mt-5 space-y-4">
+            {[1, 2, 3, 4].map((row) => (
+              <div key={row} className="space-y-2">
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl bg-card p-5 ring-1 ring-foreground/10">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-3 w-52" />
+          </div>
+          <div className="mt-5 space-y-3">
+            {[1, 2, 3, 4].map((row) => (
+              <div key={row} className="flex items-center gap-3">
+                <Skeleton className="size-8 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-3 w-2/3" />
+                  <Skeleton className="h-3 w-full" />
+                </div>
+                <Skeleton className="size-4" />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

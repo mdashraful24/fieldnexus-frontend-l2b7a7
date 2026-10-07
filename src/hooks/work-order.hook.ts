@@ -14,6 +14,7 @@ import {
   getAllWorkOrders,
   getFeedback,
   getMyAssignedWorkOrders,
+  getMyWorkOrders,
   getServiceReport,
   getWorkOrderById,
   rejectWorkOrder,
@@ -51,6 +52,14 @@ export function useGetMyAssignedWorkOrders() {
   return useQuery({
     queryKey: ["work-orders", "my-assigned"],
     queryFn: getMyAssignedWorkOrders,
+    retry: false,
+  });
+}
+
+export function useGetMyWorkOrders() {
+  return useQuery({
+    queryKey: ["work-orders", "my"],
+    queryFn: () => getMyWorkOrders({ page: 1, limit: 50 }),
     retry: false,
   });
 }

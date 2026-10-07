@@ -24,6 +24,14 @@ export function useSuspenseGetAllPayments(params: IPaymentParams) {
   });
 }
 
+export function useGetAllPayments(params: IPaymentParams) {
+  return useQuery({
+    queryKey: ["payments", params],
+    queryFn: () => getAllPayments(params),
+    retry: false,
+  });
+}
+
 export function useGetPaymentById(paymentId: string) {
   return useQuery({
     queryKey: ["payments", paymentId],

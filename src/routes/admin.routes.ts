@@ -20,6 +20,18 @@ export const adminRoutes = [
         title: "Vendors",
         url: `${prefix}/vendors`,
       },
+      {
+        title: "Work Orders",
+        url: `${prefix}/work-orders`,
+      },
+      {
+        title: "Payments",
+        url: `${prefix}/payments`,
+      },
+      {
+        title: "Service Categories",
+        url: `${prefix}/service-categories`,
+      },
     ],
   },
   {

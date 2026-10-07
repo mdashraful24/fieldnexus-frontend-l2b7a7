@@ -24,3 +24,15 @@ export interface IUpdateServiceCategoryPayload {
     isActive?: boolean;
   };
 }
+
+export interface IServiceCategoryParams {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  isActive?: boolean;
+  includeDeleted?: boolean;
+}
+
+export type ServiceCategoryListFilter = "ALL" | "DELETED";

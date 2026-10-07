@@ -38,6 +38,7 @@ import type { IWorkOrder, WorkOrderPriority, WorkOrderStatus } from "@/types";
 import WorkOrderPriorityBadge from "../work-order/work-order-priority-badge";
 import WorkOrderStatusBadge from "../work-order/work-order-status-badge";
 import TechnicianAssignmentActions from "./technician-assignment-actions";
+import TechnicianStatusActions from "./technician-status-actions";
 
 const statusOrder: WorkOrderStatus[] = [
   "ASSIGNED",
@@ -331,7 +332,9 @@ function AssignmentCard({ workOrder }: { workOrder: IWorkOrder }) {
           </p>
           <TechnicianAssignmentActions workOrder={workOrder} />
         </div>
-      ) : null}
+      ) : (
+        <TechnicianStatusActions workOrder={workOrder} />
+      )}
     </li>
   );
 }

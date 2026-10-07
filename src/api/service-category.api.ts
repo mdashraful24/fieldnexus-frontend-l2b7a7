@@ -3,11 +3,14 @@ import type {
   ApiResponse,
   ICreateServiceCategoryPayload,
   IServiceCategory,
+  IServiceCategoryParams,
   IUpdateServiceCategoryPayload,
 } from "@/types";
 
-export function getAllServiceCategories() {
-  return apiClient<ApiResponse<IServiceCategory[]>>("/service-categories");
+export function getAllServiceCategories(params?: IServiceCategoryParams) {
+  return apiClient<ApiResponse<IServiceCategory[]>>("/service-categories", {
+    query: params,
+  });
 }
 
 export function getServiceCategoryById(serviceCategoryId: string) {
@@ -44,7 +47,10 @@ export function restoreServiceCategory(serviceCategoryId: string) {
 }
 
 export function deleteServiceCategory(serviceCategoryId: string) {
-  return apiClient<ApiResponse<null>>(`/service-categories/${serviceCategoryId}`, {
-    method: "DELETE",
-  });
+  return apiClient<ApiResponse<null>>(
+    `/service-categories/${serviceCategoryId}`,
+    {
+      method: "DELETE",
+    },
+  );
 }
