@@ -45,7 +45,7 @@ export default function CustomerDashboardPage() {
           <CustomerOverview />
         </Suspense>
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Bell className="size-4" />
@@ -58,7 +58,7 @@ export default function CustomerDashboardPage() {
           <Suspense fallback={<NotificationsLoading />}>
             <NotificationList />
           </Suspense>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

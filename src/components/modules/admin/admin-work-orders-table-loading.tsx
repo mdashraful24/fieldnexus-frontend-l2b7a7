@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const columns: { label: string; width: string; align?: "right" }[] = [
+const columns: { label: string; width: string }[] = [
   { label: "#", width: "w-8" },
   { label: "Work Order", width: "w-44" },
   { label: "Customer", width: "w-32" },
@@ -16,7 +16,10 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Priority", width: "w-20" },
   { label: "Status", width: "w-24" },
   { label: "Created", width: "w-36" },
-  { label: "Actions", width: "w-40", align: "right" },
+  { label: "Approve / Assign", width: "w-32" },
+  { label: "Update", width: "w-20" },
+  { label: "Details", width: "w-20" },
+  { label: "Delete", width: "w-20" },
 ];
 
 export default function AdminWorkOrdersTableLoading() {
@@ -26,12 +29,7 @@ export default function AdminWorkOrdersTableLoading() {
         <TableHeader>
           <TableRow>
             {columns.map((column) => (
-              <TableHead
-                key={column.label}
-                className={column.align === "right" ? "text-right" : undefined}
-              >
-                {column.label}
-              </TableHead>
+              <TableHead key={column.label}>{column.label}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -39,19 +37,8 @@ export default function AdminWorkOrdersTableLoading() {
           {[1, 2, 3, 4].map((row) => (
             <TableRow key={row}>
               {columns.map((column) => (
-                <TableCell
-                  key={column.label}
-                  className={
-                    column.align === "right" ? "text-right" : undefined
-                  }
-                >
-                  <Skeleton
-                    className={
-                      column.align === "right"
-                        ? `ml-auto h-7 ${column.width}`
-                        : `h-5 ${column.width}`
-                    }
-                  />
+                <TableCell key={column.label}>
+                  <Skeleton className={`h-5 ${column.width}`} />
                 </TableCell>
               ))}
             </TableRow>

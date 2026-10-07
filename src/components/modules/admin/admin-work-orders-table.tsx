@@ -1,9 +1,10 @@
 "use client";
 
-import { Check, Eye, RefreshCw, Trash2, UserPlus } from "lucide-react";
+import { Check, Eye, RefreshCw, Trash2, UserCog, UserPlus } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import WorkOrderPriorityBadge from "@/components/modules/work-order/work-order-priority-badge";
 import WorkOrderStatusBadge from "@/components/modules/work-order/work-order-status-badge";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -30,7 +31,22 @@ import {
 } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import { getAdminStatusActions } from "@/lib/work-order";
-import type { IWorkOrder, IWorkOrderParams } from "@/types";
+import type {
+  IWorkOrder,
+  IWorkOrderParams,
+  WorkOrderListFilter,
+  WorkOrderStatus,
+} from "@/types";
+
+const ASSIGNABLE_STATUSES: WorkOrderStatus[] = [
+  "PENDING",
+  "APPROVED",
+  "ASSIGNED",
+];
+
+function StatusNote() {
+  return <span className="text-base font-bold text-muted-foreground">—</span>;
+}
 
 function ApproveWorkOrderButton({ workOrder }: { workOrder: IWorkOrder }) {
   const { mutate: updateStatus, isPending } = useUpdateWorkOrderStatus();
@@ -153,6 +169,7 @@ function DeleteWorkOrderPopover({ workOrder }: { workOrder: IWorkOrder }) {
 }
 
 export interface AdminWorkOrdersTableProps extends IWorkOrderParams {
+  listFilter: WorkOrderListFilter;
   handleDetails: (id: string) => void;
   handleAssign: (workOrder: IWorkOrder) => void;
   handleStatus: (workOrder: IWorkOrder) => void;
@@ -160,6 +177,7 @@ export interface AdminWorkOrdersTableProps extends IWorkOrderParams {
 }
 
 export default function AdminWorkOrdersTable({
+  listFilter,
   handleDetails,
   handleAssign,
   handleStatus,
@@ -169,6 +187,10 @@ export default function AdminWorkOrdersTable({
   const { data } = useSuspenseGetAllWorkOrders(params);
 
   const workOrders = data?.data ?? [];
+  const displayedWorkOrders =
+    listFilter === "DELETED"
+      ? workOrders.filter((workOrder) => workOrder.isDeleted)
+      : workOrders;
   const totalPages = data?.meta?.totalPages ?? 0;
   const page = params.page ?? 1;
   const limit = params.limit ?? 10;
@@ -192,30 +214,38 @@ export default function AdminWorkOrdersTable({
               <TableHead>Priority</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Approve / Assign</TableHead>
+              <TableHead>Update</TableHead>
+              <TableHead>Details</TableHead>
+              <TableHead>Delete</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {workOrders.length === 0 ? (
+            {displayedWorkOrders.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={8}
+                  colSpan={11}
                   className="h-32 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <p className="text-sm">No work orders found.</p>
+                    <p className="text-sm">
+                      {listFilter === "DELETED"
+                        ? "No deleted work orders found."
+                        : "No work orders found."}
+                    </p>
                   </div>
                 </TableCell>
               </TableRow>
             ) : (
-              workOrders.map((workOrder, index) => {
+              displayedWorkOrders.map((workOrder, index) => {
                 const statusActions = getAdminStatusActions(workOrder.status);
-                const canAssign =
-                  workOrder.status === "APPROVED" ||
-                  workOrder.status === "ASSIGNED";
 
                 return (
-                  <TableRow key={workOrder.id}>
+                  <TableRow
+                    key={workOrder.id}
+                    data-deleted={workOrder.isDeleted}
+                    className={workOrder.isDeleted ? "opacity-60" : undefined}
+                  >
                     <TableCell>{(page - 1) * limit + index + 1}</TableCell>
                     <TableCell className="max-w-56">
                       <p className="truncate font-medium">
@@ -235,17 +265,24 @@ export default function AdminWorkOrdersTable({
                       <WorkOrderPriorityBadge priority={workOrder.priority} />
                     </TableCell>
                     <TableCell>
-                      <WorkOrderStatusBadge status={workOrder.status} />
+                      <div className="flex flex-wrap items-center gap-1">
+                        {workOrder.isDeleted ? (
+                          <Badge variant="destructive">Deleted</Badge>
+                        ) : (
+                          <WorkOrderStatusBadge status={workOrder.status} />
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>
                       {new Date(workOrder.createdAt).toLocaleString()}
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        {workOrder.status === "PENDING" && (
+                    <TableCell>
+                      {!workOrder.isDeleted &&
+                        workOrder.status === "PENDING" && (
                           <ApproveWorkOrderButton workOrder={workOrder} />
                         )}
-                        {canAssign && (
+                      {!workOrder.isDeleted &&
+                        workOrder.status === "APPROVED" && (
                           <Button
                             variant="outline"
                             size="icon"
@@ -255,16 +292,40 @@ export default function AdminWorkOrdersTable({
                             <UserPlus className="size-4" />
                           </Button>
                         )}
-                        {statusActions.length > 0 && (
+                      {!workOrder.isDeleted &&
+                        workOrder.status === "ASSIGNED" && (
                           <Button
                             variant="outline"
                             size="icon"
-                            title="Update status"
-                            onClick={() => handleStatus(workOrder)}
+                            title="Reassign"
+                            onClick={() => handleAssign(workOrder)}
                           >
-                            <RefreshCw className="size-4" />
+                            <UserCog className="size-4" />
                           </Button>
                         )}
+                      {(workOrder.isDeleted ||
+                        !ASSIGNABLE_STATUSES.includes(workOrder.status)) && (
+                        <StatusNote />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {!workOrder.isDeleted && statusActions.length > 0 ? (
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          title="Update status"
+                          onClick={() => handleStatus(workOrder)}
+                        >
+                          <RefreshCw className="size-4" />
+                        </Button>
+                      ) : (
+                        <StatusNote />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {workOrder.isDeleted ? (
+                        <StatusNote />
+                      ) : (
                         <Button
                           variant="outline"
                           size="icon"
@@ -273,8 +334,14 @@ export default function AdminWorkOrdersTable({
                         >
                           <Eye className="size-4" />
                         </Button>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {workOrder.isDeleted ? (
+                        <StatusNote />
+                      ) : (
                         <DeleteWorkOrderPopover workOrder={workOrder} />
-                      </div>
+                      )}
                     </TableCell>
                   </TableRow>
                 );

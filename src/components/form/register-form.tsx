@@ -292,11 +292,11 @@ export default function RegisterForm() {
         </FieldGroup>
       </form>
 
-      <FieldSeparator>Or continue with</FieldSeparator>
+      {/* <FieldSeparator>Or continue with</FieldSeparator> */}
 
       <div className="flex flex-col justify-center items-center gap-6">
 
-        <GoogleLoginComponent />
+        {/* <GoogleLoginComponent /> */}
 
         <p className="text-center text-sm text-foreground">
           Already have an account?{" "}

@@ -103,7 +103,10 @@ export interface IWorkOrderParams {
   priority?: WorkOrderPriority;
   sortBy?: string;
   sortOrder?: "desc" | "asc";
+  includeDeleted?: boolean;
 }
+
+export type WorkOrderListFilter = "ALL" | "DELETED";
 
 export interface ICreateWorkOrderPayload {
   title: string;

@@ -11,6 +11,10 @@ export const technicianRoutes: SidebarItems = [
         url: `${prefix}`,
       },
       {
+        title: "My Work Orders",
+        url: `${prefix}/work-orders`,
+      },
+      {
         title: "Payments",
         url: `${prefix}/payments`,
       },

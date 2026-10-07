@@ -2,7 +2,7 @@
 
 import { cn } from "cn";
 import { Bell } from "lucide-react";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import NotificationList, {
   NotificationsLoading,
 } from "@/components/modules/notification/notification-list";
@@ -15,16 +15,17 @@ import {
 } from "@/components/ui/popover";
 import { useGetMyNotifications } from "@/hooks";
 
-const params = { page: 1, limit: 20 };
+const params = { page: 1, limit: 20, isRead: false };
 
 export default function NotificationBell() {
+  const [open, setOpen] = useState(false);
   const { data, isPending } = useGetMyNotifications(params);
 
   const notifications = data?.data ?? [];
-  const unreadCount = notifications.filter((item) => !item.isRead).length;
+  const unreadCount = notifications.length;
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         render={
           <Button
@@ -59,7 +60,7 @@ export default function NotificationBell() {
         ) : (
           <div className="max-h-96 overflow-y-auto">
             <Suspense fallback={<NotificationsLoading />}>
-              <NotificationList />
+              <NotificationList onNavigate={() => setOpen(false)} />
             </Suspense>
           </div>
         )}

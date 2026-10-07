@@ -1,23 +1,19 @@
 "use client";
 
-import { Calendar, ChevronRight, Clock3 } from "lucide-react";
+import { CalendarDays, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import WorkOrderStatusBadge from "@/components/modules/work-order/work-order-status-badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGetAllPayments, useGetMyWorkOrders } from "@/hooks";
-import type { IWorkOrder, WorkOrderStatus } from "@/types";
-import CustomerBookingActions from "./customer-booking-actions";
-
-const statusLabels: Record<WorkOrderStatus, string> = {
-  PENDING: "Pending",
-  APPROVED: "Approved",
-  ASSIGNED: "Assigned",
-  ACCEPTED: "Accepted",
-  EN_ROUTE: "En route",
-  IN_PROGRESS: "In progress",
-  COMPLETED: "Completed",
-  CANCELLED: "Cancelled",
-  REASSIGNED: "Reassigned",
-  FAILED: "Failed",
-};
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useGetMyWorkOrders } from "@/hooks";
 
 function formatDate(value?: string | null) {
   if (!value) return "Not scheduled";
@@ -27,63 +23,10 @@ function formatDate(value?: string | null) {
   }).format(new Date(value));
 }
 
-function BookingCard({
-  booking,
-  showPay,
-}: {
-  booking: IWorkOrder;
-  showPay: boolean;
-}) {
-  const isCompleted = booking.status === "COMPLETED";
-
-  return (
-    <div className="group flex flex-col gap-4 rounded-xl border p-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="font-medium">{booking.title}</p>
-          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-            {statusLabels[booking.status]}
-          </span>
-        </div>
-        <p className="mt-1 text-xs text-muted-foreground">
-          {booking.workOrderNumber}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <Calendar className="size-3.5" />
-            Created {formatDate(booking.createdAt)}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Clock3 className="size-3.5" />
-            {formatDate(booking.scheduledAt)}
-          </span>
-        </div>
-      </div>
-      {isCompleted ? (
-        <div className="shrink-0">
-          <CustomerBookingActions booking={booking} showPay={showPay} />
-        </div>
-      ) : (
-        <ChevronRight className="hidden size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 sm:block" />
-      )}
-    </div>
-  );
-}
-
 export default function CustomerBookingsList() {
+  const router = useRouter();
   const { data, isPending, isError } = useGetMyWorkOrders();
   const bookings = data?.data ?? [];
-
-  const { data: paymentsData, isPending: paymentsPending } = useGetAllPayments({
-    page: 1,
-    limit: 100,
-  });
-
-  const paidWorkOrderIds = new Set(
-    (paymentsData?.data ?? [])
-      .filter((payment) => payment.status === "PAID")
-      .map((payment) => payment.workOrderId),
-  );
 
   if (isPending) {
     return (
@@ -109,21 +52,66 @@ export default function CustomerBookingsList() {
 
   if (!bookings.length) {
     return (
-      <div className="rounded-2xl border border-dashed p-8 text-sm text-muted-foreground">
-        You have not submitted any service bookings yet.
+      <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed py-12 text-center">
+        <span className="inline-flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          <CalendarDays className="size-18" />
+        </span>
+        <p className="text-sm text-muted-foreground">
+          You have not submitted any service bookings yet.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {bookings.map((booking) => (
-        <BookingCard
-          key={booking.id}
-          booking={booking}
-          showPay={!paymentsPending && !paidWorkOrderIds.has(booking.id)}
-        />
-      ))}
+    <div className="overflow-hidden rounded-xl border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Work Order</TableHead>
+            <TableHead>Created</TableHead>
+            <TableHead>Scheduled</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {bookings.map((booking) => (
+            <TableRow key={booking.id}>
+              <TableCell>
+                <p className="font-medium">{booking.title}</p>
+                <p className="font-mono text-xs text-muted-foreground">
+                  {booking.workOrderNumber}
+                </p>
+              </TableCell>
+              <TableCell className="whitespace-nowrap text-muted-foreground">
+                {formatDate(booking.createdAt)}
+              </TableCell>
+              <TableCell className="whitespace-nowrap text-muted-foreground">
+                {formatDate(booking.scheduledAt)}
+              </TableCell>
+              <TableCell>
+                <WorkOrderStatusBadge status={booking.status} />
+              </TableCell>
+              <TableCell className="text-right">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8"
+                  onClick={() =>
+                    router.push(
+                      `/customer/bookings/details?workOrderId=${booking.id}`,
+                    )
+                  }
+                >
+                  Details
+                  <ChevronRight className="size-3.5" />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }

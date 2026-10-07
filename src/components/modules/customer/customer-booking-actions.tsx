@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/components/ui/toast";
-import { useInitiatePayment } from "@/hooks";
+import { useGetFeedback, useInitiatePayment } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import type { IWorkOrder } from "@/types";
 import CustomerFeedbackDialog from "./customer-feedback-dialog";
@@ -19,6 +19,10 @@ export default function CustomerBookingActions({
 }) {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const { mutate: initiatePayment, isPending: isPaying } = useInitiatePayment();
+  const { data: feedbackData, isPending: feedbackPending } = useGetFeedback(
+    booking.id,
+  );
+  const feedbackGiven = !!feedbackData?.data;
 
   const handlePay = () => {
     initiatePayment(
@@ -56,6 +60,12 @@ export default function CustomerBookingActions({
     return null;
   }
 
+  const showFeedback = !showPay && !feedbackPending && !feedbackGiven;
+
+  if (!showPay && !showFeedback) {
+    return null;
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       {showPay && (
@@ -70,16 +80,18 @@ export default function CustomerBookingActions({
         </Button>
       )}
 
-      <Button
-        size="sm"
-        variant="outline"
-        className="h-8"
-        onClick={() => setFeedbackOpen(true)}
-        disabled={isPaying}
-      >
-        <MessageSquareHeart />
-        Feedback
-      </Button>
+      {showFeedback && (
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8"
+          onClick={() => setFeedbackOpen(true)}
+          disabled={isPaying}
+        >
+          <MessageSquareHeart />
+          Feedback
+        </Button>
+      )}
 
       <CustomerFeedbackDialog
         booking={booking}

@@ -4,10 +4,12 @@ import { Search, X } from "lucide-react";
 import { type ChangeEvent, Suspense, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useDebounce from "@/hooks/debounce.hook";
 import type {
   IWorkOrder,
   IWorkOrderParams,
+  WorkOrderListFilter,
   WorkOrderPriority,
   WorkOrderStatus,
 } from "@/types";
@@ -37,11 +39,14 @@ const priorityOptions: WorkOrderPriority[] = [
   "URGENT",
 ];
 
+const listTabs: WorkOrderListFilter[] = ["ALL", "DELETED"];
+
 const selectClassName =
   "h-9 w-full appearance-none rounded-lg border bg-background px-3 text-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-50 lg:w-40";
 
 export default function AdminWorkOrdersTabs() {
   const [searchInput, setSearchInput] = useState("");
+  const [listTab, setListTab] = useState<WorkOrderListFilter>("ALL");
   const [statusFilter, setStatusFilter] = useState<WorkOrderStatus | "">("");
   const [priorityFilter, setPriorityFilter] = useState<WorkOrderPriority | "">(
     "",
@@ -76,6 +81,7 @@ export default function AdminWorkOrdersTabs() {
     ...(debouncedSearch ? { searchTerm: debouncedSearch } : {}),
     ...(statusFilter ? { status: statusFilter } : {}),
     ...(priorityFilter ? { priority: priorityFilter } : {}),
+    ...(listTab === "DELETED" ? { includeDeleted: true } : {}),
   };
 
   return (
@@ -105,6 +111,25 @@ export default function AdminWorkOrdersTabs() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              <Tabs
+                value={listTab}
+                onValueChange={(value) => {
+                  setListTab(value as WorkOrderListFilter);
+                  setPage(1);
+                }}
+              >
+                <TabsList className="w-full justify-start md:w-auto">
+                  {listTabs.map((tab) => (
+                    <TabsTrigger value={tab} key={tab} className="flex-1">
+                      {tab === "ALL"
+                        ? "All"
+                        : tab.charAt(0).toUpperCase() +
+                          tab.slice(1).toLowerCase()}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+
               <select
                 aria-label="Filter by status"
                 value={statusFilter}
@@ -144,6 +169,7 @@ export default function AdminWorkOrdersTabs() {
           <Suspense fallback={<AdminWorkOrdersTableLoading />}>
             <AdminWorkOrdersTable
               {...queryParams}
+              listFilter={listTab}
               handleDetails={setDetailsId}
               handleAssign={setAssignWorkOrder}
               handleStatus={setStatusWorkOrder}

@@ -1,7 +1,8 @@
 "use client";
 
+import { Banknote, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Banknote } from "lucide-react";
 import PaymentStatusBadge from "@/components/modules/payment/payment-status-badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -35,6 +36,7 @@ export function PaymentsLoading() {
 }
 
 export default function PaymentHistoryTable() {
+  const router = useRouter();
   const [status, setStatus] = useState<PaymentStatus | undefined>(undefined);
   const params = { page: 1, limit: 20, status };
 
@@ -76,6 +78,7 @@ export default function PaymentHistoryTable() {
                 <TableHead>Amount</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -95,6 +98,21 @@ export default function PaymentHistoryTable() {
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-muted-foreground">
                     {new Date(payment.createdAt).toLocaleString()}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8"
+                      onClick={() =>
+                        router.push(
+                          `/customer/payment-history/details?paymentId=${payment.id}`,
+                        )
+                      }
+                    >
+                      Details
+                      <ChevronRight className="size-3.5" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

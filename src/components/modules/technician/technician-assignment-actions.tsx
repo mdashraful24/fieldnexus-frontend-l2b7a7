@@ -11,13 +11,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
 import { useAcceptWorkOrder, useRejectWorkOrder } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
-import { rejectApplicationReasonSchema } from "@/validation";
 import type { IWorkOrder } from "@/types";
+import { rejectApplicationReasonSchema } from "@/validation";
 
 export default function TechnicianAssignmentActions({
   workOrder,
@@ -113,7 +113,7 @@ export default function TechnicianAssignmentActions({
     );
   };
 
-  if (!isAwaitingResponse) {
+  if (!isAwaitingResponse || workOrder.status !== "ASSIGNED") {
     return null;
   }
 
@@ -164,9 +164,7 @@ export default function TechnicianAssignmentActions({
               placeholder="Tell the admin why you cannot take this job..."
               aria-invalid={!!reasonError}
             />
-            {reasonError && (
-              <FieldError errors={[{ message: reasonError }]} />
-            )}
+            {reasonError && <FieldError errors={[{ message: reasonError }]} />}
           </Field>
 
           <DialogFooter>

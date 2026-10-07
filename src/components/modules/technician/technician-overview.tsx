@@ -420,7 +420,7 @@ export default function TechnicianOverview() {
 
   const awaiting = workOrders.filter(
     (order) =>
-      order.status === "ASSIGNED" ||
+      order.status === "ASSIGNED" &&
       (order.workAssignments?.some((item) => item.status === "PENDING") ??
         false),
   );
@@ -431,11 +431,22 @@ export default function TechnicianOverview() {
 
   const completed = workOrders.filter((order) => order.status === "COMPLETED");
 
+  const activeStatuses: WorkOrderStatus[] = [
+    "ASSIGNED",
+    "ACCEPTED",
+    "EN_ROUTE",
+    "IN_PROGRESS",
+  ];
+
   const urgent = workOrders.filter(
-    (order) => order.priority === "URGENT" && order.status !== "COMPLETED",
+    (order) =>
+      order.priority === "URGENT" && activeStatuses.includes(order.status),
   );
 
-  const overdue = workOrders.filter((order) => getSlaInfo(order)?.overdue);
+  const overdue = workOrders.filter(
+    (order) =>
+      activeStatuses.includes(order.status) && getSlaInfo(order)?.overdue,
+  );
 
   const statusData = [
     ...statusOrder,
@@ -457,7 +468,9 @@ export default function TechnicianOverview() {
   }));
 
   const nextScheduled = workOrders
-    .filter((order) => order.scheduledAt && order.status !== "COMPLETED")
+    .filter(
+      (order) => order.scheduledAt && activeStatuses.includes(order.status),
+    )
     .map((order) => ({
       order,
       at: new Date(order.scheduledAt as string).getTime(),
