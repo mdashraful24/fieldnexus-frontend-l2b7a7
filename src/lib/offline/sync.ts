@@ -10,6 +10,7 @@ import {
   markRequestPending,
   markRequestSyncing,
   removeQueuedRequest,
+  resetStaleSyncingRequests,
 } from "./queue";
 
 const MAX_ATTEMPTS = 5;
@@ -55,6 +56,7 @@ export function syncPendingRequests(): Promise<SyncResult> {
   }
 
   syncPromise = (async () => {
+    await resetStaleSyncingRequests();
     const items = (await getQueuedRequests()).filter(
       (item) => isQueuedRequest(item) && !isPermanentFailure(item),
     );

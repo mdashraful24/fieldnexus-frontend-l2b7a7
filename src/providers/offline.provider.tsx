@@ -4,9 +4,13 @@ import { useEffect } from "react";
 import { toast } from "@/components/ui/toast";
 import { onOfflineEvent } from "@/lib/offline/events";
 import { startAutoSync } from "@/lib/offline/sync";
+import { resetStaleSyncingRequests } from "@/lib/offline/queue";
 
 export default function OfflineSyncProvider() {
-  useEffect(() => startAutoSync(), []);
+  useEffect(() => {
+    resetStaleSyncingRequests().catch(() => {});
+    startAutoSync();
+  }, []);
 
   useEffect(() => {
     const offQueued = onOfflineEvent(

@@ -10,6 +10,7 @@ import {
   User,
   X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type z from "zod";
 import { Button } from "@/components/ui/button";
@@ -235,6 +236,7 @@ function ProfilePicture({
 }
 
 export default function ProfileForm() {
+  const router = useRouter();
   const { data: meData, isPending: mePending } = useGetMe();
   const { mutate: updateInfo, isPending: updatePending } = useUpdateUserInfo();
 
@@ -287,6 +289,7 @@ export default function ProfileForm() {
               description: "Your profile information has been updated.",
               type: "success",
             });
+            router.push("/profile");
           },
           onError: (err) => {
             toast.add({

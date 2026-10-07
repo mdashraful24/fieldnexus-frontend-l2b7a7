@@ -274,7 +274,7 @@ export default function CreateBookingForm() {
                 <Textarea
                   id={field.name}
                   name={field.name}
-                  rows={4}
+                  rows={3}
                   placeholder="Anything the technician should know before arriving..."
                   value={field.state.value}
                   onBlur={field.handleBlur}

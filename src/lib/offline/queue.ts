@@ -116,6 +116,13 @@ export function markRequestPending(id: number) {
   });
 }
 
+export async function resetStaleSyncingRequests() {
+  return offlineDB.requests
+    .where("status")
+    .equals("syncing")
+    .modify({ status: "pending", updatedAt: Date.now() });
+}
+
 export function isQueuedRequest(item: QueuedRequest) {
   return item.status === "pending" || item.status === "failed";
 }

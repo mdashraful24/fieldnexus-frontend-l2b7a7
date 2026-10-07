@@ -126,9 +126,9 @@ export default function UserAvatarMenu({
             <span className="block truncate text-sm font-medium">
               {user.name}
             </span>
-            <span className="block truncate text-xs text-muted-foreground">
+            {/* <span className="block truncate text-xs text-muted-foreground">
               {user.email}
-            </span>
+            </span> */}
             <span className="block truncate text-xs text-muted-foreground">
               {roleLabels[role] ?? role}
             </span>
@@ -141,9 +141,9 @@ export default function UserAvatarMenu({
           <UserAvatar name={user.name} imageUrl={user.imageUrl} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">{user.name}</p>
-            <p className="truncate text-xs text-muted-foreground">
+            {/* <p className="truncate text-xs text-muted-foreground">
               {user.email}
-            </p>
+            </p> */}
             <p className="truncate text-xs text-muted-foreground">
               {roleLabels[role] ?? role}
             </p>
@@ -155,6 +155,7 @@ export default function UserAvatarMenu({
         <DropdownMenuItem
           nativeButton={false}
           render={<Link href="/profile/edit" />}
+          className="cursor-pointer p-2"
         >
           <UserPen />
           Edit Profile
@@ -166,6 +167,7 @@ export default function UserAvatarMenu({
           variant="destructive"
           disabled={isLoggingOut}
           onClick={handleLogout}
+          className="cursor-pointer p-2"
         >
           <LogOut />
           {isLoggingOut ? "Logging out..." : "Logout"}

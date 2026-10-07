@@ -81,22 +81,20 @@ export default function OfflineIndicator() {
           />
         }
       >
-        {isSyncing ? (
-          <Spinner className="size-3.5" />
-        ) : isOnline ? (
+        {isOnline ? (
           <Wifi className="size-3.5 text-emerald-600 dark:text-emerald-400" />
         ) : (
           <CloudOff className="size-3.5 text-amber-600 dark:text-amber-400" />
         )}
         <span className="hidden sm:inline">{statusLabel}</span>
-        {pendingCount > 0 && (
+        {/* {pendingCount > 0 && (
           <Badge
             variant={isOnline ? "secondary" : "destructive"}
             className="h-4 px-1.5 text-[0.65rem]"
           >
             {pendingCount}
           </Badge>
-        )}
+        )} */}
       </PopoverTrigger>
       {/* <PopoverContent align="end" className="w-80">
         <PopoverTitle>Offline sync</PopoverTitle>
