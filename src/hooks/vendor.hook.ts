@@ -34,6 +34,14 @@ export function useSuspenseGetPublicVendors(params: IVendorParams) {
   });
 }
 
+export function useGetPublicVendors(params: IVendorParams) {
+  return useQuery({
+    queryKey: ["vendors", "public", params],
+    queryFn: () => getPublicVendors(params),
+    retry: false,
+  });
+}
+
 export function useGetAllVendors(params: IVendorParams) {
   return useQuery({
     queryKey: ["vendors", params],

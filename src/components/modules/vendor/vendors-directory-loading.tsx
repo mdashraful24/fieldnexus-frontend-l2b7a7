@@ -8,7 +8,7 @@ export default function VendorsDirectoryLoading() {
         <Skeleton className="h-9 w-full rounded-lg sm:max-w-xs" />
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3, 4, 5, 6].map((item) => (
           <div key={item} className="flex flex-col gap-4 rounded-xl border p-6">
             <div className="flex items-start gap-3">

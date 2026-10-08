@@ -25,6 +25,7 @@ const groups = [
   {
     title: "Legal",
     links: [
+      { label: "Contact", url: "/contact" },
       { label: "Terms of service", url: "/terms" },
       { label: "Privacy policy", url: "/privacy" },
       { label: "Security", url: "/security" },
@@ -45,8 +46,8 @@ export default function Footer() {
     <footer className="w-full border-t bg-muted/30">
       <Container>
         {/* Link columns */}
-        <div className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)] lg:gap-8">
-          <div className="flex flex-col gap-4">
+        <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(3,1fr)] lg:gap-8">
+          <div className="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
               className="flex w-fit items-center gap-3 font-heading font-semibold"
@@ -62,47 +63,19 @@ export default function Footer() {
 
           {groups.map((group) => (
             <div key={group.title}>
-              {/* Mobile: collapsible group */}
-              <details className="group border-b border-border py-3 md:hidden">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-sm font-semibold">
-                  {group.title}
-                  <span
-                    aria-hidden
-                    className="text-muted-foreground transition-transform group-open:rotate-180"
-                  >
-                    ▾
-                  </span>
-                </summary>
-                <ul className="mt-4 flex flex-col gap-3 pb-2">
-                  {group.links.map((link) => (
-                    <li key={link.url}>
-                      <Link
-                        href={link.url}
-                        className="text-sm text-muted-foreground transition-colors hover:text-blue-500 hover:underline"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-
-              {/* Desktop: plain list */}
-              <div className="hidden md:block">
-                <p className="text-sm font-semibold">{group.title}</p>
-                <ul className="mt-4 flex flex-col gap-3">
-                  {group.links.map((link) => (
-                    <li key={link.url}>
-                      <Link
-                        href={link.url}
-                        className="text-sm text-muted-foreground transition-colors hover:text-blue-500 hover:underline"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className="text-sm font-semibold">{group.title}</p>
+              <ul className="mt-4 flex flex-col gap-3">
+                {group.links.map((link) => (
+                  <li key={link.url}>
+                    <Link
+                      href={link.url}
+                      className="text-sm text-muted-foreground transition-colors hover:text-blue-500 hover:underline"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>

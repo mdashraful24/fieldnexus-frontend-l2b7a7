@@ -137,9 +137,11 @@ export default function Header() {
               key={route.url}
               href={route.url}
               aria-current={isActive(route.url) ? "page" : undefined}
-              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-primary ${
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-primary/10 hover:text-blue-600 ${
+                route.url === "/contact" ? "hidden lg:inline-flex" : ""
+              } ${
                 isActive(route.url)
-                  ? "bg-primary/20 text-primary font-semibold"
+                  ? "bg-primary/20 text-blue-600 font-semibold"
                   : "text-muted-foreground"
               }`}
             >
@@ -222,11 +224,10 @@ export default function Header() {
                 ))}
               </nav>
 
-              <div className="mt-auto flex flex-col gap-2 border-t px-4 pt-4">
+              <div className="mt-auto flex flex-col gap-2 border-t p-4">
                 {!isSignedIn && (
                   <>
                     <SheetClose
-                      nativeButton={false}
                       render={
                         <Button
                           variant="outline"
@@ -239,7 +240,6 @@ export default function Header() {
                       Login
                     </SheetClose>
                     <SheetClose
-                      nativeButton={false}
                       render={
                         <Button
                           size="lg"
@@ -254,7 +254,6 @@ export default function Header() {
                 )}
                 {isSignedIn && (
                   <SheetClose
-                    nativeButton={false}
                     render={
                       <Button
                         variant="destructive"

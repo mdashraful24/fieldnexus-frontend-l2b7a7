@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { WelcomeModal } from "@/components/common/WelcomeModal";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Toaster } from "@/components/ui/toast";
 import { siteConfig } from "@/lib/metadata";
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Providers>
             {children}
             <Toaster />
+            <WelcomeModal />
           </Providers>
         </ThemeProvider>
       </body>
