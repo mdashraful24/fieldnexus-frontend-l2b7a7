@@ -49,6 +49,7 @@ export function WelcomeModal() {
     <Dialog open={open}>
       <DialogContent
         showCloseButton={false}
+        initialFocus={false}
         className="max-h-[min(93dvh,760px)] w-[calc(100%-1.5rem)] max-w-xl gap-0 overflow-hidden p-0"
       >
         {/* Animated progress bar */}
