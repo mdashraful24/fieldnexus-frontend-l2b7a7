@@ -1,5 +1,6 @@
 export * from "./admin.api";
 export * from "./auth.api";
+export * from "./contact.api";
 export * from "./notification.api";
 export * from "./payment.api";
 export * from "./service-category.api";

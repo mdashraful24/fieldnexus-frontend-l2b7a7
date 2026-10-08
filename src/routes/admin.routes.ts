@@ -38,6 +38,10 @@ export const adminRoutes = [
     title: "Monitoring",
     items: [
       {
+        title: "Contact Messages",
+        url: `${prefix}/contact-messages`,
+      },
+      {
         title: "Audit Logs",
         url: `${prefix}/audit-logs`,
       },

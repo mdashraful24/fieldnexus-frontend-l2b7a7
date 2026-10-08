@@ -29,6 +29,7 @@ const publicRoutes = [
   { name: "Home", url: "/" },
   { name: "About us", url: "/about-us" },
   { name: "Vendors", url: "/vendors" },
+  { name: "Contact", url: "/contact" },
 ];
 
 export default function Header() {

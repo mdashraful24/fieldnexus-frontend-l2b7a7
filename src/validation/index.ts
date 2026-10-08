@@ -1,4 +1,5 @@
 export * from "./auth.validation";
+export * from "./contact.validation";
 export * from "./service-category.validation";
 export * from "./super-admin.validation";
 export * from "./technician-application.validation";

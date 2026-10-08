@@ -18,6 +18,12 @@ export function getAllVendors(params: IVendorParams) {
   });
 }
 
+export function getPublicVendors(params: IVendorParams) {
+  return apiClient<ApiResponse<IVendor[]>>("/vendors/public", {
+    query: params,
+  });
+}
+
 export function getVendorById(vendorId: string) {
   return apiClient<ApiResponse<IVendorDetail>>(`/vendors/${vendorId}`);
 }
@@ -64,7 +70,10 @@ export function getVendorMembers(vendorId: string) {
   );
 }
 
-export function addVendorMember({ vendorId, technicianId }: IAddVendorMemberPayload) {
+export function addVendorMember({
+  vendorId,
+  technicianId,
+}: IAddVendorMemberPayload) {
   return apiClient<ApiResponse<IVendorMember>>(`/vendors/${vendorId}/members`, {
     method: "POST",
     body: { technicianId },

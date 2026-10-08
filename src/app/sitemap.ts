@@ -10,6 +10,7 @@ const publicRoutes: {
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/about-us", changeFrequency: "monthly", priority: 0.8 },
   { path: "/vendors", changeFrequency: "daily", priority: 0.9 },
+  { path: "/contact", changeFrequency: "monthly", priority: 0.7 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/security", changeFrequency: "yearly", priority: 0.3 },

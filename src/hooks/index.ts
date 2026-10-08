@@ -1,5 +1,6 @@
 export * from "./admin.hook";
 export * from "./auth.hook";
+export * from "./contact.hook";
 export * from "./notification.hook";
 export * from "./payment.hook";
 export * from "./service-category.hook";

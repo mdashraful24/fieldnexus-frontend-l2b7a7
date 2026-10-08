@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import TablePagination from "@/components/ui/table-pagination";
 import useDebounce from "@/hooks/debounce.hook";
-import { useSuspenseGetAllVendors } from "@/hooks/vendor.hook";
+import { useSuspenseGetPublicVendors } from "@/hooks/vendor.hook";
 import type { IVendorParams, VendorStatus } from "@/types";
 import VendorStatusBadge from "./vendor-status-badge";
 
@@ -50,7 +50,7 @@ function VendorCard({
     .toUpperCase();
 
   return (
-    <Card className="flex h-full flex-col px-4 py-8 rounded-3xl">
+    <Card className="flex h-full flex-col px-4 py-8 rounded-3xl hover:shadow-lg dark:hover:shadow-primary transition-shadow duration-300">
       <CardContent className="flex flex-1 flex-col gap-4">
         <div className="flex items-start gap-4">
           <span className="grid size-14 shrink-0 place-items-center rounded-xl bg-primary/10 text-lg font-semibold text-blue-500">
@@ -73,9 +73,7 @@ function VendorCard({
         </div>
 
         {description ? (
-          <p className="line-clamp-3 text-sm text-foreground">
-            {description}
-          </p>
+          <p className="line-clamp-3 text-sm text-foreground">{description}</p>
         ) : null}
 
         <dl className="mt-auto space-y-2 text-sm">
@@ -127,7 +125,7 @@ export default function VendorsDirectory() {
     ...(debouncedSearch ? { searchTerm: debouncedSearch } : {}),
   };
 
-  const { data } = useSuspenseGetAllVendors(params);
+  const { data } = useSuspenseGetPublicVendors(params);
 
   const vendors = data?.data ?? [];
   const totalPages = data?.meta?.totalPages ?? 0;
@@ -188,7 +186,7 @@ export default function VendorsDirectory() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {vendors.map((vendor) => (
             <VendorCard
               key={vendor.id}

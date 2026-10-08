@@ -10,6 +10,7 @@ import {
   createVendor,
   deleteVendor,
   getAllVendors,
+  getPublicVendors,
   getVendorById,
   getVendorMembers,
   removeVendorMember,
@@ -23,6 +24,13 @@ export function useSuspenseGetAllVendors(params: IVendorParams) {
   return useSuspenseQuery({
     queryKey: ["vendors", params],
     queryFn: () => getAllVendors(params),
+  });
+}
+
+export function useSuspenseGetPublicVendors(params: IVendorParams) {
+  return useSuspenseQuery({
+    queryKey: ["vendors", "public", params],
+    queryFn: () => getPublicVendors(params),
   });
 }
 
