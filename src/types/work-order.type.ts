@@ -104,6 +104,7 @@ export interface IWorkOrderParams {
   sortBy?: string;
   sortOrder?: "desc" | "asc";
   includeDeleted?: boolean;
+  categoryId?: string;
 }
 
 export type WorkOrderListFilter = "ALL" | "DELETED";

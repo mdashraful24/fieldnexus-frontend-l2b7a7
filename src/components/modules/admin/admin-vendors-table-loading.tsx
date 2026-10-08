@@ -13,12 +13,11 @@ const columns: { label: string; width: string; align?: "right" }[] = [
   { label: "Name", width: "w-44" },
   { label: "Email", width: "w-52" },
   { label: "Contact", width: "w-28" },
-  { label: "Service Areas", width: "w-32" },
-  { label: "Rating", width: "w-20" },
+  // { label: "Service Areas", width: "w-32" },
   { label: "Status", width: "w-24" },
+  { label: "Approval", width: "w-24" },
   { label: "Performance", width: "w-24" },
   { label: "Details", width: "w-20" },
-  { label: "Members", width: "w-20" },
   { label: "Restore", width: "w-20" },
 ];
 

@@ -2,6 +2,7 @@ import apiClient from "@/lib/apiClient";
 import type {
   ApiResponse,
   IAddVendorMemberPayload,
+  IChangeVendorStatusPayload,
   ICreateVendorPayload,
   IVendor,
   IVendorDetail,
@@ -44,6 +45,16 @@ export function deleteVendor(vendorId: string) {
 export function restoreVendor(vendorId: string) {
   return apiClient<ApiResponse<IVendor>>(`/vendors/${vendorId}/restore`, {
     method: "PATCH",
+  });
+}
+
+export function changeVendorStatus({
+  vendorId,
+  status,
+}: IChangeVendorStatusPayload) {
+  return apiClient<ApiResponse<IVendor>>(`/vendors/${vendorId}/status`, {
+    method: "PATCH",
+    body: { status },
   });
 }
 

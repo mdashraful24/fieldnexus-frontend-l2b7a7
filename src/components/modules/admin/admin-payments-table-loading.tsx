@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -8,14 +9,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const columns: { label: string; width: string; align?: "right" }[] = [
+const columns: {
+  label: string;
+  width: string;
+  align?: "right";
+  className?: string;
+}[] = [
   { label: "#", width: "w-8" },
   { label: "Invoice", width: "w-36" },
-  { label: "Work Order", width: "w-44" },
+  { label: "Work Order", width: "w-44", className: "hidden md:table-cell" },
   { label: "Customer", width: "w-32" },
   { label: "Amount", width: "w-24" },
   { label: "Status", width: "w-24" },
-  { label: "Date", width: "w-36" },
+  { label: "Date", width: "w-36", className: "hidden md:table-cell" },
   { label: "Refund", width: "w-16" },
 ];
 
@@ -28,7 +34,10 @@ export default function AdminPaymentsTableLoading() {
             {columns.map((column) => (
               <TableHead
                 key={column.label}
-                className={column.align === "right" ? "text-right" : undefined}
+                className={cn(
+                  column.align === "right" ? "text-right" : undefined,
+                  column.className,
+                )}
               >
                 {column.label}
               </TableHead>
@@ -41,9 +50,10 @@ export default function AdminPaymentsTableLoading() {
               {columns.map((column) => (
                 <TableCell
                   key={column.label}
-                  className={
-                    column.align === "right" ? "text-right" : undefined
-                  }
+                  className={cn(
+                    column.align === "right" ? "text-right" : undefined,
+                    column.className,
+                  )}
                 >
                   <Skeleton
                     className={

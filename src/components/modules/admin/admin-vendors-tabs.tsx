@@ -8,18 +8,30 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useDebounce from "@/hooks/debounce.hook";
-import type { IVendor, IVendorParams, VendorListFilter } from "@/types";
+import type {
+  AdminVendorsStatusFilter,
+  IVendor,
+  IVendorParams,
+  VendorListFilter,
+} from "@/types";
 import AdminVendorCreateModal from "./admin-vendor-create-modal";
 import AdminVendorsTable from "./admin-vendors-table";
 import AdminVendorsTableLoading from "./admin-vendors-table-loading";
 import VendorPerformanceModal from "./vendor-performance-modal";
 
 const listTabs: VendorListFilter[] = ["ALL", "DELETED"];
+const statusTabs: AdminVendorsStatusFilter[] = [
+  "ALL",
+  "PENDING",
+  "APPROVED",
+  "SUSPENDED",
+];
 
 export default function AdminVendorsTabs() {
   const router = useRouter();
 
   const [listTab, setListTab] = useState<VendorListFilter>("ALL");
+  const [statusTab, setStatusTab] = useState<AdminVendorsStatusFilter>("ALL");
   const [performanceId, setPerformanceId] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -49,6 +61,7 @@ export default function AdminVendorsTabs() {
     page,
     limit: 10,
     ...(debouncedSearch ? { searchTerm: debouncedSearch } : {}),
+    ...(statusTab !== "ALL" ? { status: statusTab } : {}),
     ...(listTab === "DELETED" ? { includeDeleted: true } : {}),
   };
 
@@ -79,6 +92,25 @@ export default function AdminVendorsTabs() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              <Tabs
+                value={statusTab}
+                onValueChange={(value) => {
+                  setStatusTab(value as AdminVendorsStatusFilter);
+                  setPage(1);
+                }}
+              >
+                <TabsList className="w-full justify-start md:w-auto">
+                  {statusTabs.map((tab) => (
+                    <TabsTrigger value={tab} key={tab} className="flex-1">
+                      {tab === "ALL"
+                        ? "All Status"
+                        : tab.charAt(0).toUpperCase() +
+                          tab.slice(1).toLowerCase()}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+
               <Tabs
                 value={listTab}
                 onValueChange={(value) => {

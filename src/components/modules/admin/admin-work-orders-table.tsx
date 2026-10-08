@@ -210,12 +210,12 @@ export default function AdminWorkOrdersTable({
               <TableHead>#</TableHead>
               <TableHead>Work Order</TableHead>
               <TableHead>Customer</TableHead>
-              <TableHead>Category</TableHead>
+              <TableHead className="hidden md:table-cell">Category</TableHead>
               <TableHead>Priority</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Approve / Assign</TableHead>
-              <TableHead>Update</TableHead>
+              <TableHead className="hidden md:table-cell">Created</TableHead>
+              <TableHead>Action</TableHead>
+              {/* <TableHead>Update</TableHead> */}
               <TableHead>Details</TableHead>
               <TableHead>Delete</TableHead>
             </TableRow>
@@ -258,7 +258,7 @@ export default function AdminWorkOrdersTable({
                     <TableCell className="max-w-40 truncate">
                       {workOrder.customer?.name ?? "—"}
                     </TableCell>
-                    <TableCell className="max-w-40 truncate">
+                    <TableCell className="hidden md:table-cell max-w-40 truncate">
                       {workOrder.category?.name ?? "—"}
                     </TableCell>
                     <TableCell>
@@ -273,7 +273,7 @@ export default function AdminWorkOrdersTable({
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       {new Date(workOrder.createdAt).toLocaleString()}
                     </TableCell>
                     <TableCell>
@@ -308,7 +308,7 @@ export default function AdminWorkOrdersTable({
                         <StatusNote />
                       )}
                     </TableCell>
-                    <TableCell>
+                    {/* <TableCell>
                       {!workOrder.isDeleted && statusActions.length > 0 ? (
                         <Button
                           variant="outline"
@@ -321,7 +321,7 @@ export default function AdminWorkOrdersTable({
                       ) : (
                         <StatusNote />
                       )}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell>
                       {workOrder.isDeleted ? (
                         <StatusNote />

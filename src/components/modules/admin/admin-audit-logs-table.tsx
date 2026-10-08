@@ -169,7 +169,9 @@ export default function AdminAuditLogsTable({
               <TableHead>Action</TableHead>
               <TableHead>Entity</TableHead>
               <TableHead>Actor</TableHead>
-              <TableHead className="w-44">Changes</TableHead>
+              <TableHead className="hidden md:table-cell w-44">
+                Changes
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -241,7 +243,7 @@ export default function AdminAuditLogsTable({
                         </p>
                       )}
                     </TableCell>
-                    <TableCell className="min-w-60 align-top whitespace-normal">
+                    <TableCell className="hidden md:table-cell min-w-60 align-top whitespace-normal">
                       {changeRows.length === 0 ? (
                         <span className="text-xs text-muted-foreground">
                           — No value changes

@@ -59,10 +59,10 @@ export default function SuperAdminAdminsTable({
             <TableRow>
               <TableHead className="w-8">#</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
+              <TableHead className="hidden md:table-cell">Email</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Joined At</TableHead>
+              <TableHead className="hidden md:table-cell">Joined At</TableHead>
               <TableHead>Change Email</TableHead>
               <TableHead>Reset Password</TableHead>
               <TableHead>View</TableHead>
@@ -86,14 +86,16 @@ export default function SuperAdminAdminsTable({
                 <TableRow key={admin.id}>
                   <TableCell>{(page - 1) * limit + index + 1}</TableCell>
                   <TableCell className="font-medium">{admin.name}</TableCell>
-                  <TableCell>{admin.email}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {admin.email}
+                  </TableCell>
                   <TableCell>
                     <UserRoleBadge role={admin.role} />
                   </TableCell>
                   <TableCell>
                     <UserStatusBadge status={admin.status} />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     {new Date(admin.createdAt).toLocaleString()}
                   </TableCell>
                   <TableCell>

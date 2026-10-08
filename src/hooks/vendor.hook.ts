@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   addVendorMember,
+  changeVendorStatus,
   createVendor,
   deleteVendor,
   getAllVendors,
@@ -99,6 +100,20 @@ export function useRestoreVendor() {
       queryClient.invalidateQueries({ queryKey: ["vendors"] });
       queryClient.invalidateQueries({
         queryKey: ["admin", "vendor", vendorId],
+      });
+    },
+  });
+}
+
+export function useChangeVendorStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: changeVendorStatus,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["vendors"] });
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "vendor", variables.vendorId],
       });
     },
   });

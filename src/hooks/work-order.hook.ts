@@ -39,6 +39,18 @@ export function useSuspenseGetAllWorkOrders(params: IWorkOrderParams) {
   });
 }
 
+export function useGetAllWorkOrders(
+  params: IWorkOrderParams,
+  options?: { enabled?: boolean },
+) {
+  return useQuery({
+    queryKey: ["work-orders", "list", params],
+    queryFn: () => getAllWorkOrders(params),
+    retry: false,
+    enabled: options?.enabled ?? true,
+  });
+}
+
 export function useGetWorkOrderById(workOrderId: string) {
   return useQuery({
     queryKey: ["work-orders", workOrderId],
@@ -140,8 +152,7 @@ export function useCreateFeedback() {
   const invalidateWorkOrders = useInvalidateWorkOrders();
 
   return useMutation({
-    mutationFn: (payload: ICreateFeedbackPayload) =>
-      createFeedback(payload),
+    mutationFn: (payload: ICreateFeedbackPayload) => createFeedback(payload),
     onSuccess: invalidateWorkOrders,
   });
 }
@@ -150,8 +161,7 @@ export function useAssignWorkOrder() {
   const invalidateWorkOrders = useInvalidateWorkOrders();
 
   return useMutation({
-    mutationFn: (payload: IAssignWorkOrderPayload) =>
-      assignWorkOrder(payload),
+    mutationFn: (payload: IAssignWorkOrderPayload) => assignWorkOrder(payload),
     onSuccess: invalidateWorkOrders,
   });
 }
@@ -160,8 +170,7 @@ export function useUpdateWorkOrder() {
   const invalidateWorkOrders = useInvalidateWorkOrders();
 
   return useMutation({
-    mutationFn: (payload: IUpdateWorkOrderPayload) =>
-      updateWorkOrder(payload),
+    mutationFn: (payload: IUpdateWorkOrderPayload) => updateWorkOrder(payload),
     onSuccess: invalidateWorkOrders,
   });
 }

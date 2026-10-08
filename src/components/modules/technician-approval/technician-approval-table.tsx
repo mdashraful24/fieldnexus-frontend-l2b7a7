@@ -46,9 +46,11 @@ export default function TechnicianApprovalTable({
             <TableRow>
               <TableHead>#</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
+              <TableHead className="hidden md:table-cell">Email</TableHead>
               <TableHead>Contact No.</TableHead>
-              <TableHead>Experience (Years)</TableHead>
+              <TableHead className="hidden md:table-cell">
+                Experience (Years)
+              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Review</TableHead>
             </TableRow>
@@ -73,9 +75,13 @@ export default function TechnicianApprovalTable({
                   <TableCell className="font-medium">
                     {technician.name}
                   </TableCell>
-                  <TableCell>{technician.email}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {technician.email}
+                  </TableCell>
                   <TableCell>{technician.contactNumber ?? "—"}</TableCell>
-                  <TableCell>{technician.experienceYears}</TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {technician.experienceYears}
+                  </TableCell>
                   <TableCell>
                     <TechnicianStatusBadge status={technician.status} />
                   </TableCell>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Inbox, Pencil, RotateCcw, Trash2 } from "lucide-react";
+import { Building2, Inbox, Pencil, RotateCcw, Trash2 } from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,7 @@ import type {
   IServiceCategoryParams,
   ServiceCategoryListFilter,
 } from "@/types";
+import ServiceCategoryDetailsSheet from "./service-category-details-sheet";
 
 function DeleteCategoryPopover({ category }: { category: IServiceCategory }) {
   const { mutate: deleteServiceCategory, isPending: isDeleting } =
@@ -188,6 +189,7 @@ export default function ServiceCategoryTable({
   ...params
 }: ServiceCategoryTableProps) {
   const { data } = useSuspenseGetAllServiceCategories(params);
+  const [detailsId, setDetailsId] = useState("");
 
   const categories = data?.data ?? [];
   const displayedCategories =
@@ -214,17 +216,18 @@ export default function ServiceCategoryTable({
               <TableHead>Name</TableHead>
               <TableHead>Base Price</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
+              <TableHead className="hidden md:table-cell">Created</TableHead>
               <TableHead>Edit</TableHead>
               <TableHead>Delete</TableHead>
               <TableHead>Restore</TableHead>
+              <TableHead>Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {displayedCategories.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={8}
+                  colSpan={9}
                   className="h-32 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
@@ -258,7 +261,7 @@ export default function ServiceCategoryTable({
                       {category.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden md:table-cell">
                     {new Date(category.createdAt).toLocaleString()}
                   </TableCell>
                   <TableCell>
@@ -289,6 +292,16 @@ export default function ServiceCategoryTable({
                       <StatusNote />
                     )}
                   </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      title="Details"
+                      onClick={() => setDetailsId(category.id)}
+                    >
+                      <Building2 className="size-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             )}
@@ -303,6 +316,11 @@ export default function ServiceCategoryTable({
           handlePageChange={handlePageChange}
         />
       </div>
+
+      <ServiceCategoryDetailsSheet
+        selectedId={detailsId}
+        onClose={() => setDetailsId("")}
+      />
     </>
   );
 }

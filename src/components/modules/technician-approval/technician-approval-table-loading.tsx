@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "cn";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -10,12 +11,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const columns: { label: string; width: string; align?: "right" }[] = [
+const columns: {
+  label: string;
+  width: string;
+  align?: "right";
+  className?: string;
+}[] = [
   { label: "#", width: "w-10" },
   { label: "Name", width: "w-40" },
-  { label: "Email", width: "w-52" },
+  { label: "Email", width: "w-52", className: "hidden md:table-cell" },
   { label: "Contact No.", width: "w-28" },
-  { label: "Experience (Years)", width: "w-20" },
+  {
+    label: "Experience (Years)",
+    width: "w-20",
+    className: "hidden md:table-cell",
+  },
   { label: "Status", width: "w-24" },
   { label: "Review", width: "w-20" },
 ];
@@ -29,7 +39,10 @@ export default function TechnicianApprovalTableLoading() {
             {columns.map((column) => (
               <TableHead
                 key={column.label}
-                className={column.align === "right" ? "text-right" : undefined}
+                className={cn(
+                  column.align === "right" ? "text-right" : undefined,
+                  column.className,
+                )}
               >
                 {column.label}
               </TableHead>
@@ -42,9 +55,10 @@ export default function TechnicianApprovalTableLoading() {
               {columns.map((column) => (
                 <TableCell
                   key={column.label}
-                  className={
-                    column.align === "right" ? "text-right" : undefined
-                  }
+                  className={cn(
+                    column.align === "right" ? "text-right" : undefined,
+                    column.className,
+                  )}
                 >
                   <Skeleton
                     className={

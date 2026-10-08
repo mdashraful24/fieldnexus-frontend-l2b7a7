@@ -106,6 +106,7 @@ export interface IVendorParams {
   sortOrder?: "asc" | "desc";
   email?: string;
   includeDeleted?: boolean;
+  status?: VendorStatus;
 }
 
 export interface IVendor {
@@ -140,6 +141,8 @@ export type AdminUsersRoleFilter = "ALL" | "TECHNICIAN" | "CUSTOMER";
 export type AdminUsersStatusFilter = "ALL" | UserStatus;
 
 export type VendorListFilter = "ALL" | "DELETED";
+
+export type AdminVendorsStatusFilter = "ALL" | VendorStatus;
 
 export interface IVendorMemberTechnician {
   id: string;
@@ -182,6 +185,11 @@ export interface IUpdateVendorPayload extends Partial<ICreateVendorPayload> {}
 export interface IVendorUpdatePayload {
   vendorId: string;
   data: IUpdateVendorPayload;
+}
+
+export interface IChangeVendorStatusPayload {
+  vendorId: string;
+  status: Extract<VendorStatus, "APPROVED" | "SUSPENDED">;
 }
 
 export interface IAddVendorMemberPayload {

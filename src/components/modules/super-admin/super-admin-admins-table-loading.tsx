@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -8,13 +9,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const columns: { label: string; width: string; align?: "right" }[] = [
+const columns: {
+  label: string;
+  width: string;
+  align?: "right";
+  className?: string;
+}[] = [
   { label: "#", width: "w-8" },
   { label: "Name", width: "w-40" },
-  { label: "Email", width: "w-56" },
+  { label: "Email", width: "w-56", className: "hidden md:table-cell" },
   { label: "Role", width: "w-24" },
   { label: "Status", width: "w-24" },
-  { label: "Joined At", width: "w-40" },
+  { label: "Joined At", width: "w-40", className: "hidden md:table-cell" },
   { label: "View", width: "w-16" },
 ];
 
@@ -27,7 +33,10 @@ export default function SuperAdminAdminsTableLoading() {
             {columns.map((column) => (
               <TableHead
                 key={column.label}
-                className={column.align === "right" ? "text-right" : undefined}
+                className={cn(
+                  column.align === "right" ? "text-right" : undefined,
+                  column.className,
+                )}
               >
                 {column.label}
               </TableHead>
@@ -40,9 +49,10 @@ export default function SuperAdminAdminsTableLoading() {
               {columns.map((column) => (
                 <TableCell
                   key={column.label}
-                  className={
-                    column.align === "right" ? "text-right" : undefined
-                  }
+                  className={cn(
+                    column.align === "right" ? "text-right" : undefined,
+                    column.className,
+                  )}
                 >
                   <Skeleton
                     className={

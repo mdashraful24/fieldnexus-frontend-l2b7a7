@@ -74,7 +74,9 @@ export default function PaymentHistoryTable() {
             <TableHeader>
               <TableRow>
                 <TableHead>Invoice</TableHead>
-                <TableHead>Work order</TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Work order
+                </TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
@@ -87,7 +89,7 @@ export default function PaymentHistoryTable() {
                   <TableCell className="font-mono text-xs">
                     {payment.merchantInvoiceNumber ?? "—"}
                   </TableCell>
-                  <TableCell className="font-mono text-xs">
+                  <TableCell className="hidden md:table-cell font-mono text-xs">
                     {payment.workOrderId.slice(0, 8)}
                   </TableCell>
                   <TableCell className="whitespace-nowrap font-medium">

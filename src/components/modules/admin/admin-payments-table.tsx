@@ -137,11 +137,11 @@ export default function AdminPaymentsTable({
             <TableRow>
               <TableHead>#</TableHead>
               <TableHead>Invoice</TableHead>
-              <TableHead>Work Order</TableHead>
+              <TableHead className="hidden md:table-cell">Work Order</TableHead>
               <TableHead>Customer</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead className="hidden md:table-cell">Date</TableHead>
               <TableHead>Refund</TableHead>
             </TableRow>
           </TableHeader>
@@ -165,7 +165,7 @@ export default function AdminPaymentsTable({
                   <TableCell className="font-mono text-xs">
                     {payment.merchantInvoiceNumber ?? "—"}
                   </TableCell>
-                  <TableCell className="max-w-56">
+                  <TableCell className="hidden md:table-cell max-w-56">
                     <p className="truncate font-medium">
                       {payment.workOrder?.workOrderNumber ??
                         payment.workOrderId.slice(0, 8)}
@@ -183,7 +183,7 @@ export default function AdminPaymentsTable({
                   <TableCell>
                     <PaymentStatusBadge status={payment.status} />
                   </TableCell>
-                  <TableCell className="whitespace-nowrap text-muted-foreground">
+                  <TableCell className="hidden md:table-cell whitespace-nowrap text-muted-foreground">
                     {payment.paidAt
                       ? new Date(payment.paidAt).toLocaleString()
                       : new Date(payment.createdAt).toLocaleString()}

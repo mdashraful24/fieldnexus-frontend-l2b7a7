@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -8,15 +9,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const columns: { label: string; width: string; align?: "right" }[] = [
+const columns: {
+  label: string;
+  width: string;
+  align?: "right";
+  className?: string;
+}[] = [
   { label: "#", width: "w-8" },
   { label: "Name", width: "w-52" },
   { label: "Base Price", width: "w-28" },
   { label: "Status", width: "w-24" },
-  { label: "Created", width: "w-40" },
+  { label: "Created", width: "w-40", className: "hidden md:table-cell" },
   { label: "Edit", width: "w-16" },
   { label: "Delete", width: "w-16" },
   { label: "Restore", width: "w-20" },
+  { label: "Details", width: "w-16" },
 ];
 
 export default function ServiceCategoryTableLoading() {
@@ -28,7 +35,10 @@ export default function ServiceCategoryTableLoading() {
             {columns.map((column) => (
               <TableHead
                 key={column.label}
-                className={column.align === "right" ? "text-right" : undefined}
+                className={cn(
+                  column.align === "right" ? "text-right" : undefined,
+                  column.className,
+                )}
               >
                 {column.label}
               </TableHead>
@@ -41,9 +51,10 @@ export default function ServiceCategoryTableLoading() {
               {columns.map((column) => (
                 <TableCell
                   key={column.label}
-                  className={
-                    column.align === "right" ? "text-right" : undefined
-                  }
+                  className={cn(
+                    column.align === "right" ? "text-right" : undefined,
+                    column.className,
+                  )}
                 >
                   <Skeleton
                     className={

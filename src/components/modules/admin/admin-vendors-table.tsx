@@ -1,6 +1,14 @@
 "use client";
 
-import { Building2, Eye, Inbox, RotateCcw, Users } from "lucide-react";
+import {
+  Ban,
+  Building2,
+  Check,
+  Eye,
+  Inbox,
+  RotateCcw,
+  Users,
+} from "lucide-react";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import VendorStatusBadge from "@/components/modules/vendor/vendor-status-badge";
 import { Button } from "@/components/ui/button";
@@ -22,7 +30,12 @@ import {
 } from "@/components/ui/table";
 import TablePagination from "@/components/ui/table-pagination";
 import { toast } from "@/components/ui/toast";
-import { useRestoreVendor, useSuspenseGetAllVendors } from "@/hooks";
+import {
+  useChangeVendorStatus,
+  useGetMe,
+  useRestoreVendor,
+  useSuspenseGetAllVendors,
+} from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import type { IVendor, IVendorParams, VendorListFilter } from "@/types";
 
@@ -36,6 +49,60 @@ export interface AdminVendorsTableProps extends IVendorParams {
 
 function StatusNote() {
   return <span className="text-base font-bold text-muted-foreground">—</span>;
+}
+
+function VendorApprovalButton({ vendor }: { vendor: IVendor }) {
+  const { mutate: changeStatus, isPending } = useChangeVendorStatus();
+  const isApproved = vendor.status === "APPROVED";
+
+  const handleClick = () => {
+    changeStatus(
+      { vendorId: vendor.id, status: isApproved ? "SUSPENDED" : "APPROVED" },
+      {
+        onSuccess: (res) => {
+          toast.add({
+            title: "Success",
+            description:
+              res?.message ||
+              (isApproved
+                ? `${vendor.name} suspended successfully.`
+                : `${vendor.name} approved successfully.`),
+            type: "success",
+          });
+        },
+        onError: (err) => {
+          toast.add({
+            title: "Error",
+            description: getApiErrorMessage(
+              err,
+              isApproved
+                ? "An error occurred while suspending the vendor."
+                : "An error occurred while approving the vendor.",
+            ),
+            type: "error",
+          });
+        },
+      },
+    );
+  };
+
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      title={isApproved ? "Suspend" : "Approve"}
+      onClick={handleClick}
+      disabled={isPending}
+    >
+      {isPending ? (
+        <Spinner className="size-4" />
+      ) : isApproved ? (
+        <Ban className="size-4" />
+      ) : (
+        <Check className="size-4" />
+      )}
+    </Button>
+  );
 }
 
 function RestoreVendorPopover({ vendor }: { vendor: IVendor }) {
@@ -111,6 +178,8 @@ export default function AdminVendorsTable({
   ...params
 }: AdminVendorsTableProps) {
   const { data } = useSuspenseGetAllVendors(params);
+  const { data: meData } = useGetMe();
+  const isSuperAdmin = meData?.data?.role === "SUPER_ADMIN";
 
   const vendors = data?.data ?? [];
   const displayedVendors =
@@ -137,12 +206,13 @@ export default function AdminVendorsTable({
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Contact</TableHead>
-              <TableHead>Service Areas</TableHead>
-              <TableHead>Rating</TableHead>
+              {/* <TableHead>Service Areas</TableHead> */}
+              {/* <TableHead>Rating</TableHead> */}
               <TableHead>Status</TableHead>
+              <TableHead>Approval</TableHead>
               <TableHead>Performance</TableHead>
               <TableHead>Details</TableHead>
-              <TableHead>Members</TableHead>
+              {/* <TableHead>Members</TableHead> */}
               <TableHead>Restore</TableHead>
             </TableRow>
           </TableHeader>
@@ -150,7 +220,7 @@ export default function AdminVendorsTable({
             {displayedVendors.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={11}
+                  colSpan={10}
                   className="h-32 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
@@ -173,14 +243,21 @@ export default function AdminVendorsTable({
                   </TableCell>
                   <TableCell>{vendor.email}</TableCell>
                   <TableCell>{vendor.contactNumber ?? "—"}</TableCell>
-                  <TableCell className="max-w-40 truncate">
+                  {/* <TableCell className="max-w-40 truncate">
                     {vendor.serviceAreas ?? "—"}
-                  </TableCell>
-                  <TableCell>
+                  </TableCell> */}
+                  {/* <TableCell>
                     {vendor.rating ? `${vendor.rating.toFixed(1)} / 5` : "—"}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <VendorStatusBadge status={vendor.status} />
+                  </TableCell>
+                  <TableCell>
+                    {vendor.isDeleted || !isSuperAdmin ? (
+                      <StatusNote />
+                    ) : (
+                      <VendorApprovalButton vendor={vendor} />
+                    )}
                   </TableCell>
                   <TableCell>
                     {vendor.isDeleted ? (
@@ -210,7 +287,7 @@ export default function AdminVendorsTable({
                       </Button>
                     )}
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     {vendor.isDeleted ? (
                       <StatusNote />
                     ) : (
@@ -223,7 +300,7 @@ export default function AdminVendorsTable({
                         <Users className="size-4" />
                       </Button>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     {vendor.isDeleted ? (
                       <RestoreVendorPopover vendor={vendor} />
