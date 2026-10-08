@@ -1,1 +1,0 @@
-# Frontend URL: https://fieldnexus-frontend.vercel.app/
