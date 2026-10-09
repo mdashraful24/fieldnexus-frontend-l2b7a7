@@ -8,19 +8,15 @@ import AuthLoading from "./auth-loading";
 
 export default function GuestGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { data, isPending } = useGetMe();
+  const { data } = useGetMe();
 
   const user = data?.data;
 
   useEffect(() => {
-    if (isPending || !user) return;
+    if (!user) return;
 
     router.replace(getDashboardPath(user.role));
-  }, [isPending, user, router]);
-
-  if (isPending) {
-    return <AuthLoading />;
-  }
+  }, [user, router]);
 
   if (user) {
     return <AuthLoading label="Redirecting to your dashboard..." />;
