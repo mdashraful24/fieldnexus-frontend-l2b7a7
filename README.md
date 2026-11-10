@@ -168,15 +168,7 @@ cd fieldnexus-frontend-l2b7a7
 bun install
 ```
 
-<details>
-<summary>Using npm / pnpm / yarn instead?</summary>
-
-```bash
-npm install        # or: pnpm install  /  yarn install
-```
-
-Note: `bun.lock` is the committed lockfile, so `bun install` is the most reproducible path.
-</details>
+Note: `bun.lock` is the committed lockfile. Use Bun for all installs and scripts.
 
 ### 3. Configure environment variables
 
@@ -359,7 +351,7 @@ To preview a production build locally:
 
 ```bash
 bun run build
-bunx serve out          # or: npx serve out
+bunx serve out
 ```
 
 To deploy to Vercel, import the repository and set the environment variables (`NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`) in the project settings. Add your URL here as the live link.
