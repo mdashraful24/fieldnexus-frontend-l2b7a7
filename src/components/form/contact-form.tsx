@@ -2,6 +2,7 @@
 
 import { useForm } from "@tanstack/react-form";
 import { Send } from "lucide-react";
+import Link from "next/link";
 import { useCreateContactMessage } from "@/hooks";
 import { getApiErrorMessage } from "@/lib/apiError";
 import { contactFormSchema } from "@/validation";
@@ -11,6 +12,9 @@ import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
 import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/toast";
+
+const inputClass = "py-4.5 md:py-5";
+const textareaClass = "min-h-32 py-4 md:py-5";
 
 export default function ContactForm() {
   const { mutate: sendMessage, isPending } = useCreateContactMessage();
@@ -54,14 +58,13 @@ export default function ContactForm() {
 
   return (
     <form
-      className="flex flex-col gap-4"
       onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();
       }}
     >
-      <FieldGroup>
-        <div className="grid gap-4 sm:grid-cols-2">
+      <FieldGroup className="gap-6">
+        <div className="grid gap-6 sm:grid-cols-2">
           <form.Field name="name">
             {(field) => {
               const isInvalid =
@@ -79,7 +82,7 @@ export default function ContactForm() {
                     onBlur={field.handleBlur}
                     autoComplete="name"
                     aria-invalid={isInvalid}
-                    className="p-6 rounded-xl"
+                    className={inputClass}
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -105,7 +108,7 @@ export default function ContactForm() {
                     onBlur={field.handleBlur}
                     autoComplete="email"
                     aria-invalid={isInvalid}
-                    className="p-6 rounded-xl"
+                    className={inputClass}
                   />
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
@@ -131,7 +134,7 @@ export default function ContactForm() {
                   onBlur={field.handleBlur}
                   autoComplete="off"
                   aria-invalid={isInvalid}
-                  className="p-6 rounded-xl"
+                  className={inputClass}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
@@ -151,12 +154,12 @@ export default function ContactForm() {
                   id={field.name}
                   name={field.name}
                   placeholder="Tell us more about your inquiry..."
-                  rows={3}
+                  rows={8}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
                   aria-invalid={isInvalid}
-                  className="p-6 rounded-xl"
+                  className={textareaClass}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
@@ -164,23 +167,43 @@ export default function ContactForm() {
           }}
         </form.Field>
 
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full text-sm font-semibold p-5"
-        >
-          {isPending ? (
-            <>
-              <Spinner />
-              Sending message...
-            </>
-          ) : (
-            <>
-              <Send className="size-4" />
-              Send message
-            </>
-          )}
-        </Button>
+        <div className="flex flex-col gap-4 border-t pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-64 text-xs leading-relaxed text-muted-foreground">
+            By sending a message you agree to our{" "}
+            <Link
+              href="/terms"
+              className="font-medium text-foreground underline-offset-4 hover:text-primary hover:underline"
+            >
+              Terms
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy"
+              className="font-medium text-foreground underline-offset-4 hover:text-primary hover:underline"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </p>
+
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="h-10 w-full text-sm font-semibold sm:w-auto"
+          >
+            {isPending ? (
+              <>
+                <Spinner />
+                Sending message...
+              </>
+            ) : (
+              <>
+                <Send className="size-4" />
+                Send message
+              </>
+            )}
+          </Button>
+        </div>
       </FieldGroup>
     </form>
   );
