@@ -86,7 +86,7 @@ export default function VendorsDirectory() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {vendors.map((vendor) => (
             <VendorCard
               key={vendor.id}

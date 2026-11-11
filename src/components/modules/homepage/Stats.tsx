@@ -15,7 +15,7 @@ export default function Stats() {
       aria-label="Platform statistics"
       className="max-w-6xl w-full mx-auto flex scroll-mt-16 flex-col py-28"
     >
-      <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
         {stats.map((stat) => (
           <MarketingCard
             key={stat.label}

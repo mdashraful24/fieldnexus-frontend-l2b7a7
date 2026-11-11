@@ -76,7 +76,7 @@ export default function Roles() {
         </p>
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         {groups.map((group) => (
           <MarketingCard key={group.title} className="px-4 py-8 rounded-3xl space-y-4">
             <CardHeader>

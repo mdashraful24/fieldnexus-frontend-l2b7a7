@@ -51,7 +51,7 @@ export default function HowItWorks() {
         </p>
       </div>
 
-      <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (
           <li key={step.title}>
             <MarketingCard className="px-4 py-8 rounded-3xl">

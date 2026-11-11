@@ -67,7 +67,7 @@ export default function Features() {
         </p>
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <MarketingCard key={feature.title} className="px-4 py-8 rounded-3xl">
             <CardHeader>
