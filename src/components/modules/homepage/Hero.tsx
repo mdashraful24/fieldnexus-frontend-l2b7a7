@@ -153,7 +153,7 @@ export default function Hero() {
                       key={initials}
                       className={cn(
                         "grid size-6 place-items-center rounded-full text-[9px] font-semibold text-primary-foreground ring-2 ring-background",
-                        index === 0 ? "bg-primary" : "bg-primary/70",
+                        index === 0 ? "bg-primary" : "bg-primary",
                       )}
                     >
                       {initials}
