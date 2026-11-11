@@ -14,7 +14,7 @@ export const metadata: Metadata = createMetadata({
 
 export default function VendorDetailsPage() {
   return (
-    <main className="w-full min-h-screen overflow-x-hidden">
+    <main className="w-full overflow-x-hidden">
       <Container className="py-10 sm:py-14">
         <Suspense fallback={null}>
           <VendorDetailsView />

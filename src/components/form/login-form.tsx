@@ -217,7 +217,7 @@ export default function LoginForm() {
             </p> */}
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-4">
             {quickLoginProfiles.map((profile) => {
               const Icon = quickLoginIcons[profile.role];
 
